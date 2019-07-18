@@ -25,7 +25,6 @@ class Playlist extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        "playlists" : state.playlists,
         "playlist" : state.playlists.playlists[ownProps.playlistId]
     }
 }
