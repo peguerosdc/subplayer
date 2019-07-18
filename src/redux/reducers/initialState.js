@@ -6,5 +6,9 @@ export default {
     },
     albumsContent : {
         albums : []
+    },
+    playlists : {
+        playlists : {},
+        currentPlaylistId: {}
     }
 };

@@ -31,3 +31,12 @@ export function getAlbum(id) {
             return result["data"]["subsonic-response"]["album"];
         });
 }
+
+export function getPlaylists() {
+    const url = build_url("getPlaylists");
+    return axios
+        .get(url)
+        .then(result => {
+            return result["data"]["subsonic-response"]["playlists"]["playlist"];
+        });
+}
