@@ -40,3 +40,12 @@ export function getPlaylists() {
             return result["data"]["subsonic-response"]["playlists"]["playlist"];
         });
 }
+
+export function getPlaylistById(id) {
+    const url = build_url("getPlaylist", "&id="+id)
+    return axios
+        .get(url)
+        .then(result => {
+            return result["data"]["subsonic-response"]["playlist"];
+        });
+}

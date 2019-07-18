@@ -22,7 +22,7 @@ class Sidebar extends React.Component {
                 <h2>PLAYLISTS</h2>
                 {
                     Object.keys(playlists).map( id =>
-                        <p key={id}>{playlists[id].name} ({playlists[id].songCount})</p>
+                        <Link key={id} to={"/playlist/"+id}>{playlists[id].name} ({playlists[id].songCount})</Link>
                     )
                 }
             </div>

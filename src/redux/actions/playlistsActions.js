@@ -12,3 +12,14 @@ export function loadPlaylists() {
         dispatch(loadPlaylistsSuccess(playlists));
     };
 }
+
+export function loadOnePlaylistSuccess(playlist) {
+    return { type: types.LOAD_ONE_PLAYLIST_SUCCESS, playlist };
+}
+
+export function loadOnePlaylist(id) {
+    return async (dispatch) => {
+        const playlist = await subsonicApi.getPlaylistById(id);
+        dispatch(loadOnePlaylistSuccess(playlist));
+    };
+}

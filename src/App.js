@@ -10,6 +10,7 @@ import MySidebar from './components/Sidebar';
 import MusicPlayer from './MusicPlayer';
 import ArtistsList from './components/artists/ArtistsList'
 import Artist from './components/artists/Artist'
+import Playlist from './components/playlists/Playlist'
 
 const NotFound = () => <p>404! Sorry, nothing here</p>
 
@@ -27,6 +28,7 @@ function App() {
               <Home path="/" />
               <ArtistsList path="/artists"/>
               <Artist path="/artists/:artistId"/>
+              <Playlist path="/playlist/:playlistId"/>
             </Router>
         </Content>
       </Container>

@@ -9,6 +9,6 @@ export default {
     },
     playlists : {
         playlists : {},
-        currentPlaylistId: {}
+        currentPlaylistId: null
     }
 };
