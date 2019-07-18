@@ -43,10 +43,13 @@ export function getPlaylists() {
 
 export function getPlaylistById(id) {
     const url = build_url("getPlaylist", "&id="+id)
-    console.log(url)
     return axios
         .get(url)
         .then(result => {
             return result["data"]["subsonic-response"]["playlist"];
         });
+}
+
+export function getCoverArtUrl(id) {
+    return build_url("getCoverArt", "&id="+id)
 }

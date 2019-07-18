@@ -13,10 +13,12 @@ class Artist extends React.Component {
         let artist = this.props.artist
         let albums = this.props.artist != null ? this.props.artist.album : []
         return (
-            <div>
-                <h1>This is artist {artist != null ? artist.name : "..."}</h1>
+            <div style={{padding:"20px"}}>
+                <h1>{artist != null ? artist.name : "..."}</h1>
                 {albums.map(album => (
-                    <Album albumId={album.id} key={album.id} />
+                    <div style={{margin:"20px"}}>
+                        <Album albumId={album.id} key={album.id}/>
+                    </div>
                 ))}
             </div>
         )
