@@ -19,10 +19,10 @@ function App() {
     <Container style={{ display : "flex", height: "100vh", flexDirection:"column" }}>
       { /* Main content */ }
       <Container style={{flex: 1, "overflow":"auto"}}>
-        <Sidebar >
+        <Sidebar style={{backgroundColor:"rgb(29,45,60)"}} >
           <MySidebar />
         </Sidebar>
-        <Content style={{"overflow":"auto"}}>
+        <Content style={{"overflow":"auto", backgroundImage:"radial-gradient(rgb(29,42,58), rgb(24,44,60), rgb(11,24,39))"}}>
           <Router>
               <NotFound default />
               <Home path="/" />
@@ -33,7 +33,7 @@ function App() {
         </Content>
       </Container>
       { /* music player */ }
-      <Footer>
+      <Footer style={{backgroundColor:"rgb(42,62,82)"}}>
         <MusicPlayer />
       </Footer>
     </Container>
