@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { loadOnePlaylist } from "../../redux/actions/playlistsActions";
+// UI
+import SongsTable from '../songs/SongsTable'
 
 class Playlist extends React.Component {
     
@@ -9,15 +11,12 @@ class Playlist extends React.Component {
     }
 
     render() {
-        var playlist = this.props.playlist ? this.props.playlist : { name:"", songCount:0}
+        const playlist = this.props.playlist ? this.props.playlist : { name:"", songCount:0}
+        const songs = playlist.entry ? playlist.entry : []
         return (
             <div>
                 <h1>{playlist.name} ({playlist.songCount})</h1>
-                {
-                    playlist.entry ?
-                    playlist.entry.map(song => (<p key={song.id}>{song.title} - {song.artist}</p>))
-                    : null
-                }
+                <SongsTable songs={songs}  />
             </div>
         )
     }
