@@ -59,10 +59,7 @@ class SongsTable extends React.Component {
                         <Cell>
                             {rowData =>
                                 <Dropdown
-                                    renderTitle={ () =>
-                                        <IconButton appearance="link" icon={<Icon icon="ellipsis-v" />} size="sm" />
-                                    }
-                                >
+                                    renderTitle={ () => <IconButton appearance="link" icon={<Icon icon="ellipsis-v" />} size="sm" /> }>
                                     <Dropdown.Item>Add to playlist</Dropdown.Item>
                                     <Dropdown.Item>Dowload</Dropdown.Item>
                                 </Dropdown>
