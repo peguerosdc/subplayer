@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { loadArtist } from "../../redux/actions/artistsActions";
 import Album from '../albums/Album'
+import { FlexboxGrid } from 'rsuite';
 
 class Artist extends React.Component {
     
@@ -15,11 +16,15 @@ class Artist extends React.Component {
         return (
             <div style={{padding:"20px"}}>
                 <h1>{artist != null ? artist.name : "..."}</h1>
-                {albums.map(album => (
-                    <div style={{margin:"20px"}} key={album.id}>
-                        <Album albumId={album.id}/>
-                    </div>
-                ))}
+                <FlexboxGrid>
+                    {albums.map(album => (
+                        <FlexboxGrid.Item colspan={12} key={album.id}>
+                            <div style={{margin:"10px"}}>
+                                <Album albumId={album.id}/>
+                            </div>
+                        </FlexboxGrid.Item>
+                    ))}
+                </FlexboxGrid>
             </div>
         )
     }
