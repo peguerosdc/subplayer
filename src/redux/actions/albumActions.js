@@ -1,5 +1,5 @@
 import * as types from "./actionTypes";
-import * as subsonicApi from "../../api/subsonicApi";
+import subsonic from "../../api/subsonicApi";
 
 /* Load single album */
 export function loadAlbumSuccess(album) {
@@ -8,7 +8,7 @@ export function loadAlbumSuccess(album) {
 
 export function loadAlbum(id) {
     return async (dispatch) => {
-        const album = await subsonicApi.getAlbum(id);
+        const album = await subsonic.getAlbum(id);
         dispatch(loadAlbumSuccess(album));
     };
 }

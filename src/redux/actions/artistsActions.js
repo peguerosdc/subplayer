@@ -1,5 +1,5 @@
 import * as types from "./actionTypes";
-import * as subsonicApi from "../../api/subsonicApi";
+import subsonic from "../../api/subsonicApi";
 
 /* Load multiple artists */
 export function loadArtistsSuccess(artists) {
@@ -8,7 +8,7 @@ export function loadArtistsSuccess(artists) {
 
 export function loadArtists() {
     return async (dispatch) => {
-        const artists = await subsonicApi.getArtists();
+        const artists = await subsonic.getArtists();
         dispatch(loadArtistsSuccess(artists));
     };
 }
@@ -25,7 +25,7 @@ export function loadArtistSuccess(artist) {
 export function loadArtist(id) {
     return async (dispatch) => {
         dispatch(startedLoadingArtist(id));
-        const artist = await subsonicApi.getArtist(id);
+        const artist = await subsonic.getArtist(id);
         dispatch(loadArtistSuccess(artist));
     };
 }
