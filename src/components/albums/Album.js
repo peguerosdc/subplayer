@@ -37,7 +37,7 @@ class Album extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        "album" : state.albumsContent.albums.find(a => a.id === ownProps.albumId )
+        "album" : state.albumsContent[ownProps.albumId]
     }
 }
 
