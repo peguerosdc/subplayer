@@ -4,9 +4,6 @@ export default {
         artists : [],
         currentArtist : null
     },
-    albumsContent : {
-        albums : []
-    },
     playlists : {
         playlists : {},
         currentPlaylistId: null

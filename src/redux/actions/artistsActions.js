@@ -12,20 +12,3 @@ export function loadArtists() {
         dispatch(loadArtistsSuccess(artists));
     };
 }
-
-/* Load single artists */
-export function startedLoadingArtist(id) {
-    return { type: types.STARTED_LOADING_ARTIST, id };
-}
-
-export function loadArtistSuccess(artist) {
-    return { type: types.LOAD_ARTIST_SUCCESS, artist };
-}
-
-export function loadArtist(id) {
-    return async (dispatch) => {
-        dispatch(startedLoadingArtist(id));
-        const artist = await subsonic.getArtist(id);
-        dispatch(loadArtistSuccess(artist));
-    };
-}

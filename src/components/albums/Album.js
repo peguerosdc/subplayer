@@ -1,50 +1,47 @@
 import React from "react";
 import { connect } from "react-redux";
-import { loadAlbum } from "../../redux/actions/albumActions";
-import * as subsonicApi from "../../api/subsonicApi";
+import subsonic from "../../api/subsonicApi";
 // UI
 import { FlexboxGrid, Panel } from 'rsuite';
 import SongsTable from '../songs/SongsTable'
 
 class Album extends React.Component {
     
-    componentDidMount() {
-        this.props.loadAlbum(this.props.albumId)
+    constructor(props) {
+        super(props)
+        this.state = { album : {}}
+    }
+
+    async componentDidMount() {
+        await this.loadAlbum(this.props.albumId)
+    }
+
+    loadAlbum = async (id) => {
+        const album = await subsonic.getAlbum(id)
+        this.setState({album : album})
     }
 
     render() {
-        const album = this.props.album
+        const album = this.state.album
         const songs = album ? album.song : []
-        // Build header
-        const header = (
-            <FlexboxGrid align="middle">
-                <FlexboxGrid.Item colspan={4}>
-                    <img src={subsonicApi.getCoverArtUrl(album ? album.coverArt : "")} alt="Album Cover" width="100%" />
-                </FlexboxGrid.Item>
-                <FlexboxGrid.Item colspan={20}>
-                    <h3>{album ? album.name : "..."}</h3>
-                </FlexboxGrid.Item>
-            </FlexboxGrid>
-        )
         // Render all
         return (
-            <Panel header={header} bordered style={{backgroundColor:"white"}}>
-                <SongsTable songs={songs} columns={[SongsTable.columns.title, SongsTable.columns.duration, SongsTable.columns.options]} />
+            <Panel bordered style={{backgroundColor:"white"}}>
+                <FlexboxGrid>
+                    <FlexboxGrid.Item colspan={6}>
+                        <img src={subsonic.getCoverArtUrl(album ? album.coverArt : "")} alt="Album Cover" width="100%" />
+                    </FlexboxGrid.Item>
+                    <FlexboxGrid.Item colspan={18} style={{paddingLeft:"10px"}}>
+                        <h2>{album ? album.name : "..."}</h2>
+                        <SongsTable songs={songs} columns={[SongsTable.columns.title, SongsTable.columns.duration, SongsTable.columns.options]} />
+                    </FlexboxGrid.Item>
+                </FlexboxGrid>
             </Panel>
         )
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        "album" : state.albumsContent[ownProps.albumId]
-    }
-}
-
-const mapDispatchToProps = { loadAlbum }
-
-
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+    null,
+    null
 )(Album)
