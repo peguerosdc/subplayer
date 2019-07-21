@@ -10,5 +10,10 @@ export default {
     playlists : {
         playlists : {},
         currentPlaylistId: null
+    },
+    songs : {
+        queue : [],
+        current : null,
+        currentIndex : null
     }
 };

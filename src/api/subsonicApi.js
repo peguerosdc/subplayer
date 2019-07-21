@@ -82,6 +82,10 @@ class Subsonic {
         return buildUrl(this.config, "getCoverArt", {id:id})
     }
 
+    getStreamUrl(id) {
+        return buildUrl(this.config, "stream", {id:id})
+    }
+
 }
 
 // Export instance

@@ -1,17 +1,27 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types'
+import { addSongsToQueue } from "../../redux/actions/songsActions";
 // Table components
 import { Table, Icon, IconButton, Dropdown } from 'rsuite';
 const { Column, HeaderCell, Cell } = Table;
 
 class SongsTable extends React.Component {
 
+    songClicked = (song) => {
+        // Build queue randomly with this song at the top
+        var queue = this.props.songs.filter(s => s.id !== song.id)
+        queue.sort(() => Math.random() - 0.5)
+        queue = [song, ...queue]
+        this.props.addSongsToQueue(queue)
+    }
+
     render() {
         const songs = this.props.songs
         const columnsToShow = this.props.columns ? this.props.columns : Object.keys(columns)
         return (
             <Table
+                onRowClick={this.songClicked}
                 virtualized
                 autoHeight={true}
                 data={songs}>
@@ -72,11 +82,7 @@ class SongsTable extends React.Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    return {}
-}
-
-const mapDispatchToProps = {}
+const mapDispatchToProps = { addSongsToQueue }
 
 /* Define possible columns to show */
 const columns = {
@@ -93,6 +99,6 @@ SongsTable.propTypes = {
 SongsTable.columns = columns
 
 export default connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps
 )(SongsTable)

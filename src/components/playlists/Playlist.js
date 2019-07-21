@@ -14,7 +14,7 @@ class Playlist extends React.Component {
         const playlist = this.props.playlist ? this.props.playlist : { name:"", songCount:0}
         const songs = playlist.entry ? playlist.entry : []
         return (
-            <div>
+            <div style={{padding:"20px"}}>
                 <h1>{playlist.name} ({playlist.songCount})</h1>
                 <SongsTable songs={songs}  />
             </div>
