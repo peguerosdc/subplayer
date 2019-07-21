@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from "@reach/router";
 import './App.css';
-import 'rsuite/dist/styles/rsuite.min.css'
+import 'rsuite/styles/index.less';
 import Home from './Home';
 // UI
 import { Container, Content, Footer, Sidebar } from 'rsuite';
