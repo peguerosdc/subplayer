@@ -4,7 +4,7 @@ import './App.css';
 import 'rsuite/styles/index.less';
 import Home from './Home';
 // UI
-import { Container, Content, Footer, Sidebar, Navbar, Header, Icon, Nav, Drawer } from 'rsuite';
+import { Container, Content, Footer, Sidebar, Navbar, Header, Icon, IconButton, Nav, Drawer } from 'rsuite';
 // Music player components
 import MySidebar from './components/sidebar/Sidebar';
 import MusicPlayer from './components/MusicPlayer';
@@ -64,7 +64,12 @@ class App extends React.Component  {
         </Footer>
         { /* Drawer menu for mobile navigation */ }
         <Drawer show={showDrawer} placement="left" size="xs" className="rs-hidden-xs rs-hidden-sm" backdrop={true}>
-          <MySidebar onNavigatedTo={this.hideDrawer} />
+          <Drawer.Body>
+            <MySidebar onNavigatedTo={this.hideDrawer} />
+          </Drawer.Body>
+          <Drawer.Footer>
+            <IconButton appearance="link" onClick={this.hideDrawer} icon={<Icon icon="angle-left" />} />
+          </Drawer.Footer>
         </Drawer>
       </Container>
     );
