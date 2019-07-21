@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
+import PropTypes from 'prop-types'
 import { navigate } from "@reach/router";
 import { loadPlaylists } from "../../redux/actions/playlistsActions";
 // UI
@@ -19,10 +20,13 @@ class Sidebar extends React.Component {
 
     navigateTo = (link) => {
         navigate(link)
-        this.setState({ path : window.location.pathname })
+        this.setState({ path : link })
+        if( this.props.onNavigatedTo ){
+            this.props.onNavigatedTo(link)
+        }
     }
 
-    isSelected = (link) => window.location.pathname.startsWith(link)
+    isSelected = (link) => this.state.path.startsWith(link)
 
     render() {
         let playlists = this.props.playlists.playlists
@@ -59,10 +63,14 @@ class Sidebar extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        "playlists" : state.playlists
+        "playlists" : state.playlists,
     }
 }
 const mapDispatchToProps = { loadPlaylists }
+
+Sidebar.propTypes = {
+    onNavigatedTo : PropTypes.func
+}
 
 export default connect(
     mapStateToProps,
