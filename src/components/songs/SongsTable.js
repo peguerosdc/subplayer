@@ -2,6 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types'
 import { addSongsToQueue } from "../../redux/actions/songsActions";
+import { seconds_to_mss } from "../../utils/formatting.js"
+// UI
+import "./SongsTable.less"
 // Table components
 import { Table, Icon, IconButton, Dropdown } from 'rsuite';
 const { Column, HeaderCell, Cell } = Table;
@@ -16,7 +19,24 @@ class SongsTable extends React.Component {
         this.props.addSongsToQueue(queue)
     }
 
+    DurationCell = ({ rowData, dataKey, onClick, ...props }) => {
+      return (
+        <Cell {...props} >
+          {seconds_to_mss(rowData.duration)}
+        </Cell>
+      );
+    }
+
+    TitleCell = ({ rowData, dataKey, onClick, ...props }) => {
+      return (
+        <Cell {...props} >
+          {rowData.title} <Icon icon='volume-up' className="icon-when-playing" />
+        </Cell>
+      );
+    }
+
     render() {
+        const currentSongPlaying = this.props.currentSongPlaying ? this.props.currentSongPlaying : {}
         const songs = this.props.songs
         const columnsToShow = this.props.columns ? this.props.columns : Object.keys(columns)
         return (
@@ -24,23 +44,24 @@ class SongsTable extends React.Component {
                 onRowClick={this.songClicked}
                 virtualized
                 autoHeight={true}
-                data={songs}>
+                data={songs}
+                rowClassName={(rowData) => rowData && rowData.id === currentSongPlaying.id ? "currently_playing" : null }>
                 { columnsToShow.includes(columns.title) ? 
-                    <Column flexGrow={2}>
+                    <Column flexGrow={3}>
                         <HeaderCell> Title </HeaderCell>
-                        <Cell dataKey="title" />
+                        <this.TitleCell dataKey="title" />
                     </Column> : null
                 }
 
                 { columnsToShow.includes(columns.artist) ? 
-                    <Column>
+                    <Column flexGrow={2}>
                         <HeaderCell>Artist</HeaderCell>
                         <Cell dataKey="artist" />
                     </Column> : null
                 }
 
                 { columnsToShow.includes(columns.album) ? 
-                    <Column>
+                    <Column flexGrow={1}>
                         <HeaderCell>Album</HeaderCell>
                         <Cell dataKey="album" />
                     </Column>
@@ -56,19 +77,19 @@ class SongsTable extends React.Component {
                 }
 
                 { columnsToShow.includes(columns.duration) ? 
-                    <Column width={50}>
+                    <Column width={55}>
                         <HeaderCell><Icon icon='clock-o' /></HeaderCell>
-                        <Cell dataKey="duration" />
+                        <this.DurationCell dataKey="duration" />
                     </Column>
                     : null
                 }
 
                 { columnsToShow.includes(columns.options) ? 
-                    <Column width={30}>
+                    <Column width={40}>
                         <HeaderCell/>
                         <Cell>
                             {rowData =>
-                                <Dropdown
+                                <Dropdown placement="leftTop"
                                     renderTitle={ () => <IconButton appearance="link" icon={<Icon icon="ellipsis-v" />} size="sm" /> }>
                                     <Dropdown.Item>Add to playlist</Dropdown.Item>
                                     <Dropdown.Item>Dowload</Dropdown.Item>
@@ -79,6 +100,12 @@ class SongsTable extends React.Component {
                 }
             </Table>
         )
+    }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        currentSongPlaying : state.songs.current
     }
 }
 
@@ -99,6 +126,6 @@ SongsTable.propTypes = {
 SongsTable.columns = columns
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(SongsTable)

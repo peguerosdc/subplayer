@@ -5,7 +5,7 @@ import { playNextSong, playPreviousSong } from "../../redux/actions/songsActions
 import subsonic from "../../api/subsonicApi";
 import { seconds_to_mss } from "../../utils/formatting.js"
 // UI
-import { FlexboxGrid, IconButton, Icon, Slider, Progress } from 'rsuite';
+import { IconButton, Icon, Slider } from 'rsuite';
 import "./MusicPlayer.less"
 
 class MusicPlayer extends React.Component {
@@ -46,6 +46,7 @@ class MusicPlayer extends React.Component {
     }
 
     startSongTicker() {
+        clearInterval(this.timerID);
         this.timerID = setInterval(() => {
             if( this.state.playing ) {
                 this.tick()
@@ -96,9 +97,9 @@ class MusicPlayer extends React.Component {
                 <IconButton icon={<Icon icon="step-backward" />} appearance="link" size="sm" onClick={this.props.playPreviousSong} style={{color:"white"}}/>
                 <IconButton appearance="primary" icon={<Icon icon={playing ? "pause" : "play"} />} circle size="sm" onClick={this.togglePlayerState} />
                 <IconButton icon={<Icon icon="step-forward" />} appearance="link" size="sm" onClick={this.props.playNextSong} style={{color:"white"}} />
-                <span>{seconds_to_mss(seek)}</span>
-                <Slider className="song_progress_bar" progress value={seek} max={song.duration} />
-                <span>{seconds_to_mss(song.duration ? song.duration : 0)}</span>
+                <span className="rs-hidden-xs rs-hidden-sm">{seconds_to_mss(seek)}</span>
+                <Slider className="song_progress_bar rs-hidden-xs rs-hidden-sm" progress value={seek} max={song.duration} />
+                <span className="rs-hidden-xs rs-hidden-sm">{seconds_to_mss(song.duration ? song.duration : 0)}</span>
                 <Icon className="volume_control_mute rs-hidden-xs rs-hidden-sm" icon='volume-up' />
                 <Slider tooltip={false} progress className="volume_control_bar rs-hidden-xs rs-hidden-sm" onChange={this.changeVolume} defaultValue={1} max={1} step={0.1} />
             </div>
