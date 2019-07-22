@@ -38,7 +38,7 @@ class App extends React.Component  {
           <Navbar>
             <Navbar.Body>
               <Nav onSelect={this.showDrawer}>
-                <Nav.Item eventKey="drawer" icon={<Icon icon="bars" />}/>
+                <Nav.Item eventKey="drawer" icon={<Icon icon="bars" style={{color:"white"}} />}/>
               </Nav>
             </Navbar.Body>
           </Navbar>
