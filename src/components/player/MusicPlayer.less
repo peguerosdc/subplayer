@@ -1,0 +1,40 @@
+.darkMusicPlayer {
+    color: white;
+    display: flex;
+    flex-flow: row nowrap;
+    min-height: 65px;
+    justify-content: space-around;
+    align-items: center;
+    margin-right: 30px;
+    margin-left: 30px;
+}
+
+.darkMusicPlayer .song_metadata_container {
+    width: 200px;
+    margin-left: 10px;
+}
+
+.darkMusicPlayer .song_metadata_container p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.darkMusicPlayer .song_progress_bar {
+    flex-grow: 1;
+    width: initial;
+}
+
+.darkMusicPlayer .volume_control_bar {
+    width: 100px;
+}
+
+.darkMusicPlayer i.volume_control_mute {
+    margin-right: 15px;
+    margin-left: 5px;
+}
+
+.darkMusicPlayer span {
+    margin-right: 10px;
+    margin-left: 5px;   
+}

@@ -1,15 +1,19 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { Howl } from 'howler';
-import { FlexboxGrid, IconButton, Icon, Slider } from 'rsuite';
-import { playNextSong, playPreviousSong } from "../redux/actions/songsActions";
-import subsonic from "../api/subsonicApi";
+import { playNextSong, playPreviousSong } from "../../redux/actions/songsActions";
+import subsonic from "../../api/subsonicApi";
+import { seconds_to_mss } from "../../utils/formatting.js"
+// UI
+import { FlexboxGrid, IconButton, Icon, Slider, Progress } from 'rsuite';
+import "./MusicPlayer.less"
 
 class MusicPlayer extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { playing:false, tick: 0}
+        this.state = { playing:false, tick: 0 }
+        this.volume = 1.0
     }
 
     componentDidUpdate(prevProps) {
@@ -28,6 +32,7 @@ class MusicPlayer extends React.Component {
                     ext: ['mp3'],
                     autoplay: true,
                     html5: true,
+                    volume: this.volume,
                     // Play next song
                     onend: function() {
                         playNextSong()
@@ -58,6 +63,13 @@ class MusicPlayer extends React.Component {
         clearInterval(this.timerID);
     }
 
+    changeVolume = (newVolume) => {
+        if( this.streamer ) {
+            this.streamer.volume(newVolume)
+        }
+        this.volume = newVolume;
+    }
+
     togglePlayerState = () => {
         if( this.streamer ) {
             if(this.state.playing) {
@@ -75,22 +87,21 @@ class MusicPlayer extends React.Component {
         const playing = this.state.playing
         const seek = this.state.tick
         return (
-            <FlexboxGrid align="middle">
-                {/* Current song playing */}
-                <FlexboxGrid.Item colspan={5}>
-                    <img src={subsonic.getCoverArtUrl(song.coverArt)} alt="Cover Art" width="42" height="42"/>
-                    <b>{song.title}</b> , {song.artist}
-                </FlexboxGrid.Item>
-                <FlexboxGrid.Item colspan={2}>
-                    <IconButton icon={<Icon icon="step-backward" />} appearance="link" size="sm" onClick={this.props.playPreviousSong}/>
-                    <IconButton icon={<Icon icon={playing ? "pause" : "play"} />} circle size="sm" onClick={this.togglePlayerState} />
-                    <IconButton icon={<Icon icon="step-forward" />} appearance="link" size="sm" onClick={this.props.playNextSong} />
-                </FlexboxGrid.Item>
-                <FlexboxGrid.Item colspan={11}>
-                    {seek} <Slider progress defaultValue={seek} max={song.duration} /> {song.duration}
-                </FlexboxGrid.Item>
-                <FlexboxGrid.Item colspan={6}>More controls</FlexboxGrid.Item>
-            </FlexboxGrid>
+            <div className="darkMusicPlayer">
+                <img src={song.coverArt ? subsonic.getCoverArtUrl(song.coverArt) : null} alt="Cover Art" width="45" height="45"/>
+                <div className="song_metadata_container">
+                    <p><b>{song.title}</b></p>
+                    {song.artist}
+                </div>
+                <IconButton icon={<Icon icon="step-backward" />} appearance="link" size="sm" onClick={this.props.playPreviousSong} style={{color:"white"}}/>
+                <IconButton appearance="primary" icon={<Icon icon={playing ? "pause" : "play"} />} circle size="sm" onClick={this.togglePlayerState} />
+                <IconButton icon={<Icon icon="step-forward" />} appearance="link" size="sm" onClick={this.props.playNextSong} style={{color:"white"}} />
+                <span>{seconds_to_mss(seek)}</span>
+                <Slider className="song_progress_bar" progress value={seek} max={song.duration} />
+                <span>{seconds_to_mss(song.duration ? song.duration : 0)}</span>
+                <Icon className="volume_control_mute rs-hidden-xs rs-hidden-sm" icon='volume-up' />
+                <Slider tooltip={false} progress className="volume_control_bar rs-hidden-xs rs-hidden-sm" onChange={this.changeVolume} defaultValue={1} max={1} step={0.1} />
+            </div>
         )
     }
 }

@@ -7,7 +7,7 @@ import Home from './Home';
 import { Container, Content, Footer, Sidebar, Navbar, Header, Icon, IconButton, Nav, Drawer } from 'rsuite';
 // Music player components
 import MySidebar from './components/sidebar/Sidebar';
-import MusicPlayer from './components/MusicPlayer';
+import MusicPlayer from './components/player/MusicPlayer';
 import ArtistsList from './components/artists/ArtistsList'
 import Artist from './components/artists/Artist'
 import Playlist from './components/playlists/Playlist'

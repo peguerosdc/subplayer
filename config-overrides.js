@@ -10,7 +10,8 @@ module.exports = override(
         '@primary-bg-color': '@body-bg',
         '@nav-bar-default-bg' : '@primary-bg-color',
         '@nav-item-default-hover-bg' : 'rgb(13,30,48)',
-        '@drawer-content-bg' : '@body-bg'
+        '@drawer-content-bg' : '@body-bg',
+        "@slider-bar-default-bg" : 'rgb(13,30,48)'
     }
   })
 );
