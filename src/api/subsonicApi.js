@@ -12,7 +12,20 @@ var defaults = {
 // Define utils and helpers
 function buildUrl(config, action, params = {}) {
     var base = `http://${config.host}/rest/${action}.view?u=${config.user}&p=${config.password}&v=${config.version}&f=json&c=myplayer`
-    return base + Object.keys(params).map(k => `&${k}=${params[k]}`).join("")
+    // Check if there are multiple valued keys
+    const keys = Object.keys(params)
+    for (var i = keys.length - 1; i >= 0; i--) {
+        const key = keys[i]
+        const value = params[key]
+        if( Array.isArray(value) ) {
+            // If an element has multiple values, add one key for each value
+            base += value.map(val => `&${key}=${val}`).join("")
+        }
+        else {
+            base += `&${key}=${value}`
+        }
+    }
+    return base
 }
 
 function perform_api_call(url) {
@@ -93,8 +106,8 @@ class Subsonic {
         return buildUrl(this.config, "stream", {id:id})
     }
 
-    addSongsToPlaylist(playlistId, songId) {
-        return perform_api_call( buildUrl(this.config, "updatePlaylist", {playlistId:playlistId, songIdToAdd : songId}) )
+    addSongsToPlaylist(playlistId, songIds) {
+        return perform_api_call( buildUrl(this.config, "updatePlaylist", {playlistId:playlistId, songIdToAdd : songIds}) )
             .then(result => {
                 return result["status"] === "ok"
             })

@@ -1,15 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
 import subsonic from "../../api/subsonicApi";
+import { addSongsToPlaylist } from "../../redux/actions/playlistsActions";
 // UI
 import { FlexboxGrid, Panel } from 'rsuite';
 import SongsTable from '../songs/SongsTable'
+import PlaylistSelectorDropdown from '../common/PlaylistSelectorDropdown.js'
 
 class Album extends React.Component {
     
     constructor(props) {
         super(props)
-        this.state = { album : {}}
+        this.state = { album : {}, selectedSongs : []}
     }
 
     async componentDidMount() {
@@ -21,19 +23,29 @@ class Album extends React.Component {
         this.setState({album : album})
     }
 
+    onPlaylistSelected = (playlist) => {
+        this.props.addSongsToPlaylist(playlist, this.state.selectedSongs)
+    }
+
+    onSongsSelected = (selectedSongs) => {
+        this.setState({selectedSongs: selectedSongs})
+    }
+
     render() {
         const album = this.state.album
         const songs = album ? album.song : []
+        const disableDropdown = this.state.selectedSongs.length === 0
         // Render all
         return (
             <Panel bordered style={{backgroundColor:"white"}}>
                 <FlexboxGrid>
                     <FlexboxGrid.Item colspan={6}>
-                        <img src={subsonic.getCoverArtUrl(album.coverArt ? album.coverArt : "")} alt="Album Cover" width="100%" />
+                        <img src={album.coverArt ? subsonic.getCoverArtUrl(album.coverArt) : null} alt="Album Cover" width="100%" />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item colspan={18} style={{paddingLeft:"10px"}}>
                         <h2>{album ? album.name : "..."}</h2>
-                        <SongsTable songs={songs} columns={[SongsTable.columns.title, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.selectable]} />
+                        <PlaylistSelectorDropdown onPlaylistSelected={this.onPlaylistSelected} disabled={disableDropdown} />
+                        <SongsTable songs={songs} columns={[SongsTable.columns.title, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.selectable]} onSongsSelected={this.onSongsSelected} />
                     </FlexboxGrid.Item>
                 </FlexboxGrid>
             </Panel>
@@ -41,7 +53,9 @@ class Album extends React.Component {
     }
 }
 
+const mapDispatchToProps = { addSongsToPlaylist }
+
 export default connect(
     null,
-    null
+    mapDispatchToProps
 )(Album)

@@ -48,6 +48,10 @@ class SongsTable extends React.Component {
     handleCheckAll = (value, checked) => {
         const checkedKeys = checked ? this.props.songs.map(item => item.id) : []
         this.setState({ checkedKeys })
+        // Notify the parent
+        this.props.onSongsSelected && this.props.onSongsSelected(
+            checkedKeys.map(key => this.props.songs.find(s => s.id === key) )
+        )
     }
 
     handleCheck = (value, checked) => {
@@ -55,8 +59,11 @@ class SongsTable extends React.Component {
         const nextCheckedKeys = checked
             ? [...checkedKeys, value]
             : checkedKeys.filter(item => item !== value)
-
         this.setState({ checkedKeys: nextCheckedKeys })
+        // Notify the parent
+        this.props.onSongsSelected && this.props.onSongsSelected(
+            nextCheckedKeys.map(key => this.props.songs.find(s => s.id === key) )
+        )
     }
 
     render() {
