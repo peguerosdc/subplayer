@@ -33,7 +33,7 @@ class Album extends React.Component {
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item colspan={18} style={{paddingLeft:"10px"}}>
                         <h2>{album ? album.name : "..."}</h2>
-                        <SongsTable songs={songs} columns={[SongsTable.columns.title, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.options]} />
+                        <SongsTable songs={songs} columns={[SongsTable.columns.title, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.selectable]} />
                     </FlexboxGrid.Item>
                 </FlexboxGrid>
             </Panel>

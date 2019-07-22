@@ -2,20 +2,42 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types'
 import { addSongsToQueue } from "../../redux/actions/songsActions";
-import { addSongsToPlaylist } from "../../redux/actions/playlistsActions";
 import { seconds_to_mss } from "../../utils/formatting.js"
 // UI
 import "./SongsTable.less"
-import PopoverDropdownMenu from "./PopoverDropdownMenu.js"
 // Table components
-import { Table, Icon, Dropdown } from 'rsuite';
+import { Table, Icon, Checkbox } from 'rsuite';
 const { Column, HeaderCell, Cell } = Table;
 
+const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => {
+
+    function onClick(event) {
+        // Don't propagate the event to prevent the Table from thinking that the
+        // user also clicked on the row/song
+        event.stopPropagation()
+    }
+    return (
+        <Cell {...props} style={{ padding: 0 }}>
+            <div style={{ lineHeight: '46px' }}>
+                <Checkbox
+                    value={rowData[dataKey]}
+                    inline
+                    onClick={onClick}
+                    onChange={onChange}
+                    checked={checkedKeys.some(item => item === rowData[dataKey])} />
+            </div>
+        </Cell>
+    )
+}
 
 class SongsTable extends React.Component {
 
+    constructor(props) {
+        super(props)
+        this.state = { checkedKeys: [] }
+    }
+
     songClicked = (song) => {
-        console.log("Clicked song")
         // Build queue randomly with this song at the top
         var queue = this.props.songs.filter(s => s.id !== song.id)
         queue.sort(() => Math.random() - 0.5)
@@ -23,16 +45,39 @@ class SongsTable extends React.Component {
         this.props.addSongsToQueue(queue)
     }
 
-    onSongAddedToPlaylist = (playlistId, rowData) => {
-        this.props.addSongsToPlaylist(playlistId, [rowData])
+    handleCheckAll = (value, checked) => {
+        const checkedKeys = checked ? this.props.songs.map(item => item.id) : []
+        this.setState({ checkedKeys })
+    }
+
+    handleCheck = (value, checked) => {
+        const { checkedKeys } = this.state
+        const nextCheckedKeys = checked
+            ? [...checkedKeys, value]
+            : checkedKeys.filter(item => item !== value)
+
+        this.setState({ checkedKeys: nextCheckedKeys })
     }
 
     render() {
-        const currentSongPlaying = this.props.currentSongPlaying ? this.props.currentSongPlaying : {}
-        const songs = this.props.songs
-        const playlists = this.props.playlists ? this.props.playlists : {}
-        const playlistsIds = Object.keys(playlists)
-        const columnsToShow = this.props.columns ? this.props.columns : Object.keys(columns)
+        // Define songs data
+        const currentSongPlaying = this.props.currentSongPlaying || {}
+        const songs = this.props.songs || []
+        const columnsToShow = this.props.columns || Object.keys(columns)
+        // Define Checkbox's data
+        const checkedKeys = this.state.checkedKeys
+        let checked = false;
+        let indeterminate = false;
+        if (checkedKeys.length === songs.length) {
+            checked = true;
+        }
+        else if (checkedKeys.length === 0) {
+            checked = false;
+        }
+        else if (checkedKeys.length > 0 && checkedKeys.length < songs.length) {
+            indeterminate = true;
+        }
+        // Render
         return (
             <Table
                 onRowClick={this.songClicked}
@@ -40,6 +85,23 @@ class SongsTable extends React.Component {
                 autoHeight={true}
                 data={songs}
                 rowClassName={(rowData) => rowData && rowData.id === currentSongPlaying.id ? "currently_playing" : null }>
+                { columnsToShow.includes(columns.selectable) ? 
+                    <Column width={50} align="center">
+                        <HeaderCell style={{ padding: 0 }}>
+                            <div style={{ lineHeight: '40px' }}>
+                                <Checkbox
+                                    inline
+                                    checked={checked}
+                                    indeterminate={indeterminate}
+                                    onChange={this.handleCheckAll} />
+                            </div>
+                        </HeaderCell>
+                        <CheckCell
+                            dataKey="id"
+                            checkedKeys={checkedKeys}
+                            onChange={this.handleCheck} />
+                    </Column> : null
+                }
                 { columnsToShow.includes(columns.title) ? 
                     <Column flexGrow={3}>
                         <HeaderCell> Title </HeaderCell>
@@ -85,27 +147,6 @@ class SongsTable extends React.Component {
                     </Column>
                     : null
                 }
-
-                { columnsToShow.includes(columns.options) ? 
-                    <Column width={40}>
-                        <HeaderCell/>
-                        <PopoverDropdownMenu dataKey="id" onMenuItemSelected={this.onSongAddedToPlaylist}>
-                            <Dropdown.Item panel style={{ padding: 10, width: 160 }}>
-                                {/* Render the title depending if its possible to add to playlists */
-                                    playlistsIds.length > 0 ?
-                                    <p><b>Add to:</b></p> :
-                                    <p><b>No playlists</b></p> 
-                                }
-                            </Dropdown.Item>
-                            {
-                                /* Render the items */
-                                playlistsIds.map( id =>
-                                    <Dropdown.Item key={id} eventKey={id}>{playlists[id].name}</Dropdown.Item>
-                                )
-                            }
-                        </PopoverDropdownMenu>
-                    </Column> : null
-                }
             </Table>
         )
     }
@@ -113,12 +154,11 @@ class SongsTable extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        currentSongPlaying : state.songs.current,
-        "playlists" : state.playlists.playlists,
+        currentSongPlaying : state.songs.current
     }
 }
 
-const mapDispatchToProps = { addSongsToQueue, addSongsToPlaylist }
+const mapDispatchToProps = { addSongsToQueue }
 
 /* Define possible columns to show */
 const columns = {
@@ -127,7 +167,7 @@ const columns = {
   album: "album",
   duration: "duration",
   bitRate: "bitRate",
-  options: "options"
+  selectable: "selectable"
 }
 SongsTable.propTypes = {
   appearance: PropTypes.arrayOf(Object.keys(columns))
