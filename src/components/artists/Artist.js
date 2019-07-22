@@ -25,7 +25,7 @@ class Artist extends React.Component {
         const albums = artist && artist.album ? artist.album : []
         return (
             <div style={{padding:"20px"}}>
-                <h1>{artist != null ? artist.name : "..."}</h1>
+                <h1 style={{color:"white", fontWeight: "bold"}}>{artist != null ? artist.name : "..."}</h1>
                 <FlexboxGrid>
                     {albums.map(album => (
                         <FlexboxGrid.Item colspan={24} key={album.id}>
