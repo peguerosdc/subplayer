@@ -42,6 +42,13 @@ class Subsonic {
     constructor(config) {
         this.config = config
     }
+
+    login() {
+        return perform_api_call( buildUrl(this.config, "ping") )
+            .then(result => {
+                return result["status"] === "ok"
+            })
+    }
     
     getArtists() {
         return perform_api_call( buildUrl(this.config, "getArtists") )
@@ -84,6 +91,13 @@ class Subsonic {
 
     getStreamUrl(id) {
         return buildUrl(this.config, "stream", {id:id})
+    }
+
+    addSongsToPlaylist(playlistId, songId) {
+        return perform_api_call( buildUrl(this.config, "updatePlaylist", {playlistId:playlistId, songIdToAdd : songId}) )
+            .then(result => {
+                return result["status"] === "ok"
+            })
     }
 
 }

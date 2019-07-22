@@ -2,16 +2,20 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types'
 import { addSongsToQueue } from "../../redux/actions/songsActions";
+import { addSongsToPlaylist } from "../../redux/actions/playlistsActions";
 import { seconds_to_mss } from "../../utils/formatting.js"
 // UI
 import "./SongsTable.less"
+import PopoverDropdownMenu from "./PopoverDropdownMenu.js"
 // Table components
-import { Table, Icon, IconButton, Dropdown } from 'rsuite';
+import { Table, Icon, Dropdown } from 'rsuite';
 const { Column, HeaderCell, Cell } = Table;
+
 
 class SongsTable extends React.Component {
 
     songClicked = (song) => {
+        console.log("Clicked song")
         // Build queue randomly with this song at the top
         var queue = this.props.songs.filter(s => s.id !== song.id)
         queue.sort(() => Math.random() - 0.5)
@@ -19,25 +23,15 @@ class SongsTable extends React.Component {
         this.props.addSongsToQueue(queue)
     }
 
-    DurationCell = ({ rowData, dataKey, onClick, ...props }) => {
-      return (
-        <Cell {...props} >
-          {seconds_to_mss(rowData.duration)}
-        </Cell>
-      );
-    }
-
-    TitleCell = ({ rowData, dataKey, onClick, ...props }) => {
-      return (
-        <Cell {...props} >
-          {rowData.title} <Icon icon='volume-up' className="icon-when-playing" />
-        </Cell>
-      );
+    onSongAddedToPlaylist = (playlistId, rowData) => {
+        this.props.addSongsToPlaylist(playlistId, [rowData.id])
     }
 
     render() {
         const currentSongPlaying = this.props.currentSongPlaying ? this.props.currentSongPlaying : {}
         const songs = this.props.songs
+        const playlists = this.props.playlists ? this.props.playlists : {}
+        const playlistsIds = Object.keys(playlists)
         const columnsToShow = this.props.columns ? this.props.columns : Object.keys(columns)
         return (
             <Table
@@ -49,7 +43,13 @@ class SongsTable extends React.Component {
                 { columnsToShow.includes(columns.title) ? 
                     <Column flexGrow={3}>
                         <HeaderCell> Title </HeaderCell>
-                        <this.TitleCell dataKey="title" />
+                        <Cell dataKey="title">
+                            { rowData => 
+                                <>
+                                    {rowData.title} <Icon icon='volume-up' className="icon-when-playing" />
+                                </>
+                            }
+                        </Cell>
                     </Column> : null
                 }
 
@@ -79,7 +79,9 @@ class SongsTable extends React.Component {
                 { columnsToShow.includes(columns.duration) ? 
                     <Column width={55}>
                         <HeaderCell><Icon icon='clock-o' /></HeaderCell>
-                        <this.DurationCell dataKey="duration" />
+                        <Cell dataKey="duration" >
+                            { rowData => seconds_to_mss(rowData.duration)}
+                        </Cell>
                     </Column>
                     : null
                 }
@@ -87,15 +89,21 @@ class SongsTable extends React.Component {
                 { columnsToShow.includes(columns.options) ? 
                     <Column width={40}>
                         <HeaderCell/>
-                        <Cell>
-                            {rowData =>
-                                <Dropdown placement="leftTop"
-                                    renderTitle={ () => <IconButton appearance="link" icon={<Icon icon="ellipsis-v" />} size="sm" /> }>
-                                    <Dropdown.Item>Add to playlist</Dropdown.Item>
-                                    <Dropdown.Item>Dowload</Dropdown.Item>
-                                </Dropdown>
+                        <PopoverDropdownMenu dataKey="id" onMenuItemSelected={this.onSongAddedToPlaylist}>
+                            <Dropdown.Item panel style={{ padding: 10, width: 160 }}>
+                                {/* Render the title depending if its possible to add to playlists */
+                                    playlistsIds.length > 0 ?
+                                    <p><b>Add to:</b></p> :
+                                    <p><b>No playlists</b></p> 
+                                }
+                            </Dropdown.Item>
+                            {
+                                /* Render the items */
+                                playlistsIds.map( id =>
+                                    <Dropdown.Item key={id} eventKey={id}>{playlists[id].name}</Dropdown.Item>
+                                )
                             }
-                        </Cell>
+                        </PopoverDropdownMenu>
                     </Column> : null
                 }
             </Table>
@@ -105,11 +113,12 @@ class SongsTable extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        currentSongPlaying : state.songs.current
+        currentSongPlaying : state.songs.current,
+        "playlists" : state.playlists.playlists,
     }
 }
 
-const mapDispatchToProps = { addSongsToQueue }
+const mapDispatchToProps = { addSongsToQueue, addSongsToPlaylist }
 
 /* Define possible columns to show */
 const columns = {

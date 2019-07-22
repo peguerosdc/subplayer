@@ -23,3 +23,10 @@ export function loadOnePlaylist(id) {
         dispatch(loadOnePlaylistSuccess(playlist))
     }
 }
+
+export function addSongsToPlaylist(playlistId, songs) {
+    return async (dispatch) => {
+        const playlist = await subsonic.addSongsToPlaylist(playlistId, songs)
+        dispatch({ type: types.ADD_SONGS_TO_PLAYLIST_SUCCESS, playlist })
+    }
+}

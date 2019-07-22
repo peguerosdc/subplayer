@@ -29,7 +29,7 @@ class Album extends React.Component {
             <Panel bordered style={{backgroundColor:"white"}}>
                 <FlexboxGrid>
                     <FlexboxGrid.Item colspan={6}>
-                        <img src={subsonic.getCoverArtUrl(album ? album.coverArt : "")} alt="Album Cover" width="100%" />
+                        <img src={subsonic.getCoverArtUrl(album.coverArt ? album.coverArt : "")} alt="Album Cover" width="100%" />
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item colspan={18} style={{paddingLeft:"10px"}}>
                         <h2>{album ? album.name : "..."}</h2>
