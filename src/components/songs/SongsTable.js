@@ -24,7 +24,7 @@ class SongsTable extends React.Component {
     }
 
     onSongAddedToPlaylist = (playlistId, rowData) => {
-        this.props.addSongsToPlaylist(playlistId, [rowData.id])
+        this.props.addSongsToPlaylist(playlistId, [rowData])
     }
 
     render() {

@@ -1,10 +1,12 @@
 import React from 'react';
+import { connect } from "react-redux";
 import { Router } from "@reach/router";
 import './App.css';
 import 'rsuite/styles/index.less';
 import Home from './Home';
+import * as alerts from "./utils/alertUtils";
 // UI
-import { Container, Content, Footer, Sidebar, Navbar, Header, Icon, IconButton, Nav, Drawer } from 'rsuite';
+import { Container, Content, Footer, Sidebar, Navbar, Header, Icon, IconButton, Nav, Drawer, Alert } from 'rsuite';
 // Music player components
 import MySidebar from './components/sidebar/Sidebar';
 import MusicPlayer from './components/player/MusicPlayer';
@@ -27,6 +29,21 @@ class App extends React.Component  {
 
   hideDrawer = () => {
     this.setState({showDrawer : false})
+  }
+
+  componentDidUpdate(prevProps) {
+    const currentOperationResult = this.props.lastUpdateOperationResult
+    if( prevProps.lastUpdateOperationResult !== currentOperationResult){
+      if( currentOperationResult.result === alerts.SUCCESS ) {
+        Alert.success(currentOperationResult.message)
+      }
+      else if( currentOperationResult.result === alerts.WARNING ) {
+        Alert.warning(currentOperationResult.message) 
+      }
+      else {
+        Alert.error(currentOperationResult.message)  
+      }
+    }
   }
 
   render() {
@@ -77,4 +94,13 @@ class App extends React.Component  {
 
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        lastUpdateOperationResult : state.playlists.lastUpdateOperationResult,
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(App)

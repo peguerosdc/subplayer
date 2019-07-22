@@ -3,7 +3,8 @@ export default {
     artists : [],
     playlists : {
         playlists : {},
-        currentPlaylistId: null
+        currentPlaylistId: null,
+        lastUpdateOperationResult : {}
     },
     songs : {
         queue : [],

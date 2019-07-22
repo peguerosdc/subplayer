@@ -1,4 +1,5 @@
 import * as types from "./actionTypes";
+import * as alerts from "../../utils/alertUtils";
 import subsonic from "../../api/subsonicApi";
 
 /* Load multiple playlists */
@@ -26,7 +27,18 @@ export function loadOnePlaylist(id) {
 
 export function addSongsToPlaylist(playlistId, songs) {
     return async (dispatch) => {
-        const playlist = await subsonic.addSongsToPlaylist(playlistId, songs)
-        dispatch({ type: types.ADD_SONGS_TO_PLAYLIST_SUCCESS, playlist })
+        // Check if the song already exists
+        const playlist = await subsonic.getPlaylistById(playlistId)
+        // songs[0].id works only for one song by now. When implementing multiple songs,
+        // this will need to filter out the songs already in the playlist and add the other ones
+        if( playlist.entry.find(song => song.id === songs[0].id) ){
+            const msg = `${songs.length} song already in playlist`
+            dispatch({ type: types.ADD_SONGS_TO_PLAYLIST_RESULT, msg, status: alerts.WARNING })
+        }
+        else {
+            const result = await subsonic.addSongsToPlaylist(playlistId, songs.map(s => s.id))
+            const msg = `${songs.length} songs ${result? "" : "not "}added to playlist!`
+            dispatch({ type: types.ADD_SONGS_TO_PLAYLIST_RESULT, msg, status: result ? alerts.SUCCESS : alerts.ERROR })
+        }
     }
 }

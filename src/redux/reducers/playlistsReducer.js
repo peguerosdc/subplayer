@@ -22,7 +22,13 @@ export default (state = initialState.playlists, action) => {
             return Object.assign({}, state, {
                 playlists : playlists
             })
-        case types.ADD_SONGS_TO_PLAYLIST_SUCCESS:
+        case types.ADD_SONGS_TO_PLAYLIST_RESULT:
+            return Object.assign({}, state, {
+                lastUpdateOperationResult : {
+                    result : action.status,
+                    message : action.msg
+                }
+            })
         default:
             return state
     }
