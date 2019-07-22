@@ -45,7 +45,7 @@ class ArtistsList extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        artists: state.artistContent.artists,
+        artists: state.artists,
         currentArtistPlayingId : state.songs.current ? state.songs.current.artistId : null
     }
 }

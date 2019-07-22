@@ -1,9 +1,6 @@
 export default {
     apiCallsInProgress: 0,
-    artistContent : {
-        artists : [],
-        currentArtist : null
-    },
+    artists : [],
     playlists : {
         playlists : {},
         currentPlaylistId: null
