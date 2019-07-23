@@ -43,3 +43,15 @@ export function deletePlaylist(playlist) {
         dispatch({ type: types.DELETE_PLAYLIST_RESULT, playlist:playlist, result : result })
     }
 }
+
+
+export function createPlaylist(name) {
+    return async (dispatch) => {
+        const result = await subsonic.createPlaylist(name)
+        // Reload the playlists
+        if( result ) {
+            const playlists = await subsonic.getPlaylists()
+            dispatch(loadPlaylistsSuccess(playlists))
+        }
+    }
+}

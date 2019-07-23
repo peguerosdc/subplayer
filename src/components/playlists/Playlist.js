@@ -17,7 +17,7 @@ class Playlist extends React.Component {
     
     async componentDidMount() {
         const playlist = await subsonic.getPlaylistById(this.props.playlistId)
-        this.setState({songs : playlist.entry})
+        this.setState({songs : playlist.entry || []})
     }
 
     componentDidUpdate() {
@@ -81,7 +81,7 @@ class Playlist extends React.Component {
                 </div>
                 <SongsTable songs={songs} onSongsSelected={this.onSongsSelected} />
                 {/* Playlist deletion confirmation */}
-                <Modal backdrop="static" show={this.state.showModal} onHide={this.close} size="xs">
+                <Modal backdrop="static" show={this.state.showModal} onHide={this.closeModal} size="xs">
                     <Modal.Body>
                         <Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }} />
                         {'  '}

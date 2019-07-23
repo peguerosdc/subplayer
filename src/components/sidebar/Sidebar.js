@@ -2,16 +2,17 @@ import React from 'react';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types'
 import { navigate } from "@reach/router";
-import { loadPlaylists } from "../../redux/actions/playlistsActions";
+import { loadPlaylists, createPlaylist } from "../../redux/actions/playlistsActions";
 // UI
-import { Grid, Row, Col, Input, InputGroup, Icon } from 'rsuite';
+import { Grid, Row, Col, Input, InputGroup, Icon, Button, Modal, Form, FormGroup, FormControl, ControlLabel } from 'rsuite';
 import "./sidebar.less"
 
 class Sidebar extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { path : window.location.pathname }
+        this.newPlaylist = {name:""}
+        this.state = { path : window.location.pathname, showModal : false, playlistNameErrorMessage : null }
     }
 
     componentDidMount() {
@@ -28,10 +29,32 @@ class Sidebar extends React.Component {
 
     isSelected = (link) => this.state.path.startsWith(link)
 
+    showCreatePlaylistModal = () => {
+        this.setState({showModal:true})
+    }
+
+    closeModalAndCreate = () => {
+        if( this.newPlaylist.name.length > 0 ) {
+            this.setState({showModal:false, playlistNameErrorMessage : null})
+            this.props.createPlaylist( this.newPlaylist.name )
+        }
+        else {
+            this.setState({playlistNameErrorMessage : "Name required"})
+        }
+    }
+
+    closeModal = () => {
+        this.setState({showModal:false})
+    }
+
+    onPlaylistFormChange = (value) => {
+        this.newPlaylist = value
+    }
+
     render() {
         let playlists = this.props.playlists.byId
         return (
-            <Grid fluid style={{padding:"10px"}}>
+            <Grid fluid style={{padding:"10px", display:"flex", flexDirection:"column", height:"100%"}}>
 
                 <InputGroup inside size="lg">
                     <Input placeholder="Search" />
@@ -55,6 +78,26 @@ class Sidebar extends React.Component {
                         </Row>
                     )
                 }
+                <div style={{flexGrow:1}} />
+                <Button appearance="ghost" block={true} onClick={this.showCreatePlaylistModal} >Create new playlist</Button>
+                {/* Playlist creation modal */}
+                <Modal backdrop="static" show={this.state.showModal} onHide={this.closeModal} size="xs">
+                    <Modal.Header>
+                        <Modal.Title>New Playlist</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form fluid onChange={this.onPlaylistFormChange}>
+                            <FormGroup>
+                                <ControlLabel>Name</ControlLabel>
+                                <FormControl name="name" errorMessage={this.state.playlistNameErrorMessage} errorPlacement="bottomLeft" />
+                            </FormGroup>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.closeModalAndCreate} appearance="primary"> Create </Button>
+                        <Button onClick={this.closeModal} appearance="subtle"> Cancel </Button>
+                    </Modal.Footer>
+                </Modal>
             </Grid>
         )
     }
@@ -66,7 +109,7 @@ const mapStateToProps = (state) => {
         "playlists" : state.playlists,
     }
 }
-const mapDispatchToProps = { loadPlaylists }
+const mapDispatchToProps = { loadPlaylists, createPlaylist }
 
 Sidebar.propTypes = {
     onNavigatedTo : PropTypes.func

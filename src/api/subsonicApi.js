@@ -127,6 +127,13 @@ class Subsonic {
             })
     }
 
+    createPlaylist(name){
+        return perform_api_call( buildUrl(this.config, "createPlaylist", {name:name}) )
+            .then(result => {
+                return result["status"] === "ok"
+            })
+    }
+
 }
 
 // Export instance
