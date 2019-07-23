@@ -13,17 +13,6 @@ export function loadPlaylists() {
     }
 }
 
-export function loadOnePlaylistSuccess(playlist) {
-    return { type: types.LOAD_ONE_PLAYLIST_SUCCESS, playlist }
-}
-
-export function loadOnePlaylist(id) {
-    return async (dispatch) => {
-        const playlist = await subsonic.getPlaylistById(id)
-        dispatch(loadOnePlaylistSuccess(playlist))
-    }
-}
-
 export function addSongsToPlaylist(playlistMetadata, songs) {
     return async (dispatch) => {
         // Check if there are any songs that already exist in the playlist to prevent duplicates
@@ -38,5 +27,12 @@ export function addSongsToPlaylist(playlistMetadata, songs) {
             summary["requestStatus"] = result
         }
         dispatch(summary)
+    }
+}
+
+export function removeSongsFromPlaylist(playlist, songIndexes) {
+    return async (dispatch) => {
+        const result = await subsonic.removeSongsFromPlaylist(playlist.id, songIndexes)
+        dispatch({ type: types.REMOVE_SONGS_FROM_PLAYLIST_RESULT, playlist: playlist, removedSongs: songIndexes, result : result })
     }
 }

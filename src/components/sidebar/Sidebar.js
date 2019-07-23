@@ -29,7 +29,7 @@ class Sidebar extends React.Component {
     isSelected = (link) => this.state.path.startsWith(link)
 
     render() {
-        let playlists = this.props.playlists.playlists
+        let playlists = this.props.playlists.byId
         return (
             <Grid fluid style={{padding:"10px"}}>
 

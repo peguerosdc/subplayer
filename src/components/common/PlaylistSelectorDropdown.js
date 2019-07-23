@@ -26,7 +26,7 @@ class PlaylistSelectorDropdown extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        "playlists" : state.playlists.playlists,
+        "playlists" : state.playlists.byId,
     }
 }
 

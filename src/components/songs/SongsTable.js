@@ -66,6 +66,13 @@ class SongsTable extends React.Component {
         )
     }
 
+    componentDidUpdate(prevProps) {
+        // Clear checked songs to prevent the SongsTable keeping track of deleted songs
+        if( prevProps.songs.length !== this.props.songs.length ) {
+            this.setState({ checkedKeys: [] })
+        }
+    }
+
     render() {
         // Define songs data
         const currentSongPlaying = this.props.currentSongPlaying || {}

@@ -113,6 +113,13 @@ class Subsonic {
             })
     }
 
+    removeSongsFromPlaylist(playlistId, songIndexes) {
+        return perform_api_call( buildUrl(this.config, "updatePlaylist", {playlistId:playlistId, songIndexToRemove : songIndexes}) )
+            .then(result => {
+                return result["status"] === "ok"
+            })
+    }
+
 }
 
 // Export instance

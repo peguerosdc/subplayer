@@ -2,8 +2,7 @@ export default {
     apiCallsInProgress: 0,
     artists : [],
     playlists : {
-        playlists : {},
-        currentPlaylistId: null,
+        byId : {},
         lastUpdateOperationResult : {}
     },
     songs : {

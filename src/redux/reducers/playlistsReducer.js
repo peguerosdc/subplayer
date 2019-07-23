@@ -14,15 +14,10 @@ export default (state = initialState.playlists, action) => {
                 playlists[p.id] = p
             }
             // Return mixed with the state
-            return Object.assign({}, state, {
-                playlists : playlists
-            })
-        case types.LOAD_ONE_PLAYLIST_SUCCESS:
-            playlists = Object.assign({}, state.playlists)
-            playlists[action.playlist.id] = action.playlist
-            return Object.assign({}, state, {
-                playlists : playlists
-            })
+            return {
+                ...state,
+                byId : playlists
+            }
         case types.ADD_SONGS_TO_PLAYLIST_RESULT:
             var lastUpdateOperationResult = {}
             // Check if there were pending songs to add
@@ -58,20 +53,41 @@ export default (state = initialState.playlists, action) => {
                     message : `All song(s) already in ${action.playlist.name}`
                 }
             }
-            // Update count in current playlist
-            var currentPlaylist = Object.assign({}, action.playlist)
-            currentPlaylist["songCount"] += action.songsToAdd
-            // Copy of playlist
-            var newCopy = {}
-            newCopy[action.playlist.id] = currentPlaylist
-            // Add count to playlists
-            var tempPlaylists = Object.assign({},state.playlists)
-            tempPlaylists = Object.assign(tempPlaylists, newCopy)
             // Update state
-            return Object.assign({}, state, {
+            return {
                 lastUpdateOperationResult : lastUpdateOperationResult,
-                playlists: tempPlaylists
-            })
+                byId: {
+                    ...state.byId,
+                    [action.playlist.id] : {
+                        ...action.playlist,
+                        songCount : action.playlist.songCount + action.songsToAdd
+                    }
+                }
+            }
+        case types.REMOVE_SONGS_FROM_PLAYLIST_RESULT:
+            // If the songs were successfully removed, update the songs list
+            if( action.result ) {
+                // Update count in current playlist
+                return {
+                    ...state,
+                    byId: {
+                        ...state.byId,
+                        [action.playlist.id] : {
+                            ...action.playlist,
+                            songCount : action.playlist.songCount - action.removedSongs.length
+                        }
+                    }
+                }
+            }
+            else {
+                return {
+                    ...state,
+                    lastUpdateOperationResult : {
+                        result : alerts.ERROR,
+                        message : `Could not remove ${action.removedSongs.length} songs from ${action.playlist.name}`
+                    }
+                }
+            }
         default:
             return state
     }
