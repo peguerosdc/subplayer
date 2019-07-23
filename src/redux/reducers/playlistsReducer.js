@@ -88,6 +88,16 @@ export default (state = initialState.playlists, action) => {
                     }
                 }
             }
+        case types.DELETE_PLAYLIST_RESULT:
+            if( action.result ) {
+                let playlistsWithoutDeleted = {...state.byId}
+                delete playlistsWithoutDeleted[action.playlist.id]
+                return {
+                    ...state,
+                    byId: playlistsWithoutDeleted
+                }
+            }
+            return state
         default:
             return state
     }

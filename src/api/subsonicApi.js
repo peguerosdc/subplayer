@@ -120,6 +120,13 @@ class Subsonic {
             })
     }
 
+    deletePlaylist(playlistId){
+        return perform_api_call( buildUrl(this.config, "deletePlaylist", {id:playlistId}) )
+            .then(result => {
+                return result["status"] === "ok"
+            })
+    }
+
 }
 
 // Export instance

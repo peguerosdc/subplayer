@@ -36,3 +36,10 @@ export function removeSongsFromPlaylist(playlist, songIndexes) {
         dispatch({ type: types.REMOVE_SONGS_FROM_PLAYLIST_RESULT, playlist: playlist, removedSongs: songIndexes, result : result })
     }
 }
+
+export function deletePlaylist(playlist) {
+    return async (dispatch) => {
+        const result = await subsonic.deletePlaylist(playlist.id)
+        dispatch({ type: types.DELETE_PLAYLIST_RESULT, playlist:playlist, result : result })
+    }
+}
