@@ -9,5 +9,10 @@ export default {
         queue : [],
         current : null,
         currentIndex : null
+    },
+    auth : {
+        isAuthenticated: false,
+        isAuthenticating: true,
+        statusText: null
     }
-};
+}

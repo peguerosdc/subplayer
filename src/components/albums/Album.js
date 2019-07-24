@@ -33,7 +33,7 @@ class Album extends React.Component {
 
     render() {
         const album = this.state.album
-        const songs = album ? album.song : []
+        const songs = (album && album.song) || []
         const disableDropdown = this.state.selectedSongs.length === 0
         // Render all
         return (

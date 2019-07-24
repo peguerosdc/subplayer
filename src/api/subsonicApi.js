@@ -3,9 +3,9 @@
 
 // Default configuration
 var defaults = {
-    host : "192.168.0.35:8080",
-    user : "peguerosdc",
-    password : "enc:66726f6e746d616e323132",
+    host : null,
+    user : null,
+    password : null,
     version : "1.9.0"
 }
 
@@ -30,22 +30,13 @@ function buildUrl(config, action, params = {}) {
 
 function perform_api_call(url) {
     return fetch(url)
-        .then(res => {
-            if( res.ok ) {
-                return res.json()
-            }
-            else {
-                Promise.reject(Error(`${res.status}: ${res.statusText}`))
-            }
-        })
-        .then(json => {
-            var response = json["subsonic-response"]
-            if( response["status"] === "ok") {
-                return response
-            }
-            else {
-                Promise.reject(Error(response["error"]["message"]))
-            }
+        .then(res => res.json() )
+        .then(data => {
+            // Get subsonic response
+            const response = data["subsonic-response"]
+            return response["status"] === "ok" ?
+                response :
+                Promise.reject(new Error(`${response.error.message}`))
         })
 }
 
@@ -56,11 +47,35 @@ class Subsonic {
         this.config = config
     }
 
-    login() {
-        return perform_api_call( buildUrl(this.config, "ping") )
+    setConfig(host, username, password, encodePassword = true) {
+        this.config = Object.assign(this.config, {
+            host : host,
+            user : username,
+            password : `enc:${encodePassword ? this.getEncodedPassword(password) : password}`,
+        })
+    }
+
+    login(host, username, password, encodePassword = true) {
+        // Perform call
+        const tempConfig = {
+            host : host,
+            user : username,
+            password : `enc:${encodePassword ? this.getEncodedPassword(password) : password}`,
+            version : "1.9.0"
+        }
+        return perform_api_call( buildUrl(tempConfig, "ping") )
             .then(result => {
                 return result["status"] === "ok"
             })
+    }
+
+    getEncodedPassword(password) {
+        let encoded = ""
+        for (var i=0; i<password.length; i++) {
+            let hex = password.charCodeAt(i).toString(16);
+            encoded += (hex).slice(-4);
+        }
+        return encoded
     }
     
     getArtists() {
