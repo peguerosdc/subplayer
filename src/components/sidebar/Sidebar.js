@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from 'prop-types'
 import { navigate } from "@reach/router";
 import { loadPlaylists, createPlaylist } from "../../redux/actions/playlistsActions";
+import { logout } from "../../redux/actions/authActions";
 // UI
 import { Grid, Row, Col, Input, InputGroup, Icon, Button, Modal, Form, FormGroup, FormControl, ControlLabel } from 'rsuite';
 import "./sidebar.less"
@@ -80,6 +81,7 @@ class Sidebar extends React.Component {
                 }
                 <div style={{flexGrow:1}} />
                 <Button appearance="ghost" block={true} onClick={this.showCreatePlaylistModal} >Create new playlist</Button>
+                <Button appearance="link" block={true} onClick={this.props.logout}>Log out</Button>
                 {/* Playlist creation modal */}
                 <Modal backdrop="static" show={this.state.showModal} onHide={this.closeModal} size="xs">
                     <Modal.Header>
@@ -109,7 +111,7 @@ const mapStateToProps = (state) => {
         "playlists" : state.playlists,
     }
 }
-const mapDispatchToProps = { loadPlaylists, createPlaylist }
+const mapDispatchToProps = { loadPlaylists, createPlaylist, logout }
 
 Sidebar.propTypes = {
     onNavigatedTo : PropTypes.func
