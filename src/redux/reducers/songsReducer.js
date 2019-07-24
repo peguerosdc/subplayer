@@ -21,6 +21,8 @@ export default (state = initialState.songs, action) => {
                 currentIndex : state.currentIndex-1,
                 current : state.queue[state.currentIndex-1]
             } : {})
+        case types.LOGOUT_USER:
+            return initialState.songs
         default:
             return state;
     }

@@ -98,6 +98,8 @@ export default (state = initialState.playlists, action) => {
                 }
             }
             return state
+        case types.LOGOUT_USER:
+            return initialState.playlists
         default:
             return state
     }
