@@ -1,55 +1,30 @@
 import React from 'react';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types'
-import { navigate } from "@reach/router";
-import { loadPlaylists, createPlaylist } from "../../redux/actions/playlistsActions";
-import { logout } from "../../redux/actions/authActions";
 // UI
-import { Grid, Row, Col, Input, InputGroup, Icon, Button, Modal, Form, FormGroup, FormControl, ControlLabel } from 'rsuite';
+import { Grid, Row, Col, Input, InputGroup, Icon, Button } from 'rsuite';
 import "./sidebar.less"
 
 class Sidebar extends React.Component {
 
     constructor(props) {
         super(props)
-        this.newPlaylist = {name:""}
-        this.state = { path : window.location.pathname, showModal : false, playlistNameErrorMessage : null }
-    }
-
-    componentDidMount() {
-        this.props.loadPlaylists()
+        this.state = { path : window.location.pathname }
     }
 
     navigateTo = (link) => {
-        navigate(link)
         this.setState({ path : link })
-        if( this.props.onNavigatedTo ){
-            this.props.onNavigatedTo(link)
-        }
+        this.props.onNavigateTo && this.props.onNavigateTo(link)
     }
 
     isSelected = (link) => this.state.path.startsWith(link)
 
     showCreatePlaylistModal = () => {
-        this.setState({showModal:true})
+        this.props.onCreatePlaylistTrigger && this.props.onCreatePlaylistTrigger()
     }
 
-    closeModalAndCreate = () => {
-        if( this.newPlaylist.name.length > 0 ) {
-            this.setState({showModal:false, playlistNameErrorMessage : null})
-            this.props.createPlaylist( this.newPlaylist.name )
-        }
-        else {
-            this.setState({playlistNameErrorMessage : "Name required"})
-        }
-    }
-
-    closeModal = () => {
-        this.setState({showModal:false})
-    }
-
-    onPlaylistFormChange = (value) => {
-        this.newPlaylist = value
+    onLogOut = () => {
+        this.props.onLogOut && this.props.onLogOut()
     }
 
     render() {
@@ -57,7 +32,7 @@ class Sidebar extends React.Component {
         return (
             <Grid fluid style={{padding:"10px", display:"flex", flexDirection:"column", height:"100%"}}>
 
-                <InputGroup inside size="lg">
+                <InputGroup inside size="lg" style={{display:"none"}}>
                     <Input placeholder="Search" />
                     <InputGroup.Button><Icon icon="search" /></InputGroup.Button>
                 </InputGroup>
@@ -81,25 +56,7 @@ class Sidebar extends React.Component {
                 }
                 <div style={{flexGrow:1}} />
                 <Button appearance="ghost" block={true} onClick={this.showCreatePlaylistModal} >Create new playlist</Button>
-                <Button appearance="link" block={true} onClick={this.props.logout}>Log out</Button>
-                {/* Playlist creation modal */}
-                <Modal backdrop="static" show={this.state.showModal} onHide={this.closeModal} size="xs">
-                    <Modal.Header>
-                        <Modal.Title>New Playlist</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form fluid onChange={this.onPlaylistFormChange}>
-                            <FormGroup>
-                                <ControlLabel>Name</ControlLabel>
-                                <FormControl name="name" errorMessage={this.state.playlistNameErrorMessage} errorPlacement="bottomLeft" />
-                            </FormGroup>
-                        </Form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={this.closeModalAndCreate} appearance="primary"> Create </Button>
-                        <Button onClick={this.closeModal} appearance="subtle"> Cancel </Button>
-                    </Modal.Footer>
-                </Modal>
+                <Button appearance="link" block={true} onClick={this.onLogOut}>Log out</Button>
             </Grid>
         )
     }
@@ -111,13 +68,14 @@ const mapStateToProps = (state) => {
         "playlists" : state.playlists.byId,
     }
 }
-const mapDispatchToProps = { loadPlaylists, createPlaylist, logout }
 
 Sidebar.propTypes = {
-    onNavigatedTo : PropTypes.func
+    onNavigateTo : PropTypes.func,
+    onCreatePlaylistTrigger : PropTypes.func,
+    onLogOut : PropTypes.func
 }
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    null
 )(Sidebar)

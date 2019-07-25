@@ -3,29 +3,29 @@ import { connect } from "react-redux";
 import './App.css';
 import 'rsuite/styles/index.less';
 import * as alerts from "./utils/alertUtils";
-import { Router } from "@reach/router";
+import { Router, navigate } from "@reach/router";
+import { logout } from "./redux/actions/authActions";
+import { createPlaylist, loadPlaylists } from "./redux/actions/playlistsActions";
 // UI
-import { Container, Content, Footer, Sidebar, Navbar, Header, Icon, IconButton, Nav, Drawer, Alert } from 'rsuite';
+import { Container, Content, Footer, Sidebar, Header, Alert } from 'rsuite';
 import MySidebar from './components/sidebar/Sidebar';
+import Navbar from './components/navbar/Navbar';
 import MusicPlayer from './components/player/MusicPlayer';
 import InfiniteLineLoader from './components/common/InfiniteLineLoader'
 import ArtistsList from './components/artists/ArtistsList'
 import Artist from './components/artists/Artist'
 import Playlist from './components/playlists/Playlist'
+import CreatePlaylistModal from './components/common/CreatePlaylistModal'
 
 class App extends React.Component  {
 
   constructor(props) {
     super(props)
-    this.state = {showDrawer : false}
+    this.state = { showModal : false }
   }
 
-  showDrawer = (eventKey = null) => {
-    this.setState({showDrawer : true})
-  }
-
-  hideDrawer = () => {
-    this.setState({showDrawer : false})
+  componentDidMount() {
+    this.props.loadPlaylists()
   }
 
   componentDidUpdate(prevProps) {
@@ -43,25 +43,39 @@ class App extends React.Component  {
     }
   }
 
+  onNavigate = (link) => {
+    navigate(link)
+  }
+
+  onLogOut = () => {
+    this.props.logout()
+  }
+
+  onCreatePlaylist = () => {
+    this.setState({showModal : true})
+  }
+
+  onPlaylistCreated = (name) => {
+    this.props.createPlaylist(name)
+    this.setState({showModal : false})
+  }
+
+  onClosePlaylistModal = () => {
+    this.setState({showModal : false})
+  }
+
   render() {
-    const showDrawer = this.state.showDrawer
     return (
       <Container style={{ display : "flex", height: "100vh", flexDirection:"column" }}>
         <InfiniteLineLoader isLoading={this.props.apiCallsInProgress > 0 } />
         { /* Navbar for mobile navigation */ }
         <Header className="rs-hidden-lg rs-hidden-md">
-          <Navbar>
-            <Navbar.Body>
-              <Nav onSelect={this.showDrawer}>
-                <Nav.Item eventKey="drawer" icon={<Icon icon="bars" style={{color:"white"}} />}/>
-              </Nav>
-            </Navbar.Body>
-          </Navbar>
+          <Navbar onNavigateTo={this.onNavigate} onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
         </Header>
         { /* Main content */ }
         <Container style={{flex: 1, "overflow":"auto"}}>
           <Sidebar style={{backgroundColor:"rgb(29,45,60)"}} className="rs-hidden-xs rs-hidden-sm">
-            <MySidebar />
+            <MySidebar onNavigateTo={this.onNavigate} onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
           </Sidebar>
           <Content style={{"overflow":"auto", backgroundImage:"radial-gradient(rgb(29,42,58), rgb(24,44,60), rgb(11,24,39))"}}>
             <Router style={{height:"100%"}}>
@@ -75,15 +89,8 @@ class App extends React.Component  {
         <Footer style={{backgroundColor:"rgb(42,62,82)"}}>
           <MusicPlayer />
         </Footer>
-        { /* Drawer menu for mobile navigation */ }
-        <Drawer show={showDrawer} placement="left" size="xs" className="rs-hidden-xs rs-hidden-sm" backdrop={true}>
-          <Drawer.Body>
-            <MySidebar onNavigatedTo={this.hideDrawer} />
-          </Drawer.Body>
-          <Drawer.Footer>
-            <IconButton appearance="link" onClick={this.hideDrawer} icon={<Icon icon="angle-left" />} />
-          </Drawer.Footer>
-        </Drawer>
+        { /* playlist creation modal */ }
+        <CreatePlaylistModal showModal={this.state.showModal} createPlaylist={this.onPlaylistCreated} onClosePlaylistModal={this.onClosePlaylistModal} />
       </Container>
     );
   }
@@ -97,7 +104,9 @@ const mapStateToProps = (state) => {
     }
 }
 
+const mapDispatchToProps = { logout, createPlaylist, loadPlaylists }
+
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(App)
