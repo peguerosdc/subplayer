@@ -2,10 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 import subsonic from "../../api/subsonicApi";
 import Album from '../albums/Album'
-import { FlexboxGrid } from 'rsuite';
+import { beginApiCall, apiCallSuccess } from "../../redux/actions/apiStatusActions"
 
 class Artist extends React.Component {
-    
+
     constructor(props) {
         super(props)
         this.state = { artist : {}}
@@ -16,31 +16,27 @@ class Artist extends React.Component {
     }
 
     loadArtist = async (id) => {
-        const album = await subsonic.getArtist(id)
-        this.setState({artist : album})
+        this.props.beginApiCall()
+        const artist = await subsonic.getArtist(id)
+        this.setState({artist : artist})
+        this.props.apiCallSuccess()
     }
 
     render() {
         const artist = this.state.artist
         const albums = artist && artist.album ? artist.album : []
         return (
-            <div style={{padding:"20px"}}>
+            <div style={{padding:"20px", height:"100%", overflow:"auto"}}>
                 <h1 style={{color:"white", fontWeight: "bold"}}>{artist != null ? artist.name : "..."}</h1>
-                <FlexboxGrid>
-                    {albums.map(album => (
-                        <FlexboxGrid.Item colspan={24} key={album.id}>
-                            <div style={{margin:"10px"}}>
-                                <Album albumId={album.id}/>
-                            </div>
-                        </FlexboxGrid.Item>
-                    ))}
-                </FlexboxGrid>
+                {albums.map(album => ( <Album key={album.id} albumId={album.id} style={{margin:"10px"}}/> ))}
             </div>
         )
     }
 }
 
+const mapDispatchToProps = { beginApiCall, apiCallSuccess }
+
 export default connect(
     null,
-    null
+    mapDispatchToProps
 )(Artist)

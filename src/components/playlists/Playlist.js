@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { navigate } from "@reach/router"
 import { removeSongsFromPlaylist, deletePlaylist } from "../../redux/actions/playlistsActions";
+import { beginApiCall, apiCallSuccess } from "../../redux/actions/apiStatusActions"
 import subsonic from "../../api/subsonicApi";
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
 // UI
@@ -9,15 +10,17 @@ import SongsTable from '../songs/SongsTable'
 import { Button, Modal, Icon } from 'rsuite';
 
 class Playlist extends React.Component {
-
+    
     constructor(props) {
         super(props)
         this.state = {selectedSongs : [], songs : [], showModal : false, waitingForDeletion: false }
     }
     
     async componentDidMount() {
+        this.props.beginApiCall()
         const playlist = await subsonic.getPlaylistById(this.props.playlistId)
         this.setState({songs : playlist.entry || []})
+        this.props.apiCallSuccess()
     }
 
     componentDidUpdate() {
@@ -72,7 +75,7 @@ class Playlist extends React.Component {
                 <div style={{ display:"flex", flexFlow: "row", marginBottom:"15px", marginTop:"15px"}}>
                     <div style={{flexGrow:1}}>
                         <h1 style={{color:"white", fontWeight:"bold"}}>{playlist.name}</h1>
-                        <span>{playlist.songCount} songs, {seconds_to_hhmmss(playlist.duration)} </span>
+                        <span style={{color:"rgb(175,175,175)"}}>{playlist.songCount} songs, {seconds_to_hhmmss(playlist.duration)} </span>
                     </div>
                     <div style={{ display:"flex", flexFlow: "column"}}>
                         <Button color="red" onClick={this.askDeletionConfirmation} style={{marginBottom:"5px"}}>Delete playlist</Button>
@@ -103,7 +106,7 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-const mapDispatchToProps = { removeSongsFromPlaylist, deletePlaylist }
+const mapDispatchToProps = { removeSongsFromPlaylist, deletePlaylist, beginApiCall, apiCallSuccess }
 
 
 export default connect(

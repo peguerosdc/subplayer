@@ -37,18 +37,20 @@ class Album extends React.Component {
         const disableDropdown = this.state.selectedSongs.length === 0
         // Render all
         return (
-            <Panel bordered style={{backgroundColor:"white"}}>
-                <FlexboxGrid>
-                    <FlexboxGrid.Item colspan={6}>
-                        <img src={album.coverArt ? subsonic.getCoverArtUrl(album.coverArt) : null} alt="Album Cover" width="100%" />
-                    </FlexboxGrid.Item>
-                    <FlexboxGrid.Item colspan={18} style={{paddingLeft:"10px"}}>
-                        <h2>{album ? album.name : "..."}</h2>
-                        <PlaylistSelectorDropdown onPlaylistSelected={this.onPlaylistSelected} disabled={disableDropdown} />
-                        <SongsTable songs={songs} columns={[SongsTable.columns.title, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.selectable]} onSongsSelected={this.onSongsSelected} />
-                    </FlexboxGrid.Item>
-                </FlexboxGrid>
-            </Panel>
+            album.name ? (
+                <Panel bordered style={{backgroundColor:"white", ...this.props.style}}>
+                    <FlexboxGrid>
+                        <FlexboxGrid.Item colspan={6}>
+                            <img src={album.coverArt ? subsonic.getCoverArtUrl(album.coverArt) : null} alt="Album Cover" width="100%" />
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={18} style={{paddingLeft:"10px"}}>
+                            <h2>{album ? album.name : "..."}</h2>
+                            <PlaylistSelectorDropdown onPlaylistSelected={this.onPlaylistSelected} disabled={disableDropdown} />
+                            <SongsTable songs={songs} columns={[SongsTable.columns.title, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.selectable]} onSongsSelected={this.onSongsSelected} />
+                        </FlexboxGrid.Item>
+                    </FlexboxGrid>
+                </Panel>
+                ) : null
         )
     }
 }

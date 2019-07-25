@@ -43,7 +43,10 @@ class LoginComponent extends React.Component {
         this.user = value
     }
 
-    login = () => {
+    login = (e) => {
+        // Do not submit form until data is checked
+        e.stopPropagation()
+        e.preventDefault()
         let valid = true
         // Check host
         let hostErrorMessage = null
@@ -79,7 +82,7 @@ class LoginComponent extends React.Component {
         return (
             <div style={{display:"flex", justifyContent:"center", alignItems:"center", height:"100vh"}}>
                 <Panel bordered style={{backgroundColor:"white"}}>
-                    <Form onChange={this.onUserDataChange}>
+                    <Form onChange={this.onUserDataChange} onSubmit={this.login}>
                         <FormGroup>
                             <ControlLabel>Host</ControlLabel>
                             <FormControl name="host" type="url" errorMessage={this.state.hostErrorMessage} errorPlacement="bottomRight"/>
@@ -94,7 +97,7 @@ class LoginComponent extends React.Component {
                             <FormControl name="password" type="password" errorMessage={this.state.passwordErrorMessage} errorPlacement="bottomRight"/>
                         </FormGroup>
                         <FormGroup>
-                            <Button appearance="primary" loading={this.state.isAuthenticating} onClick={this.login} block>Log In</Button>
+                            <Button type="submit" appearance="primary" loading={this.state.isAuthenticating} block>Log In</Button>
                         </FormGroup>
                       </Form>
                   </Panel>

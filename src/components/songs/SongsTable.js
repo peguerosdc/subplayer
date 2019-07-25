@@ -69,7 +69,9 @@ class SongsTable extends React.Component {
     componentDidUpdate(prevProps) {
         // Clear checked songs to prevent the SongsTable keeping track of deleted songs
         if( prevProps.songs.length !== this.props.songs.length ) {
-            this.setState({ checkedKeys: [] })
+            if( this.state.checkedKeys.length > 0 ) {
+                this.setState({ checkedKeys: [] })
+            }
         }
     }
 
@@ -77,7 +79,7 @@ class SongsTable extends React.Component {
         // Define songs data
         const currentSongPlaying = this.props.currentSongPlaying || {}
         const songs = this.props.songs || []
-        const columnsToShow = this.props.columns || Object.keys(columns)
+        const columnsToShow = this.props.columns || defaultColumns
         // Define Checkbox's data
         const checkedKeys = this.state.checkedKeys
         let checked = false;
@@ -183,6 +185,10 @@ const columns = {
   bitRate: "bitRate",
   selectable: "selectable"
 }
+// Define defaults to show
+const defaultColumns = Object.keys(columns)
+
+// Properties
 SongsTable.propTypes = {
   appearance: PropTypes.arrayOf(Object.keys(columns))
 }

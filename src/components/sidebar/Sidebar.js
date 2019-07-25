@@ -53,7 +53,7 @@ class Sidebar extends React.Component {
     }
 
     render() {
-        let playlists = this.props.playlists.byId
+        const playlists = this.props.playlists
         return (
             <Grid fluid style={{padding:"10px", display:"flex", flexDirection:"column", height:"100%"}}>
 
@@ -108,7 +108,7 @@ class Sidebar extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        "playlists" : state.playlists,
+        "playlists" : state.playlists.byId,
     }
 }
 const mapDispatchToProps = { loadPlaylists, createPlaylist, logout }

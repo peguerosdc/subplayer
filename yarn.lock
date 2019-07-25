@@ -1493,6 +1493,13 @@
     "@webassemblyjs/wast-parser" "1.8.5"
     "@xtuc/long" "4.2.2"
 
+"@welldone-software/why-did-you-render@^3.2.3":
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@welldone-software/why-did-you-render/-/why-did-you-render-3.2.3.tgz#4495f548c7fbd087b49c9b51d80087c86a3b1a66"
+  integrity sha512-dUMkjsVsCfIo+IEmiMyb/FGKVbXrzbGqLvDTCn0ad5drNmD+BGoU/7Z+Nc7ckkV0F1G4vzs1XQrAcIxyPa8Ssw==
+  dependencies:
+    lodash "^4"
+
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz#eef014a3145ae477a1cbc00cd1e552336dceb790"
@@ -6048,6 +6055,11 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
 
+lodash@^4:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
+  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+
 loglevel@^1.4.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.1.tgz#e0fc95133b6ef276cdc8887cdaf24aa6f156f8fa"
@@ -7842,7 +7854,7 @@ prompts@^2.0.1:
     kleur "^3.0.2"
     sisteransi "^1.0.0"
 
-prop-types@^15.5.10, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -8071,6 +8083,13 @@ react-flow-types@^0.2.0-beta.6:
   version "0.2.0-beta.6"
   resolved "https://registry.yarnpkg.com/react-flow-types/-/react-flow-types-0.2.0-beta.6.tgz#bf49c8b7864fcd0951b03286c63a80d66ce9fae4"
   integrity sha512-I4f8oJFGxVJYrJLxG4sCPW7vWedNB8Eee1U2v+xBzRPlF7X5IBelqaDIKxBDLzDFb++AzpoU+uu1jFaKy1QssQ==
+
+react-infinite-scroller@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/react-infinite-scroller/-/react-infinite-scroller-1.2.4.tgz#f67eaec4940a4ce6417bebdd6e3433bfc38826e9"
+  integrity sha512-/oOa0QhZjXPqaD6sictN2edFMsd3kkMiE19Vcz5JDgHpzEJVqYcmq+V3mkwO88087kvKGe1URNksHEOt839Ubw==
+  dependencies:
+    prop-types "^15.5.8"
 
 react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6:
   version "16.8.6"

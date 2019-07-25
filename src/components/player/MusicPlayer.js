@@ -9,7 +9,7 @@ import { IconButton, Icon, Slider } from 'rsuite';
 import "./MusicPlayer.less"
 
 class MusicPlayer extends React.Component {
-
+    
     constructor(props) {
         super(props)
         this.state = { playing:false, tick: 0 }

@@ -11,7 +11,7 @@ var defaults = {
 
 // Define utils and helpers
 function buildUrl(config, action, params = {}) {
-    var base = `http://${config.host}/rest/${action}.view?u=${config.user}&p=${config.password}&v=${config.version}&f=json&c=myplayer`
+    var base = `${config.host}/rest/${action}.view?u=${config.user}&p=${config.password}&v=${config.version}&f=json&c=myplayer`
     // Check if there are multiple valued keys
     const keys = Object.keys(params)
     for (var i = keys.length - 1; i >= 0; i--) {
@@ -102,7 +102,7 @@ class Subsonic {
     getPlaylists() {
         return perform_api_call( buildUrl(this.config, "getPlaylists") )
             .then(result => {
-                return result["playlists"]["playlist"]
+                return result["playlists"]["playlist"] || []
             })
     }
 

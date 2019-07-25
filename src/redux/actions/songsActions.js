@@ -1,6 +1,5 @@
 import * as types from "./actionTypes";
 
-
 export function addSongsToQueue(songs, position=0, clear=true) {
     return (dispatch) => {
         dispatch({ type: types.ADD_SONGS_TO_QUEUE, songs })

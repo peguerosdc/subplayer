@@ -1,5 +1,6 @@
 import * as types from "./actionTypes";
 import subsonic from "../../api/subsonicApi";
+import { beginApiCall, apiCallSuccess } from "./apiStatusActions";
 
 /* Load multiple artists */
 export function loadArtistsSuccess(artists) {
@@ -8,7 +9,9 @@ export function loadArtistsSuccess(artists) {
 
 export function loadArtists() {
     return async (dispatch) => {
+        dispatch(beginApiCall())
         const artists = await subsonic.getArtists();
         dispatch(loadArtistsSuccess(artists));
+        dispatch(apiCallSuccess())
     };
 }
