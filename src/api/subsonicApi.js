@@ -149,6 +149,13 @@ class Subsonic {
             })
     }
 
+    updatePlaylist(id, name, comment, isPublic){
+        return perform_api_call( buildUrl(this.config, "updatePlaylist", {playlistId:id, name:name, comment:comment, public:isPublic }) )
+            .then(result => {
+                return result["status"] === "ok"
+            })
+    }
+
 }
 
 // Export instance

@@ -15,7 +15,9 @@ class PlaylistSelectorDropdown extends React.Component {
             <Dropdown title="Add to playlist" trigger="click" onSelect={this.onItemSelected} disabled={this.props.disabled} >
                 {
                     Object.keys(this.props.playlists).map(pId => 
-                        <Dropdown.Item key={pId} eventKey={pId}>{this.props.playlists[pId].name}</Dropdown.Item>
+                        this.props.playlists[pId].isMine ?
+                            <Dropdown.Item key={pId} eventKey={pId}>{this.props.playlists[pId].name}</Dropdown.Item>
+                            : null
                     )
                 }
             </Dropdown>

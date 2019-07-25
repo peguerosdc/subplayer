@@ -21,7 +21,7 @@ export function addSongsToPlaylist(playlistMetadata, songs) {
         dispatch(beginApiCall())
         // Check if there are any songs that already exist in the playlist to prevent duplicates
         const playlist = await subsonic.getPlaylistById(playlistMetadata.id)
-        const currentSongs = new Set(playlist.entry.map(song => song.id));
+        const currentSongs = playlist.entry ? new Set(playlist.entry.map(song => song.id)) : new Set()
         const songsToAdd = songs.filter(song => !currentSongs.has(song.id))
         // Only add songs that are not in the playlist
         // If all songs are already in the playlist, don't do anything
@@ -60,9 +60,35 @@ export function createPlaylist(name) {
         const result = await subsonic.createPlaylist(name)
         // Reload the playlists
         if( result ) {
+            // We can't directly add to the playlist because Subsonic API doesnt return the ID
             const playlists = await subsonic.getPlaylists()
             dispatch(loadPlaylistsSuccess(playlists))
-            dispatch(apiCallSuccess())
         }
+        dispatch(apiCallSuccess())
+    }
+}
+
+
+export function editPlaylist(id, name, comment, isPublic) {
+    return async (dispatch) => {
+        dispatch(beginApiCall())
+        const result = await subsonic.updatePlaylist(id, name, comment, isPublic)
+        // Edit playlist in state
+        if( result ) {
+            dispatch({type: types.EDIT_PLAYLIST_RESULT, id:id, name:name, comment:comment, public:isPublic})
+        }
+        dispatch(apiCallSuccess())
+    }
+}
+
+export function loadSinglePlaylist(id) {
+    return async (dispatch) => {
+        dispatch({type : types.LOAD_SINGLE_PLAYLIST_REQUEST, id:id})
+        dispatch(beginApiCall())
+        const playlist = await subsonic.getPlaylistById(id)
+        if( playlist ) {
+            dispatch({type: types.LOAD_SINGLE_PLAYLIST_SUCCESS, id:id, songs : playlist.entry || []})
+        }
+        dispatch(apiCallSuccess())
     }
 }

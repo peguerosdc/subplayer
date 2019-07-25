@@ -56,7 +56,7 @@ class MusicPlayer extends React.Component {
 
     tick() {
         this.setState({
-            tick: this.state.tick + 1
+            tick: Math.ceil(this.streamer.seek())
         });
     }
 

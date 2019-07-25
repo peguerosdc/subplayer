@@ -1,5 +1,6 @@
 import * as types from "../actions/actionTypes";
 import * as alerts from "../../utils/alertUtils";
+import {isPlaylistMineByOwner} from "../../utils/utils";
 import initialState from "./initialState";
 
 export default (state = initialState.playlists, action) => {
@@ -11,6 +12,8 @@ export default (state = initialState.playlists, action) => {
             playlists = {}
             for (var i = 0; i < action.playlists.length; i++) {
                 var p = action.playlists[i]
+                // Append a boolean to know if the playlist is mine
+                p.isMine = isPlaylistMineByOwner(p.owner)
                 playlists[p.id] = p
             }
             // Return mixed with the state
@@ -55,6 +58,7 @@ export default (state = initialState.playlists, action) => {
             }
             // Update state
             return {
+                ...state,
                 lastUpdateOperationResult : lastUpdateOperationResult,
                 byId: {
                     ...state.byId,
@@ -67,6 +71,11 @@ export default (state = initialState.playlists, action) => {
         case types.REMOVE_SONGS_FROM_PLAYLIST_RESULT:
             // If the songs were successfully removed, update the songs list
             if( action.result ) {
+                // Remove songs in current playlist if is currently displayed
+                let currentSongs = state.currentPlaylist.songs
+                if( action.playlist.id === state.currentPlaylist.id ) {
+                    currentSongs = state.currentPlaylist.songs.filter((song, index) => !action.removedSongs.includes(index) )
+                }
                 // Update count in current playlist
                 return {
                     ...state,
@@ -76,6 +85,10 @@ export default (state = initialState.playlists, action) => {
                             ...action.playlist,
                             songCount : action.playlist.songCount - action.removedSongs.length
                         }
+                    },
+                    currentPlaylist : {
+                        ...state.currentPlaylist,
+                        songs : currentSongs
                     }
                 }
             }
@@ -98,6 +111,39 @@ export default (state = initialState.playlists, action) => {
                 }
             }
             return state
+        case types.EDIT_PLAYLIST_RESULT:
+            // Look for this playlist in the state and check if something changed
+            const currentPlaylist = state.byId[action.id]
+            if( currentPlaylist.name !== action.name ||
+                currentPlaylist.comment !== action.comment ||
+                currentPlaylist.public !== action.public ) {
+                // Edit the values
+                const newPlaylist = { ...currentPlaylist, name: action.name,comment: action.comment,public: action.public }
+                return {
+                    ...state,
+                    byId: {
+                        ...state.byId,
+                        [action.id] : newPlaylist
+                    }
+                }
+            }
+            return state
+        case types.LOAD_SINGLE_PLAYLIST_SUCCESS:
+            return {
+                ...state,
+                currentPlaylist : {
+                    id: action.id,
+                    songs : action.songs
+                }
+            }
+        case types.LOAD_SINGLE_PLAYLIST_REQUEST:
+            return {
+                ...state,
+                currentPlaylist : {
+                    id: action.id,
+                    songs : []
+                }
+            }
         case types.LOGOUT_USER:
             return initialState.playlists
         default:
