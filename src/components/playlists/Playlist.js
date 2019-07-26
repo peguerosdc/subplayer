@@ -8,7 +8,7 @@ import { seconds_to_hhmmss } from "../../utils/formatting.js"
 import SongsTable from '../songs/SongsTable'
 import { Button, Modal, Icon, IconButton, Form, FormGroup, ControlLabel, Checkbox, Input } from 'rsuite';
 
-const NOT_MINE_COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate]
+const NOT_MINE_COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download]
 const MINE_COLUMNS_TO_SHOW = [...NOT_MINE_COLUMNS_TO_SHOW, SongsTable.columns.selectable]
 
 class Playlist extends React.Component {

@@ -3,10 +3,11 @@ import { connect } from "react-redux";
 import PropTypes from 'prop-types'
 import { addSongsToQueue } from "../../redux/actions/songsActions";
 import { seconds_to_mss } from "../../utils/formatting.js"
+import subsonic from "../../api/subsonicApi"
 // UI
 import "./SongsTable.less"
 // Table components
-import { Table, Icon, Checkbox } from 'rsuite';
+import { Table, Icon, Checkbox, Whisper, Tooltip } from 'rsuite';
 const { Column, HeaderCell, Cell } = Table;
 
 const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => {
@@ -43,6 +44,10 @@ class SongsTable extends React.Component {
         queue.sort(() => Math.random() - 0.5)
         queue = [song, ...queue]
         this.props.addSongsToQueue(queue)
+    }
+
+    preventClickPropagation = (event) => {
+        event.stopPropagation()
     }
 
     handleCheckAll = (value, checked) => {
@@ -119,7 +124,7 @@ class SongsTable extends React.Component {
                     </Column> : null
                 }
                 { columnsToShow.includes(columns.title) ? 
-                    <Column flexGrow={3}>
+                    <Column flexGrow={4}>
                         <HeaderCell> Title </HeaderCell>
                         <Cell dataKey="title">
                             { rowData => 
@@ -132,14 +137,14 @@ class SongsTable extends React.Component {
                 }
 
                 { columnsToShow.includes(columns.artist) ? 
-                    <Column flexGrow={2}>
+                    <Column flexGrow={3}>
                         <HeaderCell>Artist</HeaderCell>
                         <Cell dataKey="artist" />
                     </Column> : null
                 }
 
                 { columnsToShow.includes(columns.album) ? 
-                    <Column flexGrow={1}>
+                    <Column flexGrow={2}>
                         <HeaderCell>Album</HeaderCell>
                         <Cell dataKey="album" />
                     </Column>
@@ -147,7 +152,7 @@ class SongsTable extends React.Component {
                 }
 
                 { columnsToShow.includes(columns.bitRate) ? 
-                    <Column>
+                    <Column width={60}>
                         <HeaderCell>BitRate</HeaderCell>
                         <Cell dataKey="bitRate" />
                     </Column>
@@ -159,6 +164,22 @@ class SongsTable extends React.Component {
                         <HeaderCell><Icon icon='clock-o' /></HeaderCell>
                         <Cell dataKey="duration" >
                             { rowData => seconds_to_mss(rowData.duration)}
+                        </Cell>
+                    </Column>
+                    : null
+                }
+
+                { columnsToShow.includes(columns.download) ? 
+                    <Column width={55}>
+                        <HeaderCell><Icon icon='download' /></HeaderCell>
+                        <Cell dataKey="id">
+                            { rowData => (
+                                <Whisper placement="auto" trigger="hover" speaker={<Tooltip>{rowData.path}</Tooltip>}>
+                                    <a href={subsonic.getDownloadUrl(rowData.id)} download={rowData.title} style={{color:"#8e8e93"}}>
+                                      <Icon icon='download' onClick={this.preventClickPropagation} />
+                                    </a>
+                                </Whisper>
+                            )}
                         </Cell>
                     </Column>
                     : null
@@ -183,7 +204,8 @@ const columns = {
   album: "album",
   duration: "duration",
   bitRate: "bitRate",
-  selectable: "selectable"
+  selectable: "selectable",
+  download: "download"
 }
 // Define defaults to show
 const defaultColumns = Object.keys(columns)

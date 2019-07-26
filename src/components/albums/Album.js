@@ -50,7 +50,7 @@ class Album extends React.Component {
                                     {album ? album.name : "..."}
                                 </h2>
                                 <PlaylistSelectorDropdown onPlaylistSelected={this.onPlaylistSelected} disabled={disableDropdown} />
-                                <SongsTable songs={songs} columns={[SongsTable.columns.title, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.selectable]} onSongsSelected={this.onSongsSelected} />
+                                <SongsTable songs={songs} columns={[SongsTable.columns.title, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.selectable, SongsTable.columns.download]} onSongsSelected={this.onSongsSelected} />
                             </Col>
                         </Row>
                     </Grid>

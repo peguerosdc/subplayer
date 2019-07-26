@@ -121,6 +121,10 @@ class Subsonic {
         return buildUrl(this.config, "stream", {id:id})
     }
 
+    getDownloadUrl(id) {
+        return buildUrl(this.config, "download", {id:id})
+    }
+
     addSongsToPlaylist(playlistId, songIds) {
         return perform_api_call( buildUrl(this.config, "updatePlaylist", {playlistId:playlistId, songIdToAdd : songIds}) )
             .then(result => {
