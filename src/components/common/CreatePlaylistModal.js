@@ -29,6 +29,12 @@ class CreatePlaylistModal extends React.Component {
         }
     }
 
+    handleKeyDown = (e) => {
+        if( e.key === "Enter" ) {
+            this.closeModalAndCreate()
+        }
+    }
+
     render() {
         return (
             <Modal backdrop="static" show={this.props.showModal} onHide={this.closeModal} size="xs">
@@ -39,7 +45,7 @@ class CreatePlaylistModal extends React.Component {
                     <Form fluid onChange={this.onPlaylistFormChange}>
                         <FormGroup>
                             <ControlLabel>Name</ControlLabel>
-                            <FormControl name="name" errorMessage={this.state.playlistNameErrorMessage} errorPlacement="bottomLeft" />
+                            <FormControl name="name" errorMessage={this.state.playlistNameErrorMessage} errorPlacement="bottomLeft" onKeyDown={this.handleKeyDown} />
                         </FormGroup>
                     </Form>
                 </Modal.Body>
