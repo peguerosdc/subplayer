@@ -1,68 +1,55 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Subplayer
 
-## Available Scripts
+This is a front-end application designed to be a simple, functional and nice looking web player to be used with a Subsonic back-end (originally developed to work with [spl0k/supysonic](https://github.com/spl0k/supysonic)).
 
-In the project directory, you can run:
+## Context
 
-### `npm start`
+As many existing solutions are either unmaintained, have some basic features broken, are based on old technologies which make them ugly and difficult to install or are designed to be run on a PC with no power constraints, when I was building my home media server I found that I was no happy with any of them.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+After some research I found Supysonic which works really well on my ARM device (and has a Subsonic back-end which was a "must" in my requirements), but still I wanted a Spotify-like experience where I can stream my media directly on any web browser. As almost all of the existing solutions compatible with the Subsonic API are not shipped without it's own back-end, I decided to create my own following a one simple mantra: "keep it simple and beautiful".
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Run
 
-### `npm test`
+Clone the repository and run from the root folder:
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+$ yarn install
+$ yarn start
+```
 
-### `npm run build`
+## Docker installation
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To build the image yourself:
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+```
+$ docker build . -t peguerosdc/subplayer
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Or using the experimental `buildx` to build for multiple platforms:
 
-### `npm run eject`
+```
+$ docker buildx build --platform linux/arm64,linux/amd64 --push -t peguerosdc/subplayer .
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+To run the image:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+$ docker run --name mysubplayer \
+    -p 8000:80 \
+    --restart unless-stopped \
+    -d peguerosdc/subplayer
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+To stop:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```
+$ docker stop mysubplayer
+```
 
-## Learn More
+## TODO
+- Implement CI to push Docker image automatically when merged to `master`
+- Add unit tests
+- Search page
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## Contributions
+Any TODO item, any bug you find and want to fix, any architecture/performance/Docker improvements, any new feature you think would be cool to have is welcomed :) Just keep in mind that this project is meant to be a lightweight application capable of running on low-end devices.
