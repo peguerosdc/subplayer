@@ -160,6 +160,13 @@ class Subsonic {
             })
     }
 
+    search(query) {
+        return perform_api_call( buildUrl(this.config, "search3", {query:query }) )
+            .then(result => {
+                return result["searchResult3"]
+            })
+    }
+
 }
 
 // Export instance

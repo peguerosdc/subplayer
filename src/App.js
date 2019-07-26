@@ -16,6 +16,7 @@ import ArtistsList from './components/artists/ArtistsList'
 import Artist from './components/artists/Artist'
 import Playlist from './components/playlists/Playlist'
 import CreatePlaylistModal from './components/common/CreatePlaylistModal'
+import SearchView from './components/search/SearchView'
 
 class App extends React.Component  {
 
@@ -82,6 +83,7 @@ class App extends React.Component  {
                 <ArtistsList path="/artists"/>
                 <Artist path="/artists/:artistId"/>
                 <Playlist path="/playlist/:playlistId"/>
+                <SearchView path="/search"/>
             </Router>
           </Content>
         </Container>

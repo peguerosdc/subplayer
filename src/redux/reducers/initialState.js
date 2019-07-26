@@ -15,5 +15,6 @@ export default {
         isAuthenticated: false,
         isAuthenticating: true,
         statusText: null
-    }
+    },
+    search : {}
 }

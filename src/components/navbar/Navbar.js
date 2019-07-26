@@ -8,9 +8,6 @@ class MyNavbar extends React.Component {
 
     onNavSelected = (key) => {
         switch(key) {
-            case "search":
-                console.log("Not implemented")
-                break
             case "newPlaylist":
                 this.props.onCreatePlaylistTrigger && this.props.onCreatePlaylistTrigger()
                 break
@@ -28,7 +25,7 @@ class MyNavbar extends React.Component {
             <Navbar>
                 <Navbar.Body>
                     <Nav onSelect={this.onNavSelected}>
-                        <Nav.Item eventKey="search" icon={<Icon icon="search" />} />
+                        <Nav.Item eventKey="/search" icon={<Icon icon="search" />} />
                         <Nav.Item eventKey="/artists/">Artists</Nav.Item>
                         <Dropdown title="Playlists">
                             <Dropdown.Item eventKey="newPlaylist" icon={<Icon icon="plus" />} >New playlist</Dropdown.Item>

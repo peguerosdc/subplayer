@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types'
 // UI
-import { Grid, Row, Col, Input, InputGroup, Icon, Button } from 'rsuite';
+import { Grid, Row, Col, Button } from 'rsuite';
+import SearchBar from "../search/SearchBar"
 import "./sidebar.less"
 
 class Sidebar extends React.Component {
@@ -32,10 +33,7 @@ class Sidebar extends React.Component {
         return (
             <Grid fluid style={{padding:"10px", display:"flex", flexDirection:"column", height:"100%"}}>
 
-                <InputGroup inside size="lg" style={{display:"none"}}>
-                    <Input placeholder="Search" />
-                    <InputGroup.Button><Icon icon="search" /></InputGroup.Button>
-                </InputGroup>
+                <SearchBar />
 
                 <h3 className="title">LIBRARY</h3>
                 <Row>

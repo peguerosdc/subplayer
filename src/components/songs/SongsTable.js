@@ -101,6 +101,7 @@ class SongsTable extends React.Component {
         // Render
         return (
             <Table
+                style={{overflow:"initial"}}
                 onRowClick={this.songClicked}
                 virtualized
                 autoHeight={true}
