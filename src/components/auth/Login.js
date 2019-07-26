@@ -23,7 +23,7 @@ class LoginComponent extends React.Component {
             this.props.lazyLoginUser()
         }
         else {
-            navigate("/artists")
+            navigate("/artists", { replace: true })
         }
     }
 
@@ -31,7 +31,7 @@ class LoginComponent extends React.Component {
         // Check if we were waiting for an authentication update
         if( prevProps.isAuthenticating && !this.props.isAuthenticating ) {
             if( this.props.isAuthenticated ) {
-                navigate("/artists")
+                navigate("/artists", { replace: true })
             }
             else if(this.props.statusText) {
                 Alert.error(this.props.statusText, 3000)
@@ -86,7 +86,7 @@ class LoginComponent extends React.Component {
                         <FormGroup>
                             <ControlLabel>Host</ControlLabel>
                             <FormControl name="host" type="url" errorMessage={this.state.hostErrorMessage} errorPlacement="bottomRight"/>
-                            <HelpBlock>host:port. i.e. 192.154.323.3:8000</HelpBlock>
+                            <HelpBlock>http://HOST:PORT</HelpBlock>
                         </FormGroup>
                         <FormGroup>
                             <ControlLabel>Username</ControlLabel>

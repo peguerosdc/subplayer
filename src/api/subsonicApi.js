@@ -159,7 +159,4 @@ class Subsonic {
 }
 
 // Export instance
-var subsonic = new Subsonic(defaults)
-// Allow use of default import syntax in TypeScript
-module.exports = subsonic
-module.exports.default = subsonic
+export default new Subsonic(defaults)
