@@ -177,7 +177,7 @@ class SongsTable extends React.Component {
                         <Cell dataKey="id">
                             { rowData => (
                                 <Whisper placement="auto" trigger="hover" speaker={<Tooltip>{rowData.path}</Tooltip>}>
-                                    <a href={subsonic.getDownloadUrl(rowData.id)} download={rowData.title} style={{color:"#8e8e93"}} target="_blank">
+                                    <a href={subsonic.getDownloadUrl(rowData.id)} download={rowData.title} style={{color:"#8e8e93"}} target="_blank" rel="noopener noreferrer">
                                       <Icon icon='download' onClick={this.preventClickPropagation} />
                                     </a>
                                 </Whisper>
