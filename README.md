@@ -8,7 +8,9 @@ As many existing solutions are either unmaintained, have some basic features bro
 
 After some research I found Supysonic which works really well on my ARM device (and has a Subsonic back-end which was a "must" in my requirements), but still I wanted a Spotify-like experience where I can stream my media directly on any web browser. As almost all of the existing solutions compatible with the Subsonic API are not shipped without it's own back-end, I decided to create my own following a one simple mantra: "keep it simple and beautiful".
 
-## Run
+## Installation
+
+### Running the source code
 
 Clone the repository and run from the root folder:
 
@@ -17,7 +19,7 @@ $ yarn install
 $ yarn start
 ```
 
-## Docker installation
+### Docker installation
 
 To build the image yourself:
 
@@ -49,9 +51,17 @@ $ docker stop mysubplayer
 ## TODO
 - Implement CI to push Docker image automatically when merged to `master`
 - Add unit tests
-- `feature`: Add individual Songs to queue
+- `feature`: Playing queue management (add songs, re-order, etc)
 - `feature`: Play Songs from an Artist
 - `feature`: Toggle Shuffle on/off
+- `feature`: Song seeking
 
 ## Contributions
 Any TODO item, any bug you find and want to fix, any architecture/performance/Docker improvements, any new feature you think would be cool to have is welcomed :) Just keep in mind that this project is meant to be a lightweight application capable of running on low-end devices.
+
+## Acknowledgements
+- Favicon made by Freepik from www.flaticon.com
+- Using [rsuite/rsuite](https://github.com/rsuite/rsuite) UI components.
+
+## License
+Licensed under the [GNU General Public License v3.0](https://github.com/peguerosdc/rsuite-sonicplayer/blob/master/LICENSE).

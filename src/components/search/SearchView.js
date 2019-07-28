@@ -23,7 +23,7 @@ function AlbumElement(props) {
                     overflow: 'hidden',
                     display: 'inline-block'
                 }}>
-                <img alt="" src={album.coverArt ? subsonic.getCoverArtUrl(album.coverArt) : null} width="100" />
+                <img alt="" src={album.coverArt ? subsonic.getCoverArtUrl(album.coverArt) : "album_placeholder.jpg"} width="100" />
             </div>
             {`"${album.name}" by "${album.artist}"`}
         </div>

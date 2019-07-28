@@ -92,7 +92,7 @@ class MusicPlayer extends React.Component {
         const seek = this.state.tick
         return (
             <div className="darkMusicPlayer">
-                <img src={song.coverArt ? subsonic.getCoverArtUrl(song.coverArt) : "/favicon.ico"} alt="cover" width="45" height="45"/>
+                <img src={song.coverArt ? subsonic.getCoverArtUrl(song.coverArt) : "/currently_placeholder.png"} alt="cover" width="45" height="45"/>
                 <div className="song_metadata_container">
                     <p><b>{song.title}</b></p>
                     {song.artist}

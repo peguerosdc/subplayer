@@ -28,10 +28,11 @@ module.exports = override(
         '@nav-bar-default-font-color' : "#FFF",
         '@btn-subtle-hover-bg' : '@main_dark',
 
-        //'@dropdown-link-hover-color': "red",
-        //'@dropdown-link-hover-bg' : "red",
+        // Button
+        '@btn-default-color' : '@text_dark',
         
-        "@slider-bar-default-bg" : '@main_light', // dark grey
+        // Slider
+        "@slider-bar-default-bg" : '@main_light',
         "@slider-bar-hover-bg": '@main_light'
     }
   })
