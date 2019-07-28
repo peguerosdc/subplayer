@@ -6,9 +6,10 @@ This is a front-end application designed to be a simple, functional and nice loo
 
 ## Context
 
-As many existing solutions are either unmaintained, have some basic features broken, are based on old technologies which make them ugly and difficult to install or are designed to be run on a PC with no power constraints, when I was building my home media server I found that I was no happy with any of them.
+As many existing solutions for self-streaming audio are either unmaintained, difficult to install, based on old technologies which make them look... well... old, or are don't consider the power constraints a SBC may have, when I was building my home media server I found that I was not happy with any of them.
 
-After some research I found Supysonic which works really well on my ARM device (and has a Subsonic back-end which was a "must" in my requirements), but still I wanted a Spotify-like experience where I can stream my media directly on any web browser. As almost all of the existing solutions compatible with the Subsonic API are not shipped without it's own back-end, I decided to create my own following a one simple mantra: "keep it simple and beautiful".
+After some research, I found Supysonic which works really well on my ARM device as it provides no fancy unnecessary features (and has a Subsonic back-end which is a **must** in my requirements), but still I wanted a Spotify-like experience where I can stream and manage my media directly on any web browser.
+As Supysonic doesn't have its own UI and almost all of the existing solutions compatible with the Subsonic API are shipped `backend + frontend`, I decided to create my own following a one simple mantra: *"keep it simple and make it look good".*
 
 ## Installation
 
@@ -29,7 +30,7 @@ To build the image yourself:
 $ docker build . -t peguerosdc/subplayer
 ```
 
-Or using the experimental `buildx` to build for multiple platforms:
+Or using the experimental `buildx` to build (and push) for multiple platforms:
 
 ```
 $ docker buildx build --platform linux/arm64,linux/amd64 --push -t peguerosdc/subplayer .
@@ -67,5 +68,6 @@ Any TODO item, any bug you find and want to fix, any architecture/performance/Do
 - Favicon made by Freepik from www.flaticon.com
 - Using [rsuite/rsuite](https://github.com/rsuite/rsuite) UI components.
 
-## License
+## License
+
 Licensed under the [GNU General Public License v3.0](https://github.com/peguerosdc/rsuite-sonicplayer/blob/master/LICENSE).
