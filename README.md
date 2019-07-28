@@ -2,6 +2,8 @@
 
 This is a front-end application designed to be a simple, functional and nice looking web player to be used with a Subsonic back-end (originally developed to work with [spl0k/supysonic](https://github.com/spl0k/supysonic)).
 
+![Overview](/docs/collage.png)
+
 ## Context
 
 As many existing solutions are either unmaintained, have some basic features broken, are based on old technologies which make them ugly and difficult to install or are designed to be run on a PC with no power constraints, when I was building my home media server I found that I was no happy with any of them.
@@ -51,6 +53,8 @@ $ docker stop mysubplayer
 ## TODO
 - Implement CI to push Docker image automatically when merged to `master`
 - Add unit tests
+- Improve performance when loading an Artist's page
+- Create an AlbumView for a single album
 - `feature`: Playing queue management (add songs, re-order, etc)
 - `feature`: Play Songs from an Artist
 - `feature`: Toggle Shuffle on/off
