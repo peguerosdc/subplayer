@@ -6,7 +6,7 @@ import { search } from "../../redux/actions/searchActions";
 // UI
 import SearchBar from "./SearchBar"
 import SongsTable from '../songs/SongsTable'
-import { Col } from 'rsuite';
+import { Col, Icon } from 'rsuite';
 
 const SONG_COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download]
 
@@ -50,7 +50,7 @@ class SearchView extends React.Component {
                             <div style={{display:"flex", flexDirection:"row", flexWrap:"wrap"}}>
                                 { artists.map( a =>
                                     <Col key={a.id} sm={6} xs={12} className={currentArtistPlayingId === a.id ? "link_to_artist playing" : "link_to_artist"} onClick={ (e) => {navigate("/artists/"+a.id)} }>
-                                        {a.name}
+                                        {a.name} <Icon icon='volume-up' />
                                     </Col>
                                 )}
                             </div>

@@ -17,6 +17,7 @@ class MusicPlayer extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
+        console.log("Update")
         // Check if there is a song to play
         if( this.props.song ) {
             var playNextSong = this.props.playNextSong
@@ -61,14 +62,16 @@ class MusicPlayer extends React.Component {
     }
 
     componentWillUnmount() {
-        clearInterval(this.timerID);
+        clearInterval(this.timerID)
+        // Stop the current song if playing
+        this.streamer && this.streamer.stop()
     }
 
     changeVolume = (newVolume) => {
         if( this.streamer ) {
             this.streamer.volume(newVolume)
         }
-        this.volume = newVolume;
+        this.volume = newVolume
     }
 
     togglePlayerState = () => {

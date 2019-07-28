@@ -1,11 +1,11 @@
 
 .title {
     font-weight: bold;
-    color : rgb(216,222,222);
+    color : @text_title
 }
 
 .selectableRow {
-    color: rgb(175,175,175);
+    color: @text;
     padding-top: 10px;
     padding-bottom: 10px;
     transition: color .3s linear, background-color .3s linear;
@@ -20,6 +20,6 @@
 }
 
 .selectableRow:hover {
-    background-color: rgb(13,30,48);
+    background-color: @main_darker;
     cursor: pointer;
 }

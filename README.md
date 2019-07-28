@@ -49,9 +49,9 @@ $ docker stop mysubplayer
 ## TODO
 - Implement CI to push Docker image automatically when merged to `master`
 - Add unit tests
-- Add individual Songs to queue
-- Play Songs from an Artist
-- Toggle Shuffle on/off
+- `feature`: Add individual Songs to queue
+- `feature`: Play Songs from an Artist
+- `feature`: Toggle Shuffle on/off
 
 ## Contributions
 Any TODO item, any bug you find and want to fix, any architecture/performance/Docker improvements, any new feature you think would be cool to have is welcomed :) Just keep in mind that this project is meant to be a lightweight application capable of running on low-end devices.

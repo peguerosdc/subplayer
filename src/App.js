@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import './App.css';
 import 'rsuite/styles/index.less';
+import './index.less'
 import * as alerts from "./utils/alertUtils";
 import { Router, navigate } from "@reach/router";
 import { logout } from "./redux/actions/authActions";
@@ -75,10 +76,10 @@ class App extends React.Component  {
         </Header>
         { /* Main content */ }
         <Container style={{flex: 1, "overflow":"auto"}}>
-          <Sidebar style={{backgroundColor:"rgb(29,45,60)"}} className="rs-hidden-xs rs-hidden-sm">
+          <Sidebar className="rs-hidden-xs rs-hidden-sm sidebar">
             <MySidebar onNavigateTo={this.onNavigate} onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
           </Sidebar>
-          <Content style={{"overflow":"auto", backgroundImage:"radial-gradient(rgb(29,42,58), rgb(24,44,60), rgb(11,24,39))"}}>
+          <Content className="main-content" style={{"overflow":"auto"}}>
             <Router style={{height:"100%"}}>
                 <ArtistsList path="/artists"/>
                 <Artist path="/artists/:artistId"/>
@@ -88,7 +89,7 @@ class App extends React.Component  {
           </Content>
         </Container>
         { /* music player */ }
-        <Footer style={{backgroundColor:"rgb(42,62,82)"}}>
+        <Footer className="music-player">
           <MusicPlayer />
         </Footer>
         { /* playlist creation modal */ }

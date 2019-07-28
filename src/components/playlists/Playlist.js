@@ -121,9 +121,9 @@ class Playlist extends React.Component {
                                 : null
                             }
                         </h1>
-                        <span style={{color:"rgb(175,175,175)"}}>{playlist.songCount} songs, {seconds_to_hhmmss(playlist.duration)} by <b>{playlist.owner}</b> </span>
+                        <span>{playlist.songCount} songs, {seconds_to_hhmmss(playlist.duration)} by <b>{playlist.owner}</b> </span>
                         { playlist.comment ?
-                            <p style={{color:"rgb(175,175,175)"}}>{`"${playlist.comment}"`}</p>
+                            <p>{`"${playlist.comment}"`}</p>
                             : null }
                     </div>
                     {playlist.isMine ?
@@ -136,7 +136,7 @@ class Playlist extends React.Component {
                 </div>
                 <SongsTable songs={songs} onSongsSelected={this.onSongsSelected} columns={columnsToShow} />
                 {/* Playlist deletion confirmation */}
-                <Modal backdrop="static" show={this.state.showDeleteModal} onHide={this.closeDeleteModal} size="xs">
+                <Modal className="subplayer-modal" backdrop="static" show={this.state.showDeleteModal} onHide={this.closeDeleteModal} size="xs">
                     <Modal.Body>
                         <Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }} />
                         {'  '}
@@ -148,7 +148,7 @@ class Playlist extends React.Component {
                     </Modal.Footer>
                 </Modal>
                 {/* Playlist edition form */}
-                <Modal backdrop="static" show={this.state.showEditModal} onHide={this.closeEditModal} size="xs">
+                <Modal className="subplayer-modal" backdrop="static" show={this.state.showEditModal} onHide={this.closeEditModal} size="xs">
                     <Modal.Header>
                         <Modal.Title>Edit Playlist</Modal.Title>
                     </Modal.Header>

@@ -6,6 +6,7 @@ import { addSongsToPlaylist } from "../../redux/actions/playlistsActions";
 import { Grid, Row, Col, Panel } from 'rsuite';
 import SongsTable from '../songs/SongsTable'
 import PlaylistSelectorDropdown from '../common/PlaylistSelectorDropdown.js'
+import "./Album.less"
 
 class Album extends React.Component {
     
@@ -38,7 +39,7 @@ class Album extends React.Component {
         // Render all
         return (
             album.name ? (
-                <Panel bordered style={{backgroundColor:"white", ...this.props.style}}>
+                <Panel bordered className="album-card" style={{...this.props.style}}>
                     <Grid fluid>
                         <Row>
                             <Col smHidden xsHidden md={6} lg={6}>

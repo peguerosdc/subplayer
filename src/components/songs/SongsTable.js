@@ -106,6 +106,7 @@ class SongsTable extends React.Component {
                 virtualized
                 autoHeight={true}
                 data={songs}
+                className="songs-table"
                 rowClassName={(rowData) => rowData && rowData.id === currentSongPlaying.id ? "currently_playing" : null }>
                 { columnsToShow.includes(columns.selectable) ? 
                     <Column width={50} align="center">
