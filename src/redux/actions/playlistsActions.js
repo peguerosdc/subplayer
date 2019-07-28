@@ -25,7 +25,7 @@ export function addSongsToPlaylist(playlistMetadata, songs) {
         const songsToAdd = songs.filter(song => !currentSongs.has(song.id))
         // Only add songs that are not in the playlist
         // If all songs are already in the playlist, don't do anything
-        let summary = { type: types.ADD_SONGS_TO_PLAYLIST_RESULT, playlist: playlistMetadata, songsRequestedToAdd : songs.length, songsToAdd: songsToAdd.length }
+        let summary = { type: types.ADD_SONGS_TO_PLAYLIST_RESULT, playlist: playlistMetadata, songsRequestedToAdd : songs.length, songsToAdd: songsToAdd }
         if( songsToAdd.length > 0 ) {
             const result = await subsonic.addSongsToPlaylist(playlist.id, songsToAdd.map(s => s.id))
             summary["requestStatus"] = result

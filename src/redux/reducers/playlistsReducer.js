@@ -24,13 +24,14 @@ export default (state = initialState.playlists, action) => {
         case types.ADD_SONGS_TO_PLAYLIST_RESULT:
             var lastUpdateOperationResult = {}
             // Check if there were pending songs to add
-            if( action.songsToAdd > 0 ) {
+            const songsAdded = action.songsToAdd.length
+            if( songsAdded > 0 ) {
                 // Check if the request was successful
                 if( action.requestStatus ) {
                     // Build message
-                    let msg = `${action.songsToAdd} song(s) added to ${action.playlist.name}.`
-                    if( action.songsToAdd !== action.songsRequestedToAdd ) {
-                        msg += ` ${action.songsRequestedToAdd - action.songsToAdd} already added.`
+                    let msg = `${songsAdded} song(s) added to ${action.playlist.name}.`
+                    if( songsAdded !== action.songsRequestedToAdd ) {
+                        msg += ` ${action.songsRequestedToAdd - songsAdded} already added.`
                     }
                     lastUpdateOperationResult = {
                         result : alerts.SUCCESS,
@@ -39,9 +40,9 @@ export default (state = initialState.playlists, action) => {
                 }
                 else {
                     // Build error message
-                    let msg = `Unable to add ${action.songsToAdd} song(s) to ${action.playlist.name}.`
-                    if( action.songsToAdd !== action.songsRequestedToAdd ) {
-                        msg += ` ${action.songsRequestedToAdd - action.songsToAdd} already added.`
+                    let msg = `Unable to add ${songsAdded} song(s) to ${action.playlist.name}.`
+                    if( songsAdded !== action.songsRequestedToAdd ) {
+                        msg += ` ${action.songsRequestedToAdd - songsAdded} already added.`
                     }
                     lastUpdateOperationResult = {
                         result : alerts.ERROR,
@@ -64,7 +65,8 @@ export default (state = initialState.playlists, action) => {
                     ...state.byId,
                     [action.playlist.id] : {
                         ...action.playlist,
-                        songCount : action.playlist.songCount + action.songsToAdd
+                        songCount : action.playlist.songCount + songsAdded,
+                        duration: action.playlist.duration + action.songsToAdd.reduce( (a,b) => ({duration: a.duration+b.duration}) ).duration
                     }
                 }
             }
@@ -73,9 +75,13 @@ export default (state = initialState.playlists, action) => {
             if( action.result ) {
                 // Remove songs in current playlist if is currently displayed
                 let currentSongs = state.currentPlaylist.songs
+                let deletedSongs = []
                 if( action.playlist.id === state.currentPlaylist.id ) {
                     currentSongs = state.currentPlaylist.songs.filter((song, index) => !action.removedSongs.includes(index) )
+                    deletedSongs = state.currentPlaylist.songs.filter((song, index) =>  action.removedSongs.includes(index) )
                 }
+                console.log(deletedSongs)
+                console.log(deletedSongs.reduce( (a,b) => a.duration+b.duration ))
                 // Update count in current playlist
                 return {
                     ...state,
@@ -83,7 +89,8 @@ export default (state = initialState.playlists, action) => {
                         ...state.byId,
                         [action.playlist.id] : {
                             ...action.playlist,
-                            songCount : action.playlist.songCount - action.removedSongs.length
+                            songCount : action.playlist.songCount - action.removedSongs.length,
+                            duration : action.playlist.duration - deletedSongs.reduce( (a,b) => ({duration: a.duration+b.duration}) ).duration
                         }
                     },
                     currentPlaylist : {
