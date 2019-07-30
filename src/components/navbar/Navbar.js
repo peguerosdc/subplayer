@@ -1,10 +1,16 @@
 import React from 'react';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types'
+import { navigate } from "@reach/router";
 // UI
 import {Navbar, Icon, Nav, Dropdown } from 'rsuite'
 
 class MyNavbar extends React.Component {
+
+    constructor(props) {
+        super(props)
+        this.state = { path : "/artists/" }
+    }
 
     onNavSelected = (key) => {
         switch(key) {
@@ -15,8 +21,13 @@ class MyNavbar extends React.Component {
                 this.props.onLogOut && this.props.onLogOut()
                 break
             default:
-                this.props.onNavigateTo && this.props.onNavigateTo(key)
+                navigate(key)
+                this.setState({path : key})
         }
+    }
+
+    isRouteActive = (route) => {
+        return this.state.path.startsWith(route)
     }
 
     render() {
@@ -25,12 +36,12 @@ class MyNavbar extends React.Component {
             <Navbar>
                 <Navbar.Body>
                     <Nav onSelect={this.onNavSelected}>
-                        <Nav.Item eventKey="/search" icon={<Icon icon="search" />} />
-                        <Nav.Item eventKey="/artists/">Artists</Nav.Item>
+                        <Nav.Item eventKey="/search" icon={<Icon icon="search" />} active={this.isRouteActive("/search")} />
+                        <Nav.Item eventKey="/artists/" active={this.isRouteActive("/artists")}>Artists</Nav.Item>
                         <Dropdown title="Playlists">
                             <Dropdown.Item eventKey="newPlaylist" icon={<Icon icon="plus" />} >New playlist</Dropdown.Item>
                             {Object.keys(playlists).map( id =>
-                                <Dropdown.Item key={id} eventKey={`/playlist/${id}`}>{playlists[id].name} ({playlists[id].songCount})</Dropdown.Item>
+                                <Dropdown.Item active={this.isRouteActive(`/playlist/${id}`)} key={id} eventKey={`/playlist/${id}`}>{playlists[id].name} ({playlists[id].songCount})</Dropdown.Item>
                             )}
                         </Dropdown>
                     </Nav>

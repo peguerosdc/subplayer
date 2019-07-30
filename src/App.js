@@ -4,7 +4,7 @@ import './App.css';
 import 'rsuite/styles/index.less';
 import './index.less'
 import * as alerts from "./utils/alertUtils";
-import { Router, navigate } from "@reach/router";
+import { Router } from "@reach/router";
 import { logout } from "./redux/actions/authActions";
 import { createPlaylist, loadPlaylists } from "./redux/actions/playlistsActions";
 // UI
@@ -45,10 +45,6 @@ class App extends React.Component  {
     }
   }
 
-  onNavigate = (link) => {
-    navigate(link)
-  }
-
   onLogOut = () => {
     this.props.logout()
   }
@@ -72,12 +68,12 @@ class App extends React.Component  {
         <InfiniteLineLoader isLoading={this.props.apiCallsInProgress > 0 } />
         { /* Navbar for mobile navigation */ }
         <Header className="rs-hidden-lg rs-hidden-md">
-          <Navbar onNavigateTo={this.onNavigate} onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
+          <Navbar onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
         </Header>
         { /* Main content */ }
         <Container style={{flex: 1, "overflow":"auto"}}>
           <Sidebar className="rs-hidden-xs rs-hidden-sm sidebar">
-            <MySidebar onNavigateTo={this.onNavigate} onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
+            <MySidebar onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
           </Sidebar>
           <Content className="main-content" style={{"overflow":"auto"}}>
             <Router style={{height:"100%"}}>

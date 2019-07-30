@@ -1,22 +1,13 @@
 import React from 'react';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types'
+import { Link } from '@reach/router'
 // UI
 import { Grid, Row, Col, Button } from 'rsuite';
 import SearchBar from "../search/SearchBar"
 import "./sidebar.less"
 
 class Sidebar extends React.Component {
-
-    constructor(props) {
-        super(props)
-        this.state = { path : window.location.pathname }
-    }
-
-    navigateTo = (link) => {
-        this.setState({ path : link })
-        this.props.onNavigateTo && this.props.onNavigateTo(link)
-    }
 
     isSelected = (link) => this.state.path.startsWith(link)
 
@@ -28,6 +19,10 @@ class Sidebar extends React.Component {
         this.props.onLogOut && this.props.onLogOut()
     }
 
+    isRouteActive = (activeObject) => {
+        return activeObject.isPartiallyCurrent ? { className : "selectableRow selected" } : { className : "selectableRow" }
+    }
+
     render() {
         const playlists = this.props.playlists
         return (
@@ -36,20 +31,24 @@ class Sidebar extends React.Component {
                 <SearchBar />
 
                 <h3 className="title">LIBRARY</h3>
-                <Row>
-                    <Col md={24} className={this.isSelected("/artists") ? "selectableRow selected" : "selectableRow"} onClick={() => this.navigateTo("/artists/")}>
-                        Artists
-                    </Col>
-                </Row>
+                <Link to="/artists" getProps={this.isRouteActive}>
+                    <Row>
+                        <Col md={24}>
+                            Artists
+                        </Col>
+                    </Row>
+                </Link>
 
                 <h3 className="title">PLAYLISTS</h3>
                 {
                     Object.keys(playlists).map( id =>
-                        <Row key={id}>
-                            <Col md={24} className={this.isSelected("/playlist/"+id) ? "selectableRow selected" : "selectableRow"} onClick={() => this.navigateTo("/playlist/"+id)}>
-                                {playlists[id].name} ({playlists[id].songCount})
-                            </Col>
-                        </Row>
+                        <Link key={id} to={`/playlist/${id}`} getProps={this.isRouteActive}>
+                            <Row>
+                                <Col md={24}>
+                                    {playlists[id].name} ({playlists[id].songCount})
+                                </Col>
+                            </Row>
+                        </Link>
                     )
                 }
                 <div style={{flexGrow:1}} />
@@ -68,7 +67,6 @@ const mapStateToProps = (state) => {
 }
 
 Sidebar.propTypes = {
-    onNavigateTo : PropTypes.func,
     onCreatePlaylistTrigger : PropTypes.func,
     onLogOut : PropTypes.func
 }
