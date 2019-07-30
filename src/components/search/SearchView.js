@@ -64,7 +64,7 @@ class SearchView extends React.Component {
                             <h1 className="artists_list_title">Albums</h1>
                             <div style={{display:"flex", flexDirection:"row", flexWrap:"wrap"}}>
                                 { albums.map( a =>
-                                    <Col className="link_to_artist" key={a.id} sm={6} xs={12} onClick={ (e) => {navigate("/artists/"+a.artistId)} }>
+                                    <Col className="link_to_artist" key={a.id} sm={6} xs={12} onClick={ (e) => {navigate("/album/"+a.id)} }>
                                         <AlbumElement album={a} />
                                     </Col>
                                 )}

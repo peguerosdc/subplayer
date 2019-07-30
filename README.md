@@ -55,7 +55,6 @@ $ docker stop mysubplayer
 - Implement CI to push Docker image automatically when merged to `master`
 - Add unit tests
 - Improve performance when loading an Artist's page
-- Create an AlbumView for a single album
 - `feature`: Playing queue management (add songs, re-order, etc)
 - `feature`: Play Songs from an Artist
 - `feature`: Toggle Shuffle on/off

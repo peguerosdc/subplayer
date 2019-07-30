@@ -15,6 +15,7 @@ import MusicPlayer from './components/player/MusicPlayer';
 import InfiniteLineLoader from './components/common/InfiniteLineLoader'
 import ArtistsList from './components/artists/ArtistsList'
 import Artist from './components/artists/Artist'
+import AlbumView from './components/albums/AlbumView'
 import Playlist from './components/playlists/Playlist'
 import CreatePlaylistModal from './components/common/CreatePlaylistModal'
 import SearchView from './components/search/SearchView'
@@ -79,6 +80,7 @@ class App extends React.Component  {
             <Router style={{height:"100%"}}>
                 <ArtistsList path="/artists"/>
                 <Artist path="/artists/:artistId"/>
+                <AlbumView path="/album/:albumId"/>
                 <Playlist path="/playlist/:playlistId"/>
                 <SearchView path="/search"/>
             </Router>
