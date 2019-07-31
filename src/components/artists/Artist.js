@@ -28,7 +28,7 @@ class Artist extends React.Component {
         return (
             <div style={{padding:"20px", height:"100%", overflow:"auto"}}>
                 <h1 style={{color:"white", fontWeight: "bold"}}>{artist != null ? artist.name : "..."}</h1>
-                {albums.map(album => ( <Album key={album.id} albumId={album.id} style={{margin:"10px"}}/> ))}
+                {albums.map(album => ( <Album key={album.id} albumId={album.id} style={{marginTop:"10px", marginBottom:"10px"}}/> ))}
             </div>
         )
     }
