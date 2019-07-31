@@ -2,9 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import subsonic from "../../api/subsonicApi";
 import { addSongsToPlaylist } from "../../redux/actions/playlistsActions";
-import { beginApiCall, apiCallSuccess } from "../../redux/actions/apiStatusActions"
+import { beginApiCall, apiCallSuccess, apiCallError, apiCallWarning } from "../../redux/actions/apiStatusActions"
 // UI
-import { Grid, Row, Col, Panel, Alert } from 'rsuite';
+import { Grid, Row, Col, Panel } from 'rsuite';
 import SongsTable from '../songs/SongsTable'
 import PlaylistSelectorDropdown from '../common/PlaylistSelectorDropdown.js'
 import "./Album.less"
@@ -31,14 +31,26 @@ class Album extends React.Component {
 
     onFavouritesSelected = async () => {
         this.props.beginApiCall()
-        // We need to remove the songs that are already starred before calling the API
-        const songIds = this.state.selectedSongs.filter(song => !song.starred).map(song => song.id)
-        const result = await subsonic.star(songIds)
-        // Notify the user
-        if( result ) {
-            Alert.success(`${songIds.length} songs added to favourites!`)
+        try {
+            // We need to remove the songs that are already starred before calling the API
+            const songIds = this.state.selectedSongs.filter(song => !song.starred).map(song => song.id)
+            if( songIds.length > 0 ) {
+                const result = await subsonic.star(songIds)
+                // Notify the user
+                if( result ) {
+                    this.props.apiCallSuccess(`${songIds.length} songs added to favourites!`)
+                }
+                else {
+                    this.props.apiCallError("Unable to add to favourites")
+                }
+            }
+            else {
+                this.props.apiCallWarning("All songs are already in favourites")
+            }
         }
-        this.props.apiCallSuccess()
+        catch(error) {
+            this.props.apiCallError(error.message)
+        }
     }
 
     onSongsSelected = (selectedSongs) => {
@@ -74,7 +86,7 @@ class Album extends React.Component {
     }
 }
 
-const mapDispatchToProps = { addSongsToPlaylist, beginApiCall, apiCallSuccess }
+const mapDispatchToProps = { addSongsToPlaylist, beginApiCall, apiCallSuccess, apiCallError, apiCallWarning }
 
 export default connect(
     null,

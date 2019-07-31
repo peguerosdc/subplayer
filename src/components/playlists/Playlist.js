@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { navigate } from "@reach/router"
 import { removeSongsFromPlaylist, deletePlaylist, editPlaylist, loadSinglePlaylist } from "../../redux/actions/playlistsActions";
-import { beginApiCall, apiCallSuccess } from "../../redux/actions/apiStatusActions"
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
 // UI
 import SongsTable from '../songs/SongsTable'
@@ -185,7 +184,7 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-const mapDispatchToProps = { removeSongsFromPlaylist, deletePlaylist, beginApiCall, apiCallSuccess, editPlaylist, loadSinglePlaylist }
+const mapDispatchToProps = { removeSongsFromPlaylist, deletePlaylist, editPlaylist, loadSinglePlaylist }
 
 
 export default connect(

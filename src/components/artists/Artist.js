@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import subsonic from "../../api/subsonicApi";
 import Album from '../albums/Album'
-import { beginApiCall, apiCallSuccess } from "../../redux/actions/apiStatusActions"
+import { beginApiCall, apiCallSuccess, apiCallError } from "../../redux/actions/apiStatusActions"
 
 class Artist extends React.Component {
 
@@ -17,9 +17,14 @@ class Artist extends React.Component {
 
     loadArtist = async (id) => {
         this.props.beginApiCall()
-        const artist = await subsonic.getArtist(id)
-        this.setState({artist : artist})
-        this.props.apiCallSuccess()
+        try {
+            const artist = await subsonic.getArtist(id)
+            this.setState({artist : artist})
+            this.props.apiCallSuccess()
+        }
+        catch(error) {
+            this.props.apiCallError(error.message)
+        }
     }
 
     render() {
@@ -34,7 +39,7 @@ class Artist extends React.Component {
     }
 }
 
-const mapDispatchToProps = { beginApiCall, apiCallSuccess }
+const mapDispatchToProps = { beginApiCall, apiCallSuccess, apiCallError }
 
 export default connect(
     null,

@@ -1,7 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import subsonic from "../../api/subsonicApi"
-import { beginApiCall, apiCallSuccess } from "../../redux/actions/apiStatusActions"
+import { beginApiCall, apiCallSuccess, apiCallError } from "../../redux/actions/apiStatusActions"
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
 // UI
 import { Button } from 'rsuite';
@@ -35,25 +35,38 @@ class FavouritesView extends React.Component {
     /* Starring methods  */
     loadStarred = async () => {
         this.props.beginApiCall()
-        const favourites = await subsonic.getStarred()
-        const favSongs = favourites["song"] || []
-        // Set to state
-        console.log(favSongs)
-        const duration = favSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
-        this.setState({songs : favSongs, duration: duration})
-        this.props.apiCallSuccess()
+        try {
+            const favourites = await subsonic.getStarred()
+            const favSongs = favourites["song"] || []
+            // Set to state
+            console.log(favSongs)
+            const duration = favSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
+            this.setState({songs : favSongs, duration: duration})
+            this.props.apiCallSuccess()
+        }
+        catch(error) {
+            this.props.apiCallError(error.message)
+        }
     }
 
     unstar = async (songIds) => {
         this.props.beginApiCall()
-        const result = await subsonic.unstar(songIds)
-        // Set to state without the old stared songs
-        if( result ) {
-            const newFavSongs = this.state.songs.filter( song => !songIds.includes(song.id) )
-            const duration = newFavSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), 0 ).duration
-            this.setState({songs : newFavSongs, duration: duration})
+        try {
+            const result = await subsonic.unstar(songIds)
+            // Set to state without the old stared songs
+            if( result ) {
+                const newFavSongs = this.state.songs.filter( song => !songIds.includes(song.id) )
+                const duration = newFavSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), 0 ).duration
+                this.setState({songs : newFavSongs, duration: duration})
+                this.props.apiCallSuccess()
+            }
+            else {
+                this.props.apiCallError("Unable to remove from favourites")
+            }
         }
-        this.props.apiCallSuccess()
+        catch(error) {
+            this.props.apiCallError(error.message)
+        }
     }
 
     render() {
@@ -77,7 +90,7 @@ class FavouritesView extends React.Component {
     }
 }
 
-const mapDispatchToProps = { beginApiCall, apiCallSuccess }
+const mapDispatchToProps = { beginApiCall, apiCallSuccess, apiCallError }
 
 export default connect(
     null,

@@ -1,6 +1,6 @@
 import * as types from "./actionTypes";
 import subsonic from "../../api/subsonicApi";
-import { beginApiCall, apiCallSuccess } from "./apiStatusActions";
+import { beginApiCall, apiCallSuccess, apiCallError, apiCallWarning } from "./apiStatusActions";
 
 /* Load multiple playlists */
 export function loadPlaylistsSuccess(playlists) {
@@ -10,46 +10,96 @@ export function loadPlaylistsSuccess(playlists) {
 export function loadPlaylists() {
     return async (dispatch) => {
         dispatch(beginApiCall())
-        const playlists = await subsonic.getPlaylists()
-        dispatch(loadPlaylistsSuccess(playlists))
-        dispatch(apiCallSuccess())
+        try {
+            const playlists = await subsonic.getPlaylists()
+            dispatch(loadPlaylistsSuccess(playlists))
+            dispatch(apiCallSuccess())
+        }
+        catch(error) {
+            dispatch(apiCallError(error.message))
+        }
     }
 }
 
 export function addSongsToPlaylist(playlistMetadata, songs) {
     return async (dispatch) => {
         dispatch(beginApiCall())
-        // Check if there are any songs that already exist in the playlist to prevent duplicates
-        const playlist = await subsonic.getPlaylistById(playlistMetadata.id)
-        const currentSongs = playlist.entry ? new Set(playlist.entry.map(song => song.id)) : new Set()
-        const songsToAdd = songs.filter(song => !currentSongs.has(song.id))
-        // Only add songs that are not in the playlist
-        // If all songs are already in the playlist, don't do anything
-        let summary = { type: types.ADD_SONGS_TO_PLAYLIST_RESULT, playlist: playlistMetadata, songsRequestedToAdd : songs.length, songsToAdd: songsToAdd }
-        if( songsToAdd.length > 0 ) {
-            const result = await subsonic.addSongsToPlaylist(playlist.id, songsToAdd.map(s => s.id))
-            summary["requestStatus"] = result
+        try {
+            // Check if there are any songs that already exist in the playlist to prevent duplicates
+            const playlist = await subsonic.getPlaylistById(playlistMetadata.id)
+            const currentSongs = playlist.entry ? new Set(playlist.entry.map(song => song.id)) : new Set()
+            const songsToAdd = songs.filter(song => !currentSongs.has(song.id))
+            // Only add songs that are not in the playlist
+            // If all songs are already in the playlist, don't do anything
+            const songsAdded = songsToAdd.length
+            const songsRequestedToAdd = songs.length
+            if( songsAdded > 0 ) {
+                const result = await subsonic.addSongsToPlaylist(playlist.id, songsToAdd.map(s => s.id))
+                if( result ) {
+                    // Build the success message and dispatch
+                    let msg = `${songsAdded} song(s) added to ${playlistMetadata.name}.`
+                    if( songsAdded !== songs.length ) {
+                        msg += ` ${songs.length - songsAdded} already added.`
+                    }
+                    dispatch({ type: types.ADD_SONGS_TO_PLAYLIST_RESULT, playlist: playlistMetadata, songsAdded: songsToAdd })
+                    dispatch(apiCallSuccess(msg))
+                }
+                else {
+                    // Build error message
+                    let msg = `Unable to add ${songsAdded} song(s) to ${playlistMetadata.name}.`
+                    if( songsAdded !== songsRequestedToAdd ) {
+                        msg += ` ${songsRequestedToAdd - songsAdded} already added.`
+                    }
+                    dispatch(apiCallError(msg))
+                }
+            }
+            else {
+                // Build warning message saying that there was no need to add anything
+                dispatch(apiCallWarning(`All song(s) already in ${playlist.name}`))
+            }
         }
-        dispatch(summary)
-        dispatch(apiCallSuccess())
+        catch(error) {
+
+            dispatch(apiCallError(error.message))
+        }
     }
 }
 
 export function removeSongsFromPlaylist(playlist, songIndexes) {
     return async (dispatch) => {
         dispatch(beginApiCall())
-        const result = await subsonic.removeSongsFromPlaylist(playlist.id, songIndexes)
-        dispatch({ type: types.REMOVE_SONGS_FROM_PLAYLIST_RESULT, playlist: playlist, removedSongs: songIndexes, result : result })
-        dispatch(apiCallSuccess())
+        try {
+            const result = await subsonic.removeSongsFromPlaylist(playlist.id, songIndexes)
+            if( result ) {
+                dispatch({ type: types.REMOVE_SONGS_FROM_PLAYLIST_RESULT, playlist: playlist, removedSongs: songIndexes })
+                dispatch(apiCallSuccess(`${songIndexes.length} songs removed from ${playlist.name}`))
+            }
+            else {
+                dispatch(apiCallError(`Could not remove ${songIndexes.length} songs from ${playlist.name}`))
+            }
+        }
+        catch(error) {
+            dispatch(apiCallError(error.message))
+        }
     }
 }
 
 export function deletePlaylist(playlist) {
     return async (dispatch) => {
         dispatch(beginApiCall())
-        const result = await subsonic.deletePlaylist(playlist.id)
-        dispatch({ type: types.DELETE_PLAYLIST_RESULT, playlist:playlist, result : result })
-        dispatch(apiCallSuccess())
+        try {
+            const result = await subsonic.deletePlaylist(playlist.id)
+            if( result ) {
+                dispatch({ type: types.DELETE_PLAYLIST_RESULT, playlist:playlist })
+                dispatch(apiCallSuccess(`${playlist.name} deleted!`))
+            }
+            else {
+                dispatch(apiCallError(`Could not delete ${playlist.name}`))
+            }
+        }
+        catch(error) {
+            dispatch(apiCallError(error.message))
+        }
     }
 }
 
@@ -57,14 +107,23 @@ export function deletePlaylist(playlist) {
 export function createPlaylist(name) {
     return async (dispatch) => {
         dispatch(beginApiCall())
-        const result = await subsonic.createPlaylist(name)
-        // Reload the playlists
-        if( result ) {
-            // We can't directly add to the playlist because Subsonic API doesnt return the ID
-            const playlists = await subsonic.getPlaylists()
-            dispatch(loadPlaylistsSuccess(playlists))
+        try {
+            const result = await subsonic.createPlaylist(name)
+            // Reload the playlists
+            if( result ) {
+                // We can't directly add to the playlist because Subsonic API doesnt return the ID
+                const playlists = await subsonic.getPlaylists()
+                dispatch(loadPlaylistsSuccess(playlists))
+                dispatch(apiCallSuccess(`Playlist ${name} was created!`))
+            }
+            else {
+                dispatch(apiCallError("Could not create playlist"))
+            }
+            
         }
-        dispatch(apiCallSuccess())
+        catch(error) {
+            dispatch(apiCallError(error.message))
+        }
     }
 }
 
@@ -72,12 +131,21 @@ export function createPlaylist(name) {
 export function editPlaylist(id, name, comment, isPublic) {
     return async (dispatch) => {
         dispatch(beginApiCall())
-        const result = await subsonic.updatePlaylist(id, name, comment, isPublic)
-        // Edit playlist in state
-        if( result ) {
-            dispatch({type: types.EDIT_PLAYLIST_RESULT, id:id, name:name, comment:comment, public:isPublic})
+        try {
+            const result = await subsonic.updatePlaylist(id, name, comment, isPublic)
+            // Edit playlist in state
+            if( result ) {
+                dispatch({type: types.EDIT_PLAYLIST_RESULT, id:id, name:name, comment:comment, public:isPublic})
+                dispatch(apiCallSuccess("Playlist successfully edited"))
+            }
+            else {
+                dispatch(apiCallError("Could not edit playlist"))
+            }
+            
         }
-        dispatch(apiCallSuccess())
+        catch(error) {
+            dispatch(apiCallError(error.message))
+        }
     }
 }
 

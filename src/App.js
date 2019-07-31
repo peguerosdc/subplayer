@@ -34,11 +34,11 @@ class App extends React.Component  {
 
   componentDidUpdate(prevProps) {
     const currentOperationResult = this.props.lastUpdateOperationResult
-    if( prevProps.lastUpdateOperationResult !== currentOperationResult){
-      if( currentOperationResult.result === alerts.SUCCESS ) {
+    if( prevProps.lastUpdateOperationResult.id !== currentOperationResult.id){
+      if( currentOperationResult.type === alerts.SUCCESS ) {
         Alert.success(currentOperationResult.message)
       }
-      else if( currentOperationResult.result === alerts.WARNING ) {
+      else if( currentOperationResult.type === alerts.WARNING ) {
         Alert.warning(currentOperationResult.message) 
       }
       else {
@@ -102,8 +102,8 @@ class App extends React.Component  {
 
 const mapStateToProps = (state) => {
     return {
-        lastUpdateOperationResult : state.playlists.lastUpdateOperationResult,
-        apiCallsInProgress : state.apiCallsInProgress
+        lastUpdateOperationResult : state.apiCallsInProgress.lastOperationResult,
+        apiCallsInProgress : state.apiCallsInProgress.count,
     }
 }
 

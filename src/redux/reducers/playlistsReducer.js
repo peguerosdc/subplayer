@@ -1,5 +1,4 @@
 import * as types from "../actions/actionTypes";
-import * as alerts from "../../utils/alertUtils";
 import {isPlaylistMineByOwner} from "../../utils/utils";
 import initialState from "./initialState";
 
@@ -22,100 +21,51 @@ export default (state = initialState.playlists, action) => {
                 byId : playlists
             }
         case types.ADD_SONGS_TO_PLAYLIST_RESULT:
-            var lastUpdateOperationResult = {}
             // Check if there were pending songs to add
-            const songsAdded = action.songsToAdd.length
-            if( songsAdded > 0 ) {
-                // Check if the request was successful
-                if( action.requestStatus ) {
-                    // Build message
-                    let msg = `${songsAdded} song(s) added to ${action.playlist.name}.`
-                    if( songsAdded !== action.songsRequestedToAdd ) {
-                        msg += ` ${action.songsRequestedToAdd - songsAdded} already added.`
-                    }
-                    lastUpdateOperationResult = {
-                        result : alerts.SUCCESS,
-                        message : msg
-                    }
-                }
-                else {
-                    // Build error message
-                    let msg = `Unable to add ${songsAdded} song(s) to ${action.playlist.name}.`
-                    if( songsAdded !== action.songsRequestedToAdd ) {
-                        msg += ` ${action.songsRequestedToAdd - songsAdded} already added.`
-                    }
-                    lastUpdateOperationResult = {
-                        result : alerts.ERROR,
-                        message : msg
-                    }
-                }
-            }
-            else {
-                // Build warning message saying that there was no need to add anything
-                lastUpdateOperationResult = {
-                    result : alerts.WARNING,
-                    message : `All song(s) already in ${action.playlist.name}`
-                }
-            }
+            const songsAdded = action.songsAdded
             // Update state
             return {
                 ...state,
-                lastUpdateOperationResult : lastUpdateOperationResult,
                 byId: {
                     ...state.byId,
                     [action.playlist.id] : {
                         ...action.playlist,
-                        songCount : action.playlist.songCount + songsAdded,
-                        duration: action.playlist.duration + action.songsToAdd.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
+                        songCount : action.playlist.songCount + songsAdded.length,
+                        duration: action.playlist.duration + action.songsAdded.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
                     }
                 }
             }
         case types.REMOVE_SONGS_FROM_PLAYLIST_RESULT:
-            // If the songs were successfully removed, update the songs list
-            if( action.result ) {
-                // Remove songs in current playlist if is currently displayed
-                let currentSongs = state.currentPlaylist.songs
-                let deletedSongs = []
-                if( action.playlist.id === state.currentPlaylist.id ) {
-                    currentSongs = state.currentPlaylist.songs.filter((song, index) => !action.removedSongs.includes(index) )
-                    deletedSongs = state.currentPlaylist.songs.filter((song, index) =>  action.removedSongs.includes(index) )
-                }
-                // Update count in current playlist
-                return {
-                    ...state,
-                    byId: {
-                        ...state.byId,
-                        [action.playlist.id] : {
-                            ...action.playlist,
-                            songCount : action.playlist.songCount - action.removedSongs.length,
-                            duration : action.playlist.duration - deletedSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
-                        }
-                    },
-                    currentPlaylist : {
-                        ...state.currentPlaylist,
-                        songs : currentSongs
-                    }
-                }
+            // Remove songs in current playlist if is currently displayed
+            let currentSongs = state.currentPlaylist.songs
+            let deletedSongs = []
+            if( action.playlist.id === state.currentPlaylist.id ) {
+                currentSongs = state.currentPlaylist.songs.filter((song, index) => !action.removedSongs.includes(index) )
+                deletedSongs = state.currentPlaylist.songs.filter((song, index) =>  action.removedSongs.includes(index) )
             }
-            else {
-                return {
-                    ...state,
-                    lastUpdateOperationResult : {
-                        result : alerts.ERROR,
-                        message : `Could not remove ${action.removedSongs.length} songs from ${action.playlist.name}`
+            // Update count in current playlist
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.playlist.id] : {
+                        ...action.playlist,
+                        songCount : action.playlist.songCount - action.removedSongs.length,
+                        duration : action.playlist.duration - deletedSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
                     }
+                },
+                currentPlaylist : {
+                    ...state.currentPlaylist,
+                    songs : currentSongs
                 }
             }
         case types.DELETE_PLAYLIST_RESULT:
-            if( action.result ) {
-                let playlistsWithoutDeleted = {...state.byId}
-                delete playlistsWithoutDeleted[action.playlist.id]
-                return {
-                    ...state,
-                    byId: playlistsWithoutDeleted
-                }
+            let playlistsWithoutDeleted = {...state.byId}
+            delete playlistsWithoutDeleted[action.playlist.id]
+            return {
+                ...state,
+                byId: playlistsWithoutDeleted
             }
-            return state
         case types.EDIT_PLAYLIST_RESULT:
             // Look for this playlist in the state and check if something changed
             const currentPlaylist = state.byId[action.id]
