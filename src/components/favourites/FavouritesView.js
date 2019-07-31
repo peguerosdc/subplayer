@@ -1,7 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import subsonic from "../../api/subsonicApi"
-import { beginApiCall, apiCallSuccess, apiCallError } from "../../redux/actions/apiStatusActions"
+import { beginAsyncTask, asyncTaskSuccess, asyncTaskError } from "../../redux/actions/apiStatusActions"
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
 // UI
 import { Button } from 'rsuite';
@@ -34,7 +34,7 @@ class FavouritesView extends React.Component {
 
     /* Starring methods  */
     loadStarred = async () => {
-        this.props.beginApiCall()
+        this.props.beginAsyncTask()
         try {
             const favourites = await subsonic.getStarred()
             const favSongs = favourites["song"] || []
@@ -42,15 +42,15 @@ class FavouritesView extends React.Component {
             console.log(favSongs)
             const duration = favSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
             this.setState({songs : favSongs, duration: duration})
-            this.props.apiCallSuccess()
+            this.props.asyncTaskSuccess()
         }
         catch(error) {
-            this.props.apiCallError(error.message)
+            this.props.asyncTaskError(error.message)
         }
     }
 
     unstar = async (songIds) => {
-        this.props.beginApiCall()
+        this.props.beginAsyncTask()
         try {
             const result = await subsonic.unstar(songIds)
             // Set to state without the old stared songs
@@ -58,14 +58,14 @@ class FavouritesView extends React.Component {
                 const newFavSongs = this.state.songs.filter( song => !songIds.includes(song.id) )
                 const duration = newFavSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), 0 ).duration
                 this.setState({songs : newFavSongs, duration: duration})
-                this.props.apiCallSuccess()
+                this.props.asyncTaskSuccess()
             }
             else {
-                this.props.apiCallError("Unable to remove from favourites")
+                this.props.asyncTaskError("Unable to remove from favourites")
             }
         }
         catch(error) {
-            this.props.apiCallError(error.message)
+            this.props.asyncTaskError(error.message)
         }
     }
 
@@ -90,7 +90,7 @@ class FavouritesView extends React.Component {
     }
 }
 
-const mapDispatchToProps = { beginApiCall, apiCallSuccess, apiCallError }
+const mapDispatchToProps = { beginAsyncTask, asyncTaskSuccess, asyncTaskError }
 
 export default connect(
     null,

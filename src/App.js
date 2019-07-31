@@ -3,12 +3,11 @@ import { connect } from "react-redux";
 import './App.css';
 import 'rsuite/styles/index.less';
 import './index.less'
-import * as alerts from "./utils/alertUtils";
 import { Router } from "@reach/router";
 import { logout } from "./redux/actions/authActions";
 import { createPlaylist, loadPlaylists } from "./redux/actions/playlistsActions";
 // UI
-import { Container, Content, Footer, Sidebar, Header, Alert } from 'rsuite';
+import { Container, Content, Footer, Sidebar, Header } from 'rsuite';
 import MySidebar from './components/sidebar/Sidebar';
 import Navbar from './components/navbar/Navbar';
 import MusicPlayer from './components/player/MusicPlayer';
@@ -20,6 +19,7 @@ import Playlist from './components/playlists/Playlist'
 import CreatePlaylistModal from './components/common/CreatePlaylistModal'
 import SearchView from './components/search/SearchView'
 import FavouritesView from './components/favourites/FavouritesView'
+import AlertsManager from './components/alerts/AlertsManager'
 
 class App extends React.Component  {
 
@@ -30,21 +30,6 @@ class App extends React.Component  {
 
   componentDidMount() {
     this.props.loadPlaylists()
-  }
-
-  componentDidUpdate(prevProps) {
-    const currentOperationResult = this.props.lastUpdateOperationResult
-    if( prevProps.lastUpdateOperationResult.id !== currentOperationResult.id){
-      if( currentOperationResult.type === alerts.SUCCESS ) {
-        Alert.success(currentOperationResult.message)
-      }
-      else if( currentOperationResult.type === alerts.WARNING ) {
-        Alert.warning(currentOperationResult.message) 
-      }
-      else {
-        Alert.error(currentOperationResult.message)  
-      }
-    }
   }
 
   onLogOut = () => {
@@ -71,7 +56,7 @@ class App extends React.Component  {
         <Header className="rs-hidden-lg rs-hidden-md">
           <Navbar onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
         </Header>
-        <InfiniteLineLoader isLoading={this.props.apiCallsInProgress > 0 } />
+        <InfiniteLineLoader isLoading={this.props.asyncTasksInProgress > 0 } />
         { /* Main content */ }
         <Container style={{flex: 1, "overflow":"auto"}}>
           <Sidebar className="rs-hidden-xs rs-hidden-sm sidebar">
@@ -94,6 +79,8 @@ class App extends React.Component  {
         </Footer>
         { /* playlist creation modal */ }
         <CreatePlaylistModal showModal={this.state.showModal} createPlaylist={this.onPlaylistCreated} onClosePlaylistModal={this.onClosePlaylistModal} />
+        { /* component to handle the alerts */ }
+        <AlertsManager />
       </Container>
     );
   }
@@ -102,8 +89,7 @@ class App extends React.Component  {
 
 const mapStateToProps = (state) => {
     return {
-        lastUpdateOperationResult : state.apiCallsInProgress.lastOperationResult,
-        apiCallsInProgress : state.apiCallsInProgress.count,
+        asyncTasksInProgress : state.asyncTasksInProgress,
     }
 }
 

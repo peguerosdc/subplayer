@@ -1,17 +1,17 @@
 import * as types from "./actionTypes"
 import subsonic from "../../api/subsonicApi"
-import { beginApiCall, apiCallSuccess, apiCallError } from "./apiStatusActions"
+import { beginAsyncTask, asyncTaskSuccess, asyncTaskError } from "./apiStatusActions"
 
 export function search(query) {
     return async (dispatch) => {
-        dispatch(beginApiCall())
+        dispatch(beginAsyncTask())
         try {
             const result = await subsonic.search(query)
             dispatch({ type: types.SEARCH_RESULT, payload:result })
-            dispatch(apiCallSuccess())
+            dispatch(asyncTaskSuccess())
         }
         catch(error) {
-            dispatch(apiCallError(error.message))
+            dispatch(asyncTaskError(error.message))
         }
     }
 }

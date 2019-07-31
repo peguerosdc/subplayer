@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import subsonic from "../../api/subsonicApi";
 import { addSongsToPlaylist } from "../../redux/actions/playlistsActions";
-import { beginApiCall, apiCallSuccess, apiCallError, apiCallWarning } from "../../redux/actions/apiStatusActions"
+import { beginAsyncTask, asyncTaskSuccess, asyncTaskError, asyncTaskWarning } from "../../redux/actions/apiStatusActions"
 // UI
 import { Grid, Row, Col, Panel } from 'rsuite';
 import SongsTable from '../songs/SongsTable'
@@ -30,7 +30,7 @@ class Album extends React.Component {
     }
 
     onFavouritesSelected = async () => {
-        this.props.beginApiCall()
+        this.props.beginAsyncTask()
         try {
             // We need to remove the songs that are already starred before calling the API
             const songIds = this.state.selectedSongs.filter(song => !song.starred).map(song => song.id)
@@ -38,18 +38,18 @@ class Album extends React.Component {
                 const result = await subsonic.star(songIds)
                 // Notify the user
                 if( result ) {
-                    this.props.apiCallSuccess(`${songIds.length} songs added to favourites!`)
+                    this.props.asyncTaskSuccess(`${songIds.length} songs added to favourites!`)
                 }
                 else {
-                    this.props.apiCallError("Unable to add to favourites")
+                    this.props.asyncTaskError("Unable to add to favourites")
                 }
             }
             else {
-                this.props.apiCallWarning("All songs are already in favourites")
+                this.props.asyncTaskWarning("All songs are already in favourites")
             }
         }
         catch(error) {
-            this.props.apiCallError(error.message)
+            this.props.asyncTaskError(error.message)
         }
     }
 
@@ -86,7 +86,7 @@ class Album extends React.Component {
     }
 }
 
-const mapDispatchToProps = { addSongsToPlaylist, beginApiCall, apiCallSuccess, apiCallError, apiCallWarning }
+const mapDispatchToProps = { addSongsToPlaylist, beginAsyncTask, asyncTaskSuccess, asyncTaskError, asyncTaskWarning }
 
 export default connect(
     null,

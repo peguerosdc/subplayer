@@ -1,8 +1,6 @@
 export default {
-    apiCallsInProgress: {
-        count: 0,
-        lastOperationResult:{}
-    },
+    asyncTasksInProgress: 0,
+    alert : {},
     artists : [],
     playlists : {
         byId : {},

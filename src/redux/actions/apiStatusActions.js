@@ -1,17 +1,18 @@
 import * as types from "./actionTypes"
+import * as alerts from "./alertsActions"
 
-export function beginApiCall() {
-  return { type: types.BEGIN_API_CALL }
+export function beginAsyncTask() {
+  return { type: types.BEGIN_ASYNC_OPERATION }
 }
 
-export function apiCallSuccess(message) {
-  return { type: types.END_API_CALL_SUCCESS, message }
+export function asyncTaskSuccess(message) {
+  return message ?  { type: types.END_ASYNC_OPERATION, ...alerts.alertSuccess(message) } : { type: types.END_ASYNC_OPERATION }
 }
 
-export function apiCallWarning(message) {
-  return { type: types.END_API_CALL_WARNING, message : message }
+export function asyncTaskWarning(message) {
+  return message ?  { type: types.END_ASYNC_OPERATION, ...alerts.alertWarning(message) } : { type: types.END_ASYNC_OPERATION }
 }
 
-export function apiCallError(message) {
-  return { type: types.END_API_CALL_ERROR, message : message }
+export function asyncTaskError(message) {
+  return message ?  { type: types.END_ASYNC_OPERATION, ...alerts.alertError(message) } : { type: types.END_ASYNC_OPERATION }
 }

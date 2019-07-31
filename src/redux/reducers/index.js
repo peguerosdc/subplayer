@@ -1,16 +1,18 @@
 import { combineReducers } from "redux";
-import apiCallsInProgress from "./apiStatusReducer";
+import asyncTasksInProgress from "./asyncTasksReducer";
 import artists from "./artistsReducer";
 import playlists from "./playlistsReducer";
 import songs from "./songsReducer";
 import auth from "./authReducer"
 import search from "./searchReducer"
+import alert from "./alertsReducer"
 
 export default combineReducers({
-    apiCallsInProgress,
+    asyncTasksInProgress,
     artists,
     playlists,
     songs,
     auth,
-    search
+    search,
+    alert
 });
