@@ -17,7 +17,6 @@ class MusicPlayer extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        console.log("Update")
         // Check if there is a song to play
         if( this.props.song ) {
             var playNextSong = this.props.playNextSong
@@ -68,9 +67,7 @@ class MusicPlayer extends React.Component {
     }
 
     changeVolume = (newVolume) => {
-        if( this.streamer ) {
-            this.streamer.volume(newVolume)
-        }
+        this.streamer && this.streamer.volume(newVolume)
         this.volume = newVolume
     }
 

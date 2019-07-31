@@ -26,7 +26,6 @@ module.exports = override(
         '@nav-bar-default-bg' : '@main',
         '@nav-item-default-hover-bg' : '@main_dark',
         '@nav-bar-default-font-color' : "#FFF",
-        '@btn-subtle-hover-bg' : '@main_dark',
 
         // Button
         '@btn-default-color' : '@text_dark',
