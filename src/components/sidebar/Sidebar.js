@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from 'prop-types'
 import { Link } from '@reach/router'
 // UI
-import { Grid, Row, Col, Button } from 'rsuite';
+import { Grid, Row, Col, Button, Icon } from 'rsuite';
 import SearchBar from "../search/SearchBar"
 import "./sidebar.less"
 
@@ -34,7 +34,15 @@ class Sidebar extends React.Component {
                 <Link to="/artists" getProps={this.isRouteActive}>
                     <Row>
                         <Col md={24}>
-                            Artists
+                            <Icon icon='group'/>{' '}Artists
+                        </Col>
+                    </Row>
+                </Link>
+
+                <Link to="/favourites" getProps={this.isRouteActive}>
+                    <Row>
+                        <Col md={24}>
+                            <Icon icon='star'/>{' '}Favourites
                         </Col>
                     </Row>
                 </Link>

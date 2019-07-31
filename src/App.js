@@ -19,6 +19,7 @@ import AlbumView from './components/albums/AlbumView'
 import Playlist from './components/playlists/Playlist'
 import CreatePlaylistModal from './components/common/CreatePlaylistModal'
 import SearchView from './components/search/SearchView'
+import FavouritesView from './components/favourites/FavouritesView'
 
 class App extends React.Component  {
 
@@ -66,11 +67,11 @@ class App extends React.Component  {
   render() {
     return (
       <Container style={{ display : "flex", height: "100vh", flexDirection:"column" }}>
-        <InfiniteLineLoader isLoading={this.props.apiCallsInProgress > 0 } />
         { /* Navbar for mobile navigation */ }
         <Header className="rs-hidden-lg rs-hidden-md">
           <Navbar onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
         </Header>
+        <InfiniteLineLoader isLoading={this.props.apiCallsInProgress > 0 } />
         { /* Main content */ }
         <Container style={{flex: 1, "overflow":"auto"}}>
           <Sidebar className="rs-hidden-xs rs-hidden-sm sidebar">
@@ -83,6 +84,7 @@ class App extends React.Component  {
                 <AlbumView path="/album/:albumId"/>
                 <Playlist path="/playlist/:playlistId"/>
                 <SearchView path="/search"/>
+                <FavouritesView path="/favourites" />
             </Router>
           </Content>
         </Container>

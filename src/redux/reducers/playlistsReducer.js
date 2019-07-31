@@ -66,7 +66,7 @@ export default (state = initialState.playlists, action) => {
                     [action.playlist.id] : {
                         ...action.playlist,
                         songCount : action.playlist.songCount + songsAdded,
-                        duration: action.playlist.duration + action.songsToAdd.reduce( (a,b) => ({duration: a.duration+b.duration}) ).duration
+                        duration: action.playlist.duration + action.songsToAdd.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
                     }
                 }
             }
@@ -80,8 +80,6 @@ export default (state = initialState.playlists, action) => {
                     currentSongs = state.currentPlaylist.songs.filter((song, index) => !action.removedSongs.includes(index) )
                     deletedSongs = state.currentPlaylist.songs.filter((song, index) =>  action.removedSongs.includes(index) )
                 }
-                console.log(deletedSongs)
-                console.log(deletedSongs.reduce( (a,b) => a.duration+b.duration ))
                 // Update count in current playlist
                 return {
                     ...state,
@@ -90,7 +88,7 @@ export default (state = initialState.playlists, action) => {
                         [action.playlist.id] : {
                             ...action.playlist,
                             songCount : action.playlist.songCount - action.removedSongs.length,
-                            duration : action.playlist.duration - deletedSongs.reduce( (a,b) => ({duration: a.duration+b.duration}) ).duration
+                            duration : action.playlist.duration - deletedSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
                         }
                     },
                     currentPlaylist : {

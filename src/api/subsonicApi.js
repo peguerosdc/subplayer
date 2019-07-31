@@ -167,6 +167,27 @@ class Subsonic {
             })
     }
 
+    getStarred() {
+        return perform_api_call( buildUrl(this.config, "getStarred2") )
+            .then(result => {
+                return result["starred2"]
+            })
+    }
+
+    unstar(ids) {
+        return perform_api_call( buildUrl(this.config, "unstar", {id:ids}) )
+            .then(result => {
+                return result["status"] === "ok"
+            })
+    }
+
+    star(ids) {
+        return perform_api_call( buildUrl(this.config, "star", {id:ids}) )
+            .then(result => {
+                return result["status"] === "ok"
+            })
+    }
+
 }
 
 // Export instance
