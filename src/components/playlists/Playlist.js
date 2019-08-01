@@ -112,7 +112,7 @@ class Playlist extends React.Component {
         const columnsToShow = playlist.isMine ? MINE_COLUMNS_TO_SHOW : NOT_MINE_COLUMNS_TO_SHOW
         return (
             <div style={{display:"flex", flexFlow:"column", padding:"20px", height:"100%", width:"100%"}}>
-                <div style={{ display:"flex", flexFlow: "row", marginBottom:"15px", marginTop:"15px"}}>
+                <div style={{ display:"flex", flexFlow: "row", marginBottom:"15px"}}>
                     <div style={{flexGrow:1}}>
                         <h1 style={{color:"white", fontWeight:"bold"}}>
                             {playlist.isMine ? playlist.name : this.formatExternalPlaylistName(playlist.name) }

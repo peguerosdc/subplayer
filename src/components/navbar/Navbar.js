@@ -37,8 +37,8 @@ class MyNavbar extends React.Component {
                 <Navbar.Body>
                     <Nav onSelect={this.onNavSelected}>
                         <Nav.Item eventKey="/search" icon={<Icon icon="search" />} active={this.isRouteActive("/search")} />
-                        <Nav.Item eventKey="/artists/" active={this.isRouteActive("/artists")}>Artists</Nav.Item>
-                        <Nav.Item eventKey="/favourites/" active={this.isRouteActive("/favourites")}>Favourites</Nav.Item>
+                        <Nav.Item eventKey="/artists/" icon={<Icon icon="group" />} active={this.isRouteActive("/artists")} />
+                        <Nav.Item eventKey="/favourites/" icon={<Icon icon="star" />} active={this.isRouteActive("/favourites")} />
                         <Dropdown title="Playlists">
                             <Dropdown.Item eventKey="newPlaylist" icon={<Icon icon="plus" />} >New playlist</Dropdown.Item>
                             {Object.keys(playlists).map( id =>
