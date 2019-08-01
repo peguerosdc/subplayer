@@ -6,13 +6,13 @@ export function beginAsyncTask() {
 }
 
 export function asyncTaskSuccess(message) {
-  return message ?  { type: types.END_ASYNC_OPERATION, ...alerts.alertSuccess(message) } : { type: types.END_ASYNC_OPERATION }
+  return message ?  { type: types.END_ASYNC_OPERATION, ...alerts.alertSuccessObject(message) } : { type: types.END_ASYNC_OPERATION }
 }
 
 export function asyncTaskWarning(message) {
-  return message ?  { type: types.END_ASYNC_OPERATION, ...alerts.alertWarning(message) } : { type: types.END_ASYNC_OPERATION }
+  return message ?  { type: types.END_ASYNC_OPERATION, ...alerts.alertWarningObject(message) } : { type: types.END_ASYNC_OPERATION }
 }
 
 export function asyncTaskError(message) {
-  return message ?  { type: types.END_ASYNC_OPERATION, ...alerts.alertError(message) } : { type: types.END_ASYNC_OPERATION }
+  return message ?  { type: types.END_ASYNC_OPERATION, ...alerts.alertErrorObject(message) } : { type: types.END_ASYNC_OPERATION }
 }

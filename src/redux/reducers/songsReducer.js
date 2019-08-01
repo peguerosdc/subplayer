@@ -31,15 +31,21 @@ export default createReducer(initialState.songs, {
     },
     [types.STAR_SONG_RESULT] : (state, payload) => {
         let newState = state
+        const currentSongPlaying = state.current
         // We are relying on the current song being edited
-        if(state.current.id === payload.songId) {
-            const newSong = { ...state.current, starred : new Date().toISOString() }
-            const newQueue = state.queue.slice(0, state.currentIndex).concat( [newSong], state.queue.slice(state.currentIndex+1))
-            newState = {
-                ...state,
-                current : newSong,
-                queue : newQueue
-            }
+        if( currentSongPlaying ) {
+            payload.songIds.forEach( (starredSongId, index) => {
+                if(currentSongPlaying.id === starredSongId) {
+                    const star = payload.starred ? new Date().toISOString() : false
+                    const newSong = { ...state.current, starred : star }
+                    const newQueue = state.queue.slice(0, state.currentIndex).concat( [newSong], state.queue.slice(state.currentIndex+1))
+                    newState = {
+                        ...state,
+                        current : newSong,
+                        queue : newQueue
+                    }
+                }
+            })
         }
         return newState
     },

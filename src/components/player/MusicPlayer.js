@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { Howl } from 'howler';
-import { playNextSong, playPreviousSong, setStarOnSong } from "../../redux/actions/songsActions";
+import { playNextSong, playPreviousSong, setStarOnSongs } from "../../redux/actions/songsActions";
 import subsonic from "../../api/subsonicApi";
 import { seconds_to_mss } from "../../utils/formatting.js"
 // UI
@@ -25,11 +25,14 @@ class MusicPlayer extends React.Component {
                 // Stop the current song if playing
                 if( this.streamer ) {
                     this.streamer.stop()
+                    this.streamer.unload()
                 }
                 // Stop the previous song to prevent both songs to play at the same time
                 this.streamer = new Howl({
                     src: [subsonic.getStreamUrl(this.props.song.id)],
                     ext: ['mp3'],
+                    preload: false,
+                    pool: 2,
                     autoplay: true,
                     html5: true,
                     volume: this.volume,
@@ -63,7 +66,7 @@ class MusicPlayer extends React.Component {
     componentWillUnmount() {
         clearInterval(this.timerID)
         // Stop the current song if playing
-        this.streamer && this.streamer.stop()
+        this.streamer && (this.streamer.stop() && this.streamer.unload() )
     }
 
     changeVolume = (newVolume) => {
@@ -84,10 +87,8 @@ class MusicPlayer extends React.Component {
     }
 
     toggleStarOnSong = () => {
-        console.log("Editing song")
-        console.log(this.props.song)
         if( this.props.song ){
-            this.props.setStarOnSong(this.props.song.id, !this.props.song.starred)
+            this.props.setStarOnSongs([this.props.song], !this.props.song.starred)
         }
     }
 
@@ -127,7 +128,7 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = { playNextSong, playPreviousSong, setStarOnSong }
+const mapDispatchToProps = { playNextSong, playPreviousSong, setStarOnSongs }
 
 export default connect(
     mapStateToProps,
