@@ -23,6 +23,7 @@ class Artist extends React.Component {
             this.props.asyncTaskSuccess()
         }
         catch(error) {
+            console.error(error)
             this.props.asyncTaskError(error.message)
         }
     }

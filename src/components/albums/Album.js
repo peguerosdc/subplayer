@@ -49,6 +49,7 @@ class Album extends React.Component {
             }
         }
         catch(error) {
+            console.error(error)
             this.props.asyncTaskError(error.message)
         }
     }

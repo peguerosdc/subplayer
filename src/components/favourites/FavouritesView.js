@@ -45,6 +45,7 @@ class FavouritesView extends React.Component {
             this.props.asyncTaskSuccess()
         }
         catch(error) {
+            console.error(error)
             this.props.asyncTaskError(error.message)
         }
     }
@@ -65,6 +66,7 @@ class FavouritesView extends React.Component {
             }
         }
         catch(error) {
+            console.error(error)
             this.props.asyncTaskError(error.message)
         }
     }

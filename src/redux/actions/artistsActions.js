@@ -4,7 +4,7 @@ import { beginAsyncTask, asyncTaskSuccess, asyncTaskError } from "./apiStatusAct
 
 /* Load multiple artists */
 export function loadArtistsSuccess(artists) {
-    return { type: types.LOAD_ARTISTS_SUCCESS, artists }
+    return { type: types.LOAD_ARTISTS_SUCCESS, payload: {artists: artists} }
 }
 
 export function loadArtists() {
@@ -16,6 +16,7 @@ export function loadArtists() {
             dispatch(asyncTaskSuccess())
         }
         catch(error) {
+            console.error(error)
             dispatch(asyncTaskError(error.message))
         }
     }

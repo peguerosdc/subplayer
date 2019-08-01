@@ -1,14 +1,9 @@
 
 import * as types from "../actions/actionTypes";
 import initialState from "./initialState";
+import {createReducer} from '../../utils/redux.js';
 
-export default function asyncTasksReducer(state = initialState.asyncTasksInProgress, action) {
-    switch(action.type) {
-        case types.BEGIN_ASYNC_OPERATION:
-            return state + 1
-        case types.END_ASYNC_OPERATION:
-            return state - 1
-        default:
-            return state
-    }
-}
+export default createReducer(initialState.asyncTasksInProgress, {
+    [types.BEGIN_ASYNC_OPERATION]: (state, payload) => state + 1,
+    [types.END_ASYNC_OPERATION]: (state, payload) => state - 1
+})

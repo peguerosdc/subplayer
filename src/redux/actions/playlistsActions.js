@@ -4,7 +4,7 @@ import { beginAsyncTask, asyncTaskSuccess, asyncTaskError, asyncTaskWarning } fr
 
 /* Load multiple playlists */
 export function loadPlaylistsSuccess(playlists) {
-    return { type: types.LOAD_PLAYLISTS_SUCCESS, playlists }
+    return { type: types.LOAD_PLAYLISTS_SUCCESS, payload: { playlists : playlists} }
 }
 
 export function loadPlaylists() {
@@ -16,6 +16,7 @@ export function loadPlaylists() {
             dispatch(asyncTaskSuccess())
         }
         catch(error) {
+            console.error(error)
             dispatch(asyncTaskError(error.message))
         }
     }
@@ -41,7 +42,7 @@ export function addSongsToPlaylist(playlistMetadata, songs) {
                     if( songsAdded !== songs.length ) {
                         msg += ` ${songs.length - songsAdded} already added.`
                     }
-                    dispatch({ type: types.ADD_SONGS_TO_PLAYLIST_RESULT, playlist: playlistMetadata, songsAdded: songsToAdd })
+                    dispatch({ type: types.ADD_SONGS_TO_PLAYLIST_RESULT, payload: {playlist: playlistMetadata, songsAdded: songsToAdd } })
                     dispatch(asyncTaskSuccess(msg))
                 }
                 else {
@@ -59,6 +60,7 @@ export function addSongsToPlaylist(playlistMetadata, songs) {
             }
         }
         catch(error) {
+            console.error(error)
 
             dispatch(asyncTaskError(error.message))
         }
@@ -71,7 +73,7 @@ export function removeSongsFromPlaylist(playlist, songIndexes) {
         try {
             const result = await subsonic.removeSongsFromPlaylist(playlist.id, songIndexes)
             if( result ) {
-                dispatch({ type: types.REMOVE_SONGS_FROM_PLAYLIST_RESULT, playlist: playlist, removedSongs: songIndexes })
+                dispatch({ type: types.REMOVE_SONGS_FROM_PLAYLIST_RESULT, payload:{ playlist: playlist, removedSongs: songIndexes } })
                 dispatch(asyncTaskSuccess(`${songIndexes.length} songs removed from ${playlist.name}`))
             }
             else {
@@ -79,6 +81,7 @@ export function removeSongsFromPlaylist(playlist, songIndexes) {
             }
         }
         catch(error) {
+            console.error(error)
             dispatch(asyncTaskError(error.message))
         }
     }
@@ -90,7 +93,7 @@ export function deletePlaylist(playlist) {
         try {
             const result = await subsonic.deletePlaylist(playlist.id)
             if( result ) {
-                dispatch({ type: types.DELETE_PLAYLIST_RESULT, playlist:playlist })
+                dispatch({ type: types.DELETE_PLAYLIST_RESULT, payload:{ playlist:playlist } })
                 dispatch(asyncTaskSuccess(`${playlist.name} deleted!`))
             }
             else {
@@ -98,6 +101,7 @@ export function deletePlaylist(playlist) {
             }
         }
         catch(error) {
+            console.error(error)
             dispatch(asyncTaskError(error.message))
         }
     }
@@ -108,7 +112,7 @@ export function createPlaylist(name) {
     return async (dispatch) => {
         dispatch(beginAsyncTask())
         try {
-            const result = await subsonic.createPlaylist(name)
+            const result = await subsonic.createPlaylist(encodeURIComponent(name))
             // Reload the playlists
             if( result ) {
                 // We can't directly add to the playlist because Subsonic API doesnt return the ID
@@ -122,6 +126,7 @@ export function createPlaylist(name) {
             
         }
         catch(error) {
+            console.error(error)
             dispatch(asyncTaskError(error.message))
         }
     }
@@ -132,10 +137,10 @@ export function editPlaylist(id, name, comment, isPublic) {
     return async (dispatch) => {
         dispatch(beginAsyncTask())
         try {
-            const result = await subsonic.updatePlaylist(id, name, comment, isPublic)
+            const result = await subsonic.updatePlaylist(id, encodeURIComponent(name), encodeURIComponent(comment), isPublic)
             // Edit playlist in state
             if( result ) {
-                dispatch({type: types.EDIT_PLAYLIST_RESULT, id:id, name:name, comment:comment, public:isPublic})
+                dispatch({type: types.EDIT_PLAYLIST_RESULT, payload: { id:id, name:name, comment:comment, public:isPublic} })
                 dispatch(asyncTaskSuccess("Playlist successfully edited"))
             }
             else {
@@ -144,6 +149,7 @@ export function editPlaylist(id, name, comment, isPublic) {
             
         }
         catch(error) {
+            console.error(error)
             dispatch(asyncTaskError(error.message))
         }
     }
@@ -151,11 +157,11 @@ export function editPlaylist(id, name, comment, isPublic) {
 
 export function loadSinglePlaylist(id) {
     return async (dispatch) => {
-        dispatch({type : types.LOAD_SINGLE_PLAYLIST_REQUEST, id:id})
+        dispatch({type : types.LOAD_SINGLE_PLAYLIST_REQUEST, payload: {id:id} })
         dispatch(beginAsyncTask())
         const playlist = await subsonic.getPlaylistById(id)
         if( playlist ) {
-            dispatch({type: types.LOAD_SINGLE_PLAYLIST_SUCCESS, id:id, songs : playlist.entry || []})
+            dispatch({type: types.LOAD_SINGLE_PLAYLIST_SUCCESS, payload: {id:id, songs : playlist.entry || []} })
         }
         dispatch(asyncTaskSuccess())
     }

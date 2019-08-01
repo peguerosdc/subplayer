@@ -1,8 +1,9 @@
 import * as types from "./actionTypes";
 
+// "position" and "clear" are meant to be used when implementing queue management
 export function addSongsToQueue(songs, position=0, clear=true) {
     return (dispatch) => {
-        dispatch({ type: types.ADD_SONGS_TO_QUEUE, songs })
+        dispatch({ type: types.ADD_SONGS_TO_QUEUE, payload: {songs} })
     }
 }
 

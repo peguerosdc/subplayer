@@ -11,6 +11,7 @@ export function search(query) {
             dispatch(asyncTaskSuccess())
         }
         catch(error) {
+            console.error(error)
             dispatch(asyncTaskError(error.message))
         }
     }

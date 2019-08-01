@@ -44,6 +44,7 @@ export function loginUser(host, username, password, encodePassword = true) {
             }
         }
         catch(err) {
+            console.error(err)
             dispatch(loginUserFailure(err))
         }
         
