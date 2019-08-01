@@ -99,11 +99,15 @@ class SongsTable extends React.Component {
             indeterminate = true;
         }
         // Render
+        const heightProps = this.props.height === -1
+            ? { autoHeight : true, style : {overflow:"initial"} }
+            : { height : this.props.height}
+        console.log(heightProps)
         return (
             <Table
+                {...heightProps}
                 onRowClick={this.songClicked}
                 virtualized
-                height={this.props.height}
                 data={songs}
                 className="songs-table"
                 rowClassName={(rowData) => rowData && rowData.id === currentSongPlaying.id ? "currently_playing" : null }>
@@ -216,6 +220,11 @@ SongsTable.propTypes = {
   appearance: PropTypes.arrayOf(Object.keys(columns))
 }
 SongsTable.columns = columns
+
+// Defaults
+SongsTable.defaultProps = {
+    height : -1
+}
 
 export default connect(
     mapStateToProps,
