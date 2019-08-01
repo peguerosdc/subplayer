@@ -39,7 +39,6 @@ class FavouritesView extends React.Component {
             const favourites = await subsonic.getStarred()
             const favSongs = favourites["song"] || []
             // Set to state
-            console.log(favSongs)
             const duration = favSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
             this.setState({songs : favSongs, duration: duration})
             this.props.asyncTaskSuccess()
@@ -57,7 +56,7 @@ class FavouritesView extends React.Component {
             // Set to state without the old stared songs
             if( result ) {
                 const newFavSongs = this.state.songs.filter( song => !songIds.includes(song.id) )
-                const duration = newFavSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), 0 ).duration
+                const duration = newFavSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
                 this.setState({songs : newFavSongs, duration: duration})
                 this.props.asyncTaskSuccess()
             }
@@ -76,7 +75,7 @@ class FavouritesView extends React.Component {
         const duration = this.state.duration
         const disableButton = this.state.selectedSongs && this.state.selectedSongs.length === 0
         return (
-            <div style={{padding:"20px", height:"100%", overflow:"auto"}}>
+            <div style={{padding:"20px", height:"100%" }}>
                 <div style={{ display:"flex", flexFlow: "row", marginBottom:"15px"}}>
                     <div style={{flexGrow:1}}>
                         <h1 style={{color:"white", fontWeight: "bold"}}>Favourites</h1>
