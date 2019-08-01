@@ -3,7 +3,9 @@ import { connect } from "react-redux"
 import subsonic from "../../api/subsonicApi"
 import { beginAsyncTask, asyncTaskSuccess, asyncTaskError } from "../../redux/actions/apiStatusActions"
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
+
 // UI
+import AutoSizer from 'react-virtualized-auto-sizer'
 import { Button } from 'rsuite';
 import SongsTable from '../songs/SongsTable'
 
@@ -75,7 +77,7 @@ class FavouritesView extends React.Component {
         const duration = this.state.duration
         const disableButton = this.state.selectedSongs && this.state.selectedSongs.length === 0
         return (
-            <div style={{padding:"20px", height:"100%" }}>
+            <div style={{display:"flex", flexFlow:"column", padding:"20px", height:"100%", width:"100%" }}>
                 <div style={{ display:"flex", flexFlow: "row", marginBottom:"15px"}}>
                     <div style={{flexGrow:1}}>
                         <h1 style={{color:"white", fontWeight: "bold"}}>Favourites</h1>
@@ -85,7 +87,13 @@ class FavouritesView extends React.Component {
                         <Button onClick={this.removeSelectedSongs} disabled={disableButton}>Remove from favourites</Button>
                     </div>
                 </div>
-                <SongsTable songs={songs} onSongsSelected={this.onSongsSelected} />
+                <div style={{flexGrow:1}}>
+                    <AutoSizer disableWidth>
+                    {({height}) => (
+                        <SongsTable songs={songs} onSongsSelected={this.onSongsSelected} height={height} />
+                    )}
+                    </AutoSizer>
+                </div>
             </div>
         )
     }

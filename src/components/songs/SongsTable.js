@@ -101,10 +101,9 @@ class SongsTable extends React.Component {
         // Render
         return (
             <Table
-                style={{overflow:"initial"}}
                 onRowClick={this.songClicked}
                 virtualized
-                autoHeight={true}
+                height={this.props.height}
                 data={songs}
                 className="songs-table"
                 rowClassName={(rowData) => rowData && rowData.id === currentSongPlaying.id ? "currently_playing" : null }>

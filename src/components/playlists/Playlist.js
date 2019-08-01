@@ -4,6 +4,7 @@ import { navigate } from "@reach/router"
 import { removeSongsFromPlaylist, deletePlaylist, editPlaylist, loadSinglePlaylist } from "../../redux/actions/playlistsActions";
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
 // UI
+import AutoSizer from 'react-virtualized-auto-sizer'
 import SongsTable from '../songs/SongsTable'
 import { Button, Modal, Icon, IconButton, Form, FormGroup, ControlLabel, Checkbox, Input } from 'rsuite';
 
@@ -110,7 +111,7 @@ class Playlist extends React.Component {
         const disableButton = this.state.selectedSongs && this.state.selectedSongs.length === 0
         const columnsToShow = playlist.isMine ? MINE_COLUMNS_TO_SHOW : NOT_MINE_COLUMNS_TO_SHOW
         return (
-            <div style={{padding:"20px"}}>
+            <div style={{display:"flex", flexFlow:"column", padding:"20px", height:"100%", width:"100%"}}>
                 <div style={{ display:"flex", flexFlow: "row", marginBottom:"15px", marginTop:"15px"}}>
                     <div style={{flexGrow:1}}>
                         <h1 style={{color:"white", fontWeight:"bold"}}>
@@ -133,7 +134,13 @@ class Playlist extends React.Component {
                         : null
                     }
                 </div>
-                <SongsTable songs={songs} onSongsSelected={this.onSongsSelected} columns={columnsToShow} />
+                <div style={{flexGrow:1}}>
+                    <AutoSizer disableWidth>
+                    {({height}) => (
+                        <SongsTable songs={songs} onSongsSelected={this.onSongsSelected} columns={columnsToShow} height={height} />
+                    )}
+                    </AutoSizer>
+                </div>
                 {/* Playlist deletion confirmation */}
                 <Modal className="subplayer-modal" backdrop="static" show={this.state.showDeleteModal} onHide={this.closeDeleteModal} size="xs">
                     <Modal.Body>
