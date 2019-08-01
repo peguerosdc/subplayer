@@ -67,13 +67,13 @@ export function addSongsToPlaylist(playlistMetadata, songs) {
     }
 }
 
-export function removeSongsFromPlaylist(playlist, songIndexes) {
+export function removeSongsFromPlaylist(playlist, songs, songIndexes) {
     return async (dispatch) => {
         dispatch(beginAsyncTask())
         try {
             const result = await subsonic.removeSongsFromPlaylist(playlist.id, songIndexes)
             if( result ) {
-                dispatch({ type: types.REMOVE_SONGS_FROM_PLAYLIST_RESULT, payload:{ playlist: playlist, removedSongs: songIndexes } })
+                dispatch({ type: types.REMOVE_SONGS_FROM_PLAYLIST_RESULT, payload:{ playlist: playlist, removedSongs:songs, removedSongsIndexes: songIndexes } })
                 dispatch(asyncTaskSuccess(`${songIndexes.length} songs removed from ${playlist.name}`))
             }
             else {

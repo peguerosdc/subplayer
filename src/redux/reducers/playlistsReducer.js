@@ -38,11 +38,9 @@ export default createReducer(initialState.playlists, {
     },
     [types.REMOVE_SONGS_FROM_PLAYLIST_RESULT]: (state, payload) => {
         // Remove songs in current playlist if is currently displayed
-        let currentSongs = state.currentPlaylist.songs
-        let deletedSongs = []
+        let currentSongsIds = state.currentPlaylist.songs
         if( payload.playlist.id === state.currentPlaylist.id ) {
-            currentSongs = state.currentPlaylist.songs.filter((song, index) => !payload.removedSongs.includes(index) )
-            deletedSongs = state.currentPlaylist.songs.filter((song, index) =>  payload.removedSongs.includes(index) )
+            currentSongsIds = state.currentPlaylist.songs.filter((song, index) => !payload.removedSongsIndexes.includes(index) )
         }
         // Update count in current playlist
         return {
@@ -51,13 +49,13 @@ export default createReducer(initialState.playlists, {
                 ...state.byId,
                 [payload.playlist.id] : {
                     ...payload.playlist,
-                    songCount : payload.playlist.songCount - payload.removedSongs.length,
-                    duration : payload.playlist.duration - deletedSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
+                    songCount : payload.playlist.songCount - payload.removedSongsIndexes.length,
+                    duration : payload.playlist.duration - payload.removedSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
                 }
             },
             currentPlaylist : {
                 ...state.currentPlaylist,
-                songs : currentSongs
+                songs : currentSongsIds
             }
         }
     },

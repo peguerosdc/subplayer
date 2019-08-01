@@ -51,7 +51,7 @@ class Playlist extends React.Component {
             const selectedIndexes = this.state.selectedSongs.map( selectedSong => this.props.songs.findIndex(song => song.id === selectedSong.id) )
             this.deletedIndexes = selectedIndexes 
             // Call action
-            this.props.removeSongsFromPlaylist( this.props.playlist, selectedIndexes)
+            this.props.removeSongsFromPlaylist( this.props.playlist, this.state.selectedSongs, selectedIndexes)
         }
     }
 
