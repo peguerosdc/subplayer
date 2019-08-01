@@ -49,5 +49,15 @@ export default createReducer(initialState.songs, {
         }
         return newState
     },
+    [types.PUT_SONGS_RESULT] : (state, payload) => {
+        // Transform the array of songs coming in the payload to a normalized object
+        let normalized_songs = payload.songs.reduce( (current,song) => ({...current, [song.id] : song }), {} )
+        // Replace the current songs if "clearCurrentList" or append the new songs to
+        // the existing list
+        const newSongs = payload.clearCurrentList
+            ? normalized_songs
+            : {...state.byId, ...normalized_songs}
+        return { ...state, byId : newSongs }
+    },
     [types.LOGOUT_USER]: (state, payload) => initialState.songs
 })

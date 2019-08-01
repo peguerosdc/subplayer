@@ -59,3 +59,7 @@ export function setStarOnSongs(songs, setStarred) {
         
     }
 }
+
+export function putLoadedSongs(songs, clearCurrentList = true) {
+    return { type: types.PUT_SONGS_RESULT, payload : {songs: songs, clearCurrentList : clearCurrentList} }
+}

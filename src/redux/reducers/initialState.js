@@ -7,12 +7,13 @@ export default {
     },
     playlists : {
         byId : {},
-        currentPlaylist : { songs: [] }
+        currentPlaylist : { id: null, songs: [] }
     },
     songs : {
         queue : [],
         currentSongPlaying : null,
-        currentSongIndex : null
+        currentSongIndex : null,
+        byId : {}
     },
     auth : {
         isAuthenticated: false,

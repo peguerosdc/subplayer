@@ -161,7 +161,9 @@ export function loadSinglePlaylist(id) {
         dispatch(beginAsyncTask())
         const playlist = await subsonic.getPlaylistById(id)
         if( playlist ) {
-            dispatch({type: types.LOAD_SINGLE_PLAYLIST_SUCCESS, payload: {id:id, songs : playlist.entry || []} })
+            const songsOfPlaylist = playlist.entry || []
+            dispatch({type: types.PUT_SONGS_RESULT, payload: { songs : songsOfPlaylist} })
+            dispatch({type: types.LOAD_SINGLE_PLAYLIST_SUCCESS, payload: {id:id, songs : songsOfPlaylist.map(song => song.id)} })
         }
         dispatch(asyncTaskSuccess())
     }

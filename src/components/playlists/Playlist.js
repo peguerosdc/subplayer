@@ -187,7 +187,7 @@ class Playlist extends React.Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         "playlist" : state.playlists.byId[ownProps.playlistId],
-        "songs" : state.playlists.currentPlaylist.songs
+        "songs" : state.playlists.currentPlaylist.songs.map( id => state.songs.byId[id] )
     }
 }
 

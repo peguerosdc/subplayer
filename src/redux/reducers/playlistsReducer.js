@@ -12,6 +12,7 @@ export default createReducer(initialState.playlists, {
             // Append a boolean to know if the playlist is mine
             p.isMine = isPlaylistMineByOwner(p.owner)
             playlists[p.id] = p
+            playlists[p.id].songs = []
         }
         // Return mixed with the state
         return {
@@ -90,7 +91,7 @@ export default createReducer(initialState.playlists, {
         return {
             ...state,
             currentPlaylist : {
-                id: payload.id,
+                id : payload.id,
                 songs : payload.songs
             }
         }
@@ -99,7 +100,7 @@ export default createReducer(initialState.playlists, {
         return {
             ...state,
             currentPlaylist : {
-                id: payload.id,
+                id : payload.id,
                 songs : []
             }
         }
