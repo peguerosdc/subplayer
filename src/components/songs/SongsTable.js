@@ -102,7 +102,6 @@ class SongsTable extends React.Component {
         const heightProps = this.props.height === -1
             ? { autoHeight : true, style : {overflow:"initial"} }
             : { height : this.props.height}
-        console.log(heightProps)
         return (
             <Table
                 {...heightProps}

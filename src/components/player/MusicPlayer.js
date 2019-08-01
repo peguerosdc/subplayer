@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { Howl } from 'howler';
-import { playNextSong, playPreviousSong } from "../../redux/actions/songsActions";
+import { playNextSong, playPreviousSong, setStarOnSong } from "../../redux/actions/songsActions";
 import subsonic from "../../api/subsonicApi";
 import { seconds_to_mss } from "../../utils/formatting.js"
 // UI
@@ -83,16 +83,30 @@ class MusicPlayer extends React.Component {
         }
     }
 
+    toggleStarOnSong = () => {
+        console.log("Editing song")
+        console.log(this.props.song)
+        if( this.props.song ){
+            this.props.setStarOnSong(this.props.song.id, !this.props.song.starred)
+        }
+    }
+
     render () {
         const song = this.props.song ? this.props.song : {}
         const playing = this.state.playing
         const seek = this.state.tick
+        const starIcon = song.starred ? "star" : "star-o"
         return (
             <div className="darkMusicPlayer">
                 <img src={song.coverArt ? subsonic.getCoverArtUrl(song.coverArt) : "/currently_placeholder.png"} alt="cover" width="45" height="45"/>
-                <div className="song_metadata_container">
-                    <p><b>{song.title}</b></p>
-                    {song.artist}
+                <div className="song_metadata_container" style={{display:"flex", flexFlow:"row"}}>
+                    <div style={{overflow:"hidden"}}>
+                        <p><b>{song.title}</b></p>
+                        {song.artist}
+                    </div>
+                    <div>
+                        <IconButton icon={<Icon icon={starIcon} />} onClick={this.toggleStarOnSong} appearance="link" size="lg" style={{color:"white"}}/>
+                    </div>
                 </div>
                 <IconButton icon={<Icon icon="step-backward" />} appearance="link" size="sm" onClick={this.props.playPreviousSong} style={{color:"white"}}/>
                 <IconButton appearance="primary" icon={<Icon icon={playing ? "pause" : "play"} />} circle size="sm" onClick={this.togglePlayerState} />
@@ -113,7 +127,7 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = { playNextSong, playPreviousSong }
+const mapDispatchToProps = { playNextSong, playPreviousSong, setStarOnSong }
 
 export default connect(
     mapStateToProps,

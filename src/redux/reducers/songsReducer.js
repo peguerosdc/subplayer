@@ -29,5 +29,19 @@ export default createReducer(initialState.songs, {
             } 
             : {})
     },
+    [types.STAR_SONG_RESULT] : (state, payload) => {
+        let newState = state
+        // We are relying on the current song being edited
+        if(state.current.id === payload.songId) {
+            const newSong = { ...state.current, starred : new Date().toISOString() }
+            const newQueue = state.queue.slice(0, state.currentIndex).concat( [newSong], state.queue.slice(state.currentIndex+1))
+            newState = {
+                ...state,
+                current : newSong,
+                queue : newQueue
+            }
+        }
+        return newState
+    },
     [types.LOGOUT_USER]: (state, payload) => initialState.songs
 })
