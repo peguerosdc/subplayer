@@ -44,6 +44,12 @@ class SearchView extends React.Component {
                 </Col>
 
                 {
+                    (artists.length === 0 && albums.length === 0 && songs.length === 0)
+                    ? <h1>No results</h1>
+                    : null
+                }
+
+                {
                     artists.length > 0 ? (
                         <>
                             <h1 className="artists_list_title">Artists</h1>
