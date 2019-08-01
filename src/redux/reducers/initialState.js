@@ -9,6 +9,9 @@ export default {
         byId : {},
         currentPlaylist : { id: null, songs: [] }
     },
+    favourites : {
+        songs : []
+    },
     songs : {
         queue : [],
         currentSongPlaying : null,

@@ -4,7 +4,7 @@ import subsonic from "../../api/subsonicApi";
 import { addSongsToPlaylist } from "../../redux/actions/playlistsActions";
 import { loadAlbum } from "../../redux/actions/albumActions";
 import { beginAsyncTask, asyncTaskSuccess } from "../../redux/actions/apiStatusActions"
-import { setStarOnSongs } from "../../redux/actions/songsActions";
+import { setStarOnSongs } from "../../redux/actions/favouritesActions";
 // UI
 import { Grid, Row, Col, Panel } from 'rsuite';
 import SongsTable from '../songs/SongsTable'

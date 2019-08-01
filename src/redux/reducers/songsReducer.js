@@ -47,6 +47,20 @@ export default createReducer(initialState.songs, {
                 }
             })
         }
+        // Toggle if it is found in the DB of songs
+        const modifiedSongsInDB = payload.songIds.filter(id => state.byId[id])
+        modifiedSongsInDB.forEach( (id) => {
+            newState = {
+                ...newState,
+                byId : {
+                    ...newState.byId,
+                    [id] : {
+                        ...newState.byId[id],
+                        starred : payload.starred
+                    }
+                }
+            }
+        })
         return newState
     },
     [types.PUT_SONGS_RESULT] : (state, payload) => {

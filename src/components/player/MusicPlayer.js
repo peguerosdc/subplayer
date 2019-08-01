@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { Howl } from 'howler';
-import { playNextSong, playPreviousSong, setStarOnSongs } from "../../redux/actions/songsActions";
+import { playNextSong, playPreviousSong } from "../../redux/actions/songsActions"
+import { setStarOnSongs } from "../../redux/actions/favouritesActions"
 import subsonic from "../../api/subsonicApi";
 import { seconds_to_mss } from "../../utils/formatting.js"
 // UI
