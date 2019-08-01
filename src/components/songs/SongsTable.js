@@ -195,7 +195,7 @@ class SongsTable extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        currentSongPlaying : state.songs.current
+        currentSongPlaying : state.songs.currentSongPlaying
     }
 }
 

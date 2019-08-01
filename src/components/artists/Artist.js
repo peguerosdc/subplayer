@@ -3,16 +3,18 @@ import { connect } from "react-redux";
 import subsonic from "../../api/subsonicApi";
 import Album from '../albums/Album'
 import { beginAsyncTask, asyncTaskSuccess, asyncTaskError } from "../../redux/actions/apiStatusActions"
+import { clearAlbums } from "../../redux/actions/albumActions"
 import InfiniteScroll from 'react-infinite-scroller'
 
 class Artist extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { artist : {}, artistsToDisplay : [], hasMoreToLoad: false}
+        this.state = { artist : {}, albumsToDisplay : [], hasMoreToLoad: false}
     }
 
     async componentDidMount() {
+        this.props.clearAlbums()
         await this.loadArtist(this.props.artistId)
     }
 
@@ -42,14 +44,14 @@ class Artist extends React.Component {
                 maximumValue = albums.length
                 hasMoreToLoad = false
             }
-            // Add new artists
+            // Add new albums
             let toAdd = []
             for (var i = page*pageSize; i < maximumValue; i++) {
                 const album = albums[i]
                 toAdd.push( <Album key={i} albumId={album.id} style={{marginTop:"10px", marginBottom:"10px", minHeight:"300px"}}/> )
             }
             this.setState({
-                artistsToDisplay : this.state.artistsToDisplay.concat(toAdd),
+                albumsToDisplay : this.state.albumsToDisplay.concat(toAdd),
                 hasMoreToLoad : hasMoreToLoad})
         }
         else {
@@ -68,14 +70,14 @@ class Artist extends React.Component {
                     hasMore={this.state.hasMoreToLoad}
                     loader={<div key={0}>Loading ...</div>}
                     useWindow={false}>
-                    {this.state.artistsToDisplay}
+                    {this.state.albumsToDisplay}
                 </InfiniteScroll>
             </div>
         )
     }
 }
 
-const mapDispatchToProps = { beginAsyncTask, asyncTaskSuccess, asyncTaskError }
+const mapDispatchToProps = { beginAsyncTask, asyncTaskSuccess, asyncTaskError, clearAlbums }
 
 export default connect(
     null,

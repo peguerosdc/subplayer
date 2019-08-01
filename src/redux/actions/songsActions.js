@@ -29,7 +29,7 @@ export function setStarOnSongs(songs, setStarred) {
     return async (dispatch) => {
         dispatch(beginAsyncTask())
         // We need to remove the songs that are already starred before calling the API
-        const songIds = songs.filter(song => !song.starred).map(song => song.id)
+        const songIds = songs.filter(song => song.starred !== setStarred).map(song => song.id)
         if( songIds.length === 0 ) {
             dispatch(asyncTaskWarning("All songs are already in favourites"))
         }

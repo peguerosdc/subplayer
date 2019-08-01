@@ -6,42 +6,42 @@ export default createReducer(initialState.songs, {
     [types.ADD_SONGS_TO_QUEUE]: (state, payload) => {
         return {
             ...state,
-            currentIndex : 0,
-            current : payload.songs[0],
+            currentSongIndex : 0,
+            currentSongPlaying : payload.songs[0],
             queue : payload.songs
         }
     },
     [types.PLAY_NEXT_SONG]: (state, payload) => {
-        const hasNext = (state.currentIndex != null) && (state.currentIndex + 1 < state.queue.length)
+        const hasNext = (state.currentSongIndex != null) && (state.currentSongIndex + 1 < state.queue.length)
         return Object.assign({}, state,
             hasNext ? {
-                currentIndex : state.currentIndex + 1,
-                current : state.queue[state.currentIndex + 1]
+                currentSongIndex : state.currentSongIndex + 1,
+                currentSongPlaying : state.queue[state.currentSongIndex + 1]
             }
-            : { currentIndex : null, current : null })
+            : { currentSongIndex : null, currentSongPlaying : null })
     },
     [types.PLAY_PREVIOUS_SONG]: (state, payload) => {
-        const hasPrevious = state.currentIndex > 0
+        const hasPrevious = state.currentSongIndex > 0
         return Object.assign({}, state,
             hasPrevious ? {
-                currentIndex : state.currentIndex-1,
-                current : state.queue[state.currentIndex-1]
+                currentSongIndex : state.currentSongIndex-1,
+                currentSongPlaying : state.queue[state.currentSongIndex-1]
             } 
             : {})
     },
     [types.STAR_SONG_RESULT] : (state, payload) => {
         let newState = state
-        const currentSongPlaying = state.current
+        const currentSongPlaying = state.currentSongPlaying
         // We are relying on the current song being edited
         if( currentSongPlaying ) {
             payload.songIds.forEach( (starredSongId, index) => {
                 if(currentSongPlaying.id === starredSongId) {
                     const star = payload.starred ? new Date().toISOString() : false
-                    const newSong = { ...state.current, starred : star }
-                    const newQueue = state.queue.slice(0, state.currentIndex).concat( [newSong], state.queue.slice(state.currentIndex+1))
+                    const newSong = { ...state.currentSongPlaying, starred : star }
+                    const newQueue = state.queue.slice(0, state.currentSongIndex).concat( [newSong], state.queue.slice(state.currentSongIndex+1))
                     newState = {
                         ...state,
-                        current : newSong,
+                        currentSongPlaying : newSong,
                         queue : newQueue
                     }
                 }

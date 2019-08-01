@@ -53,7 +53,7 @@ class ArtistIndex extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        currentSongPlaying : state.songs.current,
+        currentSongPlaying : state.songs.currentSongPlaying,
         index: state.artists[ownProps.index]
     }
 }

@@ -124,7 +124,7 @@ class MusicPlayer extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        "song" : state.songs.current
+        "song" : state.songs.currentSongPlaying
     }
 }
 

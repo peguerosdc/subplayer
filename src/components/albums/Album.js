@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import subsonic from "../../api/subsonicApi";
 import { addSongsToPlaylist } from "../../redux/actions/playlistsActions";
+import { loadAlbum } from "../../redux/actions/albumActions";
 import { beginAsyncTask, asyncTaskSuccess } from "../../redux/actions/apiStatusActions"
 import { setStarOnSongs } from "../../redux/actions/songsActions";
 // UI
@@ -14,18 +15,11 @@ class Album extends React.Component {
     
     constructor(props) {
         super(props)
-        this.state = { album : {}, selectedSongs : []}
+        this.state = { selectedSongs : []}
     }
 
-    async componentDidMount() {
-        await this.loadAlbum(this.props.albumId)
-    }
-
-    loadAlbum = async (id) => {
-        this.props.beginAsyncTask()
-        const album = await subsonic.getAlbum(id)
-        this.setState({album : album})
-        this.props.asyncTaskSuccess()
+    componentDidMount() {
+        this.props.loadAlbum(this.props.albumId)
     }
 
     onPlaylistSelected = (playlist) => {
@@ -41,10 +35,9 @@ class Album extends React.Component {
     }
 
     render() {
-        const album = this.state.album
+        const album = this.props.album || {}
         const songs = (album && album.song) || []
         const disableDropdown = this.state.selectedSongs.length === 0
-        console.log("Render album: "+album.name)
         // Render all
         return (
             <Panel bordered className="album-card" style={{...this.props.style}}>
@@ -68,9 +61,15 @@ class Album extends React.Component {
     }
 }
 
-const mapDispatchToProps = { addSongsToPlaylist, beginAsyncTask, asyncTaskSuccess, setStarOnSongs }
+const mapStateToProps = (state, ownProps) => {
+    return {
+        "album" : state.albums.byId[ownProps.albumId]
+    }
+}
+
+const mapDispatchToProps = { addSongsToPlaylist, beginAsyncTask, asyncTaskSuccess, setStarOnSongs, loadAlbum }
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Album)

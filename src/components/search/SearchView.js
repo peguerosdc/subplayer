@@ -98,7 +98,7 @@ const mapStateToProps = (state, ownProps) => {
         "artists" : state.search.artists,
         "albums" : state.search.albums,
         "songs" : state.search.songs,
-        currentSongPlaying : state.songs.current,
+        currentSongPlaying : state.songs.currentSongPlaying,
     }
 }
 

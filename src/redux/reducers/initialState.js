@@ -2,15 +2,17 @@ export default {
     asyncTasksInProgress: 0,
     alert : {},
     artists : [],
+    albums : {
+        byId : {}
+    },
     playlists : {
         byId : {},
-        lastUpdateOperationResult : {},
         currentPlaylist : { songs: [] }
     },
     songs : {
         queue : [],
-        current : null,
-        currentIndex : null
+        currentSongPlaying : null,
+        currentSongIndex : null
     },
     auth : {
         isAuthenticated: false,

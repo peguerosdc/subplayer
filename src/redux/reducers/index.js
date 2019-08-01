@@ -6,6 +6,7 @@ import songs from "./songsReducer";
 import auth from "./authReducer"
 import search from "./searchReducer"
 import alert from "./alertsReducer"
+import albums from "./albumsReducer"
 
 export default combineReducers({
     asyncTasksInProgress,
@@ -14,5 +15,6 @@ export default combineReducers({
     songs,
     auth,
     search,
-    alert
+    alert,
+    albums
 });
