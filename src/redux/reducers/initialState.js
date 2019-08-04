@@ -1,7 +1,10 @@
 export default {
     asyncTasksInProgress: 0,
     alert : {},
-    artists : [],
+    artists : {
+        byIndex : [],
+        byId : {}
+    },
     albums : {
         byId : {}
     },

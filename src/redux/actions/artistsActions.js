@@ -4,7 +4,7 @@ import { beginAsyncTask, asyncTaskSuccess, asyncTaskError } from "./apiStatusAct
 
 /* Load multiple artists */
 export function loadArtistsSuccess(artists) {
-    return { type: types.LOAD_ARTISTS_SUCCESS, payload: {artists: artists} }
+    return { type: types.LOAD_ARTISTS_INDEX_SUCCESS, payload: {artistsIndex: artists} }
 }
 
 export function loadArtists() {
@@ -23,7 +23,7 @@ export function loadArtists() {
 }
 
 /* Load songs of just one artist */
-const loadSongsOfArtistSuccess = songs => ({type : types.LOAD_ONE_ARTIST_SUCCESS, payload: { songs : songs} })
+const loadSongsOfArtistSuccess = songs => ({type : types.LOAD_SONGS_OF_ONE_ARTIST_SUCCESS, payload: { songs : songs} })
 
 export function loadSongsOfArtist(artist) {
     return async (dispatch) => {
@@ -44,5 +44,25 @@ export function loadSongsOfArtist(artist) {
                 console.error(error)
                 dispatch(asyncTaskError(`Unable to load songs of ${artist.name}`))
             })
+    }
+}
+
+/* Load information of one artist along with its songs */
+
+const loadOneArtistSuccess = artist => ({type: types.LOAD_ONE_ARTIST_SUCCESS, payload : {artist: artist}})
+
+export function loadOneArtist(artistId) {
+    return async (dispatch) => {
+        dispatch(beginAsyncTask())
+        try {
+            const artist = await subsonic.getArtist(artistId)
+            dispatch(loadOneArtistSuccess(artist))
+            dispatch(asyncTaskSuccess())
+            dispatch(loadSongsOfArtist(artist))
+        }
+        catch(error) {
+            console.error(error)
+            dispatch(asyncTaskError(error.message))
+        }
     }
 }

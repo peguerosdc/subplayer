@@ -1,13 +1,10 @@
 import React from "react";
 // Redux
 import { connect } from "react-redux";
-import { beginAsyncTask, asyncTaskSuccess, asyncTaskError } from "../../redux/actions/apiStatusActions"
-import { loadSongsOfArtist } from "../../redux/actions/artistsActions"
+import { loadOneArtist } from "../../redux/actions/artistsActions"
 import { songsOfArtistSelector } from '../../redux/selectors/songSelectors'
 import { addSongsToPlaylist } from "../../redux/actions/playlistsActions";
 import { setStarOnSongs } from "../../redux/actions/favouritesActions";
-// Utils
-import subsonic from "../../api/subsonicApi";
 // UI
 import AutoSizer from 'react-virtualized-auto-sizer'
 import SongsTable from '../songs/SongsTable'
@@ -19,26 +16,11 @@ class Artist extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { artist : {}, selectedSongs : [] }
+        this.state = { selectedSongs : [] }
     }
 
-    async componentDidMount() {
-        await this.loadArtist(this.props.artistId)
-    }
-
-    loadArtist = async (id) => {
-        this.props.beginAsyncTask()
-        try {
-            const artist = await subsonic.getArtist(id)
-            this.setState({artist : artist})
-            // Load all albums
-            this.props.loadSongsOfArtist(artist)
-            this.props.asyncTaskSuccess()
-        }
-        catch(error) {
-            console.error(error)
-            this.props.asyncTaskError("Unable to load artist")
-        }
+    componentDidMount() {
+        this.props.loadOneArtist(this.props.artistId)
     }
 
     // Add to favs and playlist
@@ -55,7 +37,7 @@ class Artist extends React.Component {
     }
 
     render() {
-        const artist = this.state.artist
+        const artist = this.props.artist || {}
         const songs = this.props.songs
         const hasSongsSelected = this.state.selectedSongs.length !== 0
         return (
@@ -76,11 +58,12 @@ class Artist extends React.Component {
 
 const mapStateToProps = (state, props) => {
     return {
+        artist : state.artists.byId[props.artistId],
         songs: songsOfArtistSelector(state, props),
     }
 }
 
-const mapDispatchToProps = { beginAsyncTask, asyncTaskSuccess, asyncTaskError, loadSongsOfArtist, addSongsToPlaylist, setStarOnSongs }
+const mapDispatchToProps = { loadOneArtist, addSongsToPlaylist, setStarOnSongs }
 
 export default connect(
     mapStateToProps,

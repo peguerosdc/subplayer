@@ -14,36 +14,34 @@ export default createReducer(initialState.albums, {
             }
         }
     },
-    [types.STAR_SONG_RESULT]: (state, payload) => {
-        // Look for at least one song that has changed
-        function hasASongThatChanged(songs) {
-            return songs.find( song => hasSongStarChanged(song.id) )
+    [types.LOAD_ONE_ARTIST_SUCCESS]: (state, payload) => {
+        // Normalize the albums of the artist to just contain the IDs
+        const artists_albums_by_id = {}
+        payload.artist.album.forEach(album => {
+            artists_albums_by_id[album.id] = album
+        })
+        return {
+            ...state,
+            byId : artists_albums_by_id
         }
-
-        // Check if the songId is found in the list of songs that changed (payload.songIds)
-        function hasSongStarChanged(songId) {
-            return payload.songIds.find(id => id === songId)
-        }
-
-        // Check if the songs are in any of the albums
-        // If that's the case, then toggle its star to match
-        // the new value
-        let newAlbums = {...state.byId}
-        Object.keys(state.byId).forEach( (albumId, index) => {
-            const album = state.byId[albumId]
-            if( hasASongThatChanged(album.song) ) {
-                // Create a copy of this album
-                newAlbums[albumId] = {
-                    ...album,
-                    song : album.song.map(
-                        song => hasSongStarChanged(song.id) ? {...song, starred : payload.starred} : song
-                    )
+    },
+    [types.LOAD_SONGS_OF_ONE_ARTIST_SUCCESS]: (state, payload) => {
+        // Look for albums with songs present in this payload and
+        // put its corresponding IDs
+        let newByIdState = {...state.byId}
+        payload.songs.forEach(song => {
+            const thisAlbum = state.byId[song.albumId]
+            newByIdState = {
+                ...newByIdState,
+                [song.albumId] : {
+                    ...thisAlbum,
+                    song : thisAlbum.song ? thisAlbum.song.concat(song.id) : [song.id]
                 }
             }
         })
         return {
             ...state,
-            byId : newAlbums
+            byId : newByIdState
         }
     },
     [types.LOGOUT_USER]: (state, payload) => initialState.albums

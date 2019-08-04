@@ -70,7 +70,7 @@ class ArtistsList extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        artists: state.artists,
+        artists: state.artists.byIndex,
     }
 }
 
