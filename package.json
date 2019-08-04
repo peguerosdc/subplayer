@@ -19,6 +19,7 @@
     "redux": "^4.0.4",
     "redux-immutable-state-invariant": "^2.1.0",
     "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0",
     "rsuite": "^3.8.7"
   },
   "scripts": {

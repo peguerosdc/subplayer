@@ -2,6 +2,17 @@ import * as types from "../actions/actionTypes";
 import initialState from "./initialState";
 import {createReducer} from '../../utils/redux.js';
 
+function put_songs_in_store(state, songs, clearCurrentList = true) {
+    // Transform the array of songs coming in the payload to a normalized object
+    let normalized_songs = songs.reduce( (current,song) => ({...current, [song.id] : song }), {} )
+    // Replace the current songs if "clearCurrentList" or append the new songs to
+    // the existing list
+    const newSongs = clearCurrentList
+        ? normalized_songs
+        : {...state.byId, ...normalized_songs}
+    return { ...state, byId : newSongs }
+}
+
 export default createReducer(initialState.songs, {
     [types.ADD_SONGS_TO_QUEUE]: (state, payload) => {
         return {
@@ -63,15 +74,7 @@ export default createReducer(initialState.songs, {
         })
         return newState
     },
-    [types.PUT_SONGS_RESULT] : (state, payload) => {
-        // Transform the array of songs coming in the payload to a normalized object
-        let normalized_songs = payload.songs.reduce( (current,song) => ({...current, [song.id] : song }), {} )
-        // Replace the current songs if "clearCurrentList" or append the new songs to
-        // the existing list
-        const newSongs = payload.clearCurrentList
-            ? normalized_songs
-            : {...state.byId, ...normalized_songs}
-        return { ...state, byId : newSongs }
-    },
+    [types.PUT_SONGS_RESULT] : (state, payload) => put_songs_in_store(state, payload.songs, payload.clearCurrentList),
+    [types.LOAD_ONE_ARTIST_SUCCESS] : (state, payload) => put_songs_in_store(state, payload.songs, true),
     [types.LOGOUT_USER]: (state, payload) => initialState.songs
 })

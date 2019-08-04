@@ -1,6 +1,8 @@
 // Load list of artists
 export const LOAD_ARTISTS = "LOAD_ARTISTS";
 export const LOAD_ARTISTS_SUCCESS = "LOAD_ARTISTS_SUCCESS";
+// Load single artist
+export const LOAD_ONE_ARTIST_SUCCESS = "LOAD_ONE_ARTIST_SUCCESS";
 // Load playlists
 export const LOAD_PLAYLISTS = "LOAD_PLAYLISTS";
 export const LOAD_PLAYLISTS_SUCCESS = "LOAD_PLAYLISTS_SUCCESS";
