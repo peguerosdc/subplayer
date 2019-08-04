@@ -11,9 +11,7 @@ export default {
     playlists : {
         byId : {}
     },
-    favourites : {
-        songs : []
-    },
+    favourites : [],
     songs : {
         byId : {}
     },

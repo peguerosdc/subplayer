@@ -1,8 +1,10 @@
 import React from "react"
+// Redux
 import { connect } from "react-redux"
 import { loadFavouriteSongs, setStarOnSongs } from "../../redux/actions/favouritesActions"
+import { favouriteSongsSelector } from '../../redux/selectors/songSelectors'
+// Utils
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
-
 // UI
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { Button } from 'rsuite';
@@ -67,7 +69,7 @@ class FavouritesView extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        "songs" : state.favourites.songs.map( id => state.songs.byId[id] )
+        "songs" : favouriteSongsSelector(state)
     }
 }
 

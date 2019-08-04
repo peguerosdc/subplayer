@@ -18,7 +18,3 @@ export function playPreviousSong() {
         dispatch({ type: types.PLAY_PREVIOUS_SONG })
     }
 }
-
-export function putLoadedSongs(songs, clearCurrentList = true) {
-    return { type: types.PUT_SONGS_RESULT, payload : {songs: songs, clearCurrentList : clearCurrentList} }
-}

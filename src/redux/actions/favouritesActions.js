@@ -9,8 +9,7 @@ export function loadFavouriteSongs() {
             const favourites = await subsonic.getStarred()
             const favSongs = favourites["song"] || []
             // Set to state
-            dispatch({type: types.PUT_SONGS_RESULT, payload: { songs : favSongs} })
-            dispatch({type: types.LOAD_FAVOURITES_RESULT, payload: {songs : favSongs.map(song => song.id)} })
+            dispatch({type: types.LOAD_FAVOURITES_RESULT, payload: {songs : favSongs} })
             dispatch(asyncTaskSuccess())
         }
         catch(error) {
