@@ -9,10 +9,14 @@ export default createReducer(initialState.playlists, {
         var playlists = {}
         for (var i = 0; i < payload.playlists.length; i++) {
             var p = payload.playlists[i]
+            p = {...p, ...state.byId[p.id]}
             // Append a boolean to know if the playlist is mine
             p.isMine = isPlaylistMineByOwner(p.owner)
+            // Fill array of songs empty if not present
+            if( !p.songs ) {
+                p.songs = []
+            }
             playlists[p.id] = p
-            playlists[p.id].songs = []
         }
         // Return mixed with the state
         return {
@@ -23,7 +27,9 @@ export default createReducer(initialState.playlists, {
     [types.ADD_SONGS_TO_PLAYLIST_RESULT]: (state, payload) => {
         // Check if there were pending songs to add
         const songsAdded = payload.songsAdded
-        // Update state
+        // When updating the state, there is no necessity to update the "songs" array
+        // as it will get re-populated when the playlist's page is opened, but still 
+        // let's do it just in case it is needed in the future
         return {
             ...state,
             byId: {
@@ -31,18 +37,16 @@ export default createReducer(initialState.playlists, {
                 [payload.playlist.id] : {
                     ...payload.playlist,
                     songCount : payload.playlist.songCount + songsAdded.length,
-                    duration: payload.playlist.duration + payload.songsAdded.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
+                    duration: payload.playlist.duration + payload.songsAdded.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration,
+                    songs : state.byId[payload.playlist.id].songs.concat(songsAdded.map(song => song.id))
                 }
             }
         }
     },
     [types.REMOVE_SONGS_FROM_PLAYLIST_RESULT]: (state, payload) => {
-        // Remove songs in current playlist if is currently displayed
-        let currentSongsIds = state.currentPlaylist.songs
-        if( payload.playlist.id === state.currentPlaylist.id ) {
-            currentSongsIds = state.currentPlaylist.songs.filter((song, index) => !payload.removedSongsIndexes.includes(index) )
-        }
-        // Update count in current playlist
+        // Update count in current playlist. When updating the state, in here it is
+        // necessary to remove the song from the list as songs are only removed when
+        // the playlist's page is loaded and the UI needs to be refreshed
         return {
             ...state,
             byId: {
@@ -50,12 +54,9 @@ export default createReducer(initialState.playlists, {
                 [payload.playlist.id] : {
                     ...payload.playlist,
                     songCount : payload.playlist.songCount - payload.removedSongsIndexes.length,
-                    duration : payload.playlist.duration - payload.removedSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
+                    duration : payload.playlist.duration - payload.removedSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration,
+                    songs : payload.playlist.songs.filter((song, index) => !payload.removedSongsIndexes.includes(index) )
                 }
-            },
-            currentPlaylist : {
-                ...state.currentPlaylist,
-                songs : currentSongsIds
             }
         }
     },
@@ -86,20 +87,16 @@ export default createReducer(initialState.playlists, {
         return state
     },
     [types.LOAD_SINGLE_PLAYLIST_SUCCESS]: (state, payload) => {
+        const {entry, ...playlist} = payload.playlist
         return {
             ...state,
-            currentPlaylist : {
-                id : payload.id,
-                songs : payload.songs
-            }
-        }
-    },
-    [types.LOAD_SINGLE_PLAYLIST_REQUEST]: (state, payload) => {
-        return {
-            ...state,
-            currentPlaylist : {
-                id : payload.id,
-                songs : []
+            byId : {
+                ...state.byId,
+                [playlist.id] : {
+                    ...state.byId[playlist.id],
+                    ...playlist,
+                    songs : entry.map(song => song.id)
+                }
             }
         }
     },

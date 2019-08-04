@@ -1,7 +1,10 @@
 import React from "react";
-import { connect } from "react-redux";
 import { navigate } from "@reach/router"
+// Redux
+import { connect } from "react-redux";
 import { removeSongsFromPlaylist, deletePlaylist, editPlaylist, loadSinglePlaylist } from "../../redux/actions/playlistsActions";
+import { songsOfPlaylistSelector } from '../../redux/selectors/songSelectors'
+// Utils
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
 // UI
 import AutoSizer from 'react-virtualized-auto-sizer'
@@ -187,7 +190,7 @@ class Playlist extends React.Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         "playlist" : state.playlists.byId[ownProps.playlistId],
-        "songs" : state.playlists.currentPlaylist.songs.map( id => state.songs.byId[id] )
+        "songs" : songsOfPlaylistSelector(state, ownProps)
     }
 }
 

@@ -9,8 +9,7 @@ export default {
         byId : {}
     },
     playlists : {
-        byId : {},
-        currentPlaylist : { id: null, songs: [] }
+        byId : {}
     },
     favourites : {
         songs : []
