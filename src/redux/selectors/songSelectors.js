@@ -6,6 +6,8 @@ const getAlbum = (state, props) => state.albums.byId[props.albumId]
 
 const getSongs = (state, props) => state.songs.byId
 
+const getFavourites = (state, props) => state.favourites
+
 export const makeGetSongsOfAlbum = () => {
     return createSelector (
         [ getAlbum, getSongs ],
@@ -30,6 +32,25 @@ export const songsOfArtistSelector = createSelector(
 export const songsOfPlaylistSelector = createSelector(
     [getPlaylist, getSongs],
     (playlist, songs) => {
-        return (playlist && playlist.songs) ? playlist.songs.map(id => songs[id]) : []
+        return (playlist && playlist.songs)
+            ? playlist.songs.reduce( (accum,songId) => {
+                if( songs[songId] ) {
+                    accum.push(songs[songId])
+                }
+                return accum
+            }, [])
+            : []
+    }
+)
+
+export const favouriteSongsSelector = createSelector(
+    [getSongs, getFavourites],
+    (songs, favourites) => {
+        return favourites.reduce( (accum,songId) => {
+            if( songs[songId] ) {
+                accum.push(songs[songId])
+            }
+            return accum
+        }, [])
     }
 )
