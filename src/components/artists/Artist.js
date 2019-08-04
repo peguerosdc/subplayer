@@ -1,85 +1,71 @@
 import React from "react";
+// Redux
 import { connect } from "react-redux";
-import subsonic from "../../api/subsonicApi";
-import Album from '../albums/Album'
-import { beginAsyncTask, asyncTaskSuccess, asyncTaskError } from "../../redux/actions/apiStatusActions"
-import { clearAlbums } from "../../redux/actions/albumActions"
-import InfiniteScroll from 'react-infinite-scroller'
+import { loadOneArtist } from "../../redux/actions/artistsActions"
+import { songsOfArtistSelector } from '../../redux/selectors/songSelectors'
+import { addSongsToPlaylist } from "../../redux/actions/playlistsActions";
+import { setStarOnSongs } from "../../redux/actions/favouritesActions";
+// UI
+import AutoSizer from 'react-virtualized-auto-sizer'
+import SongsTable from '../songs/SongsTable'
+import PlaylistSelectorDropdown from '../common/PlaylistSelectorDropdown.js'
+
+const COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.selectable, SongsTable.columns.download]
 
 class Artist extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { artist : {}, albumsToDisplay : [], hasMoreToLoad: false}
+        this.state = { selectedSongs : [] }
     }
 
-    async componentDidMount() {
-        this.props.clearAlbums()
-        await this.loadArtist(this.props.artistId)
+    componentDidMount() {
+        this.props.loadOneArtist(this.props.artistId)
     }
 
-    loadArtist = async (id) => {
-        this.props.beginAsyncTask()
-        try {
-            const artist = await subsonic.getArtist(id)
-            this.setState({artist : artist, hasMoreToLoad : true})
-            this.props.asyncTaskSuccess()
-        }
-        catch(error) {
-            console.error(error)
-            this.props.asyncTaskError(error.message)
-        }
+    // Add to favs and playlist
+    onSongsSelected = (selectedSongs) => {
+        this.setState({selectedSongs: selectedSongs})
     }
 
-    cacheArtistsIndex = (page) => {
-        const artist = this.state.artist
-        const albums = artist && artist.album ? artist.album : []
-        // Define each page with 3 elements
-        const pageSize = 3
-        if( page*pageSize + pageSize < albums.length + pageSize) {
-            let hasMoreToLoad = true
-            // Cap maximum value
-            let maximumValue = page*pageSize + pageSize
-            if( page*pageSize + pageSize > albums.length) {
-                maximumValue = albums.length
-                hasMoreToLoad = false
-            }
-            // Add new albums
-            let toAdd = []
-            for (var i = page*pageSize; i < maximumValue; i++) {
-                const album = albums[i]
-                toAdd.push( <Album key={i} albumId={album.id} style={{marginTop:"10px", marginBottom:"10px", minHeight:"300px"}}/> )
-            }
-            this.setState({
-                albumsToDisplay : this.state.albumsToDisplay.concat(toAdd),
-                hasMoreToLoad : hasMoreToLoad})
-        }
-        else {
-            this.setState({hasMoreToLoad : false})
-        }
+    onPlaylistSelected = (playlist) => {
+        this.props.addSongsToPlaylist(playlist, this.state.selectedSongs)
+    }
+
+    onFavouritesSelected = () => {
+        this.props.setStarOnSongs(this.state.selectedSongs, true)
     }
 
     render() {
-        const artist = this.state.artist
+        const artist = this.props.artist || {}
+        const songs = this.props.songs
+        const hasSongsSelected = this.state.selectedSongs.length !== 0
         return (
-            <div style={{padding:"20px", height:"100%", overflow:"auto"}}>
+            <div style={{display:"flex", flexFlow:"column", padding:"20px", height:"100%", width:"100%"}}>
                 <h1 style={{color:"white", fontWeight: "bold"}}>{artist != null ? artist.name : "..."}</h1>
-                <InfiniteScroll
-                    pageStart={-1}
-                    loadMore={this.cacheArtistsIndex}
-                    hasMore={this.state.hasMoreToLoad}
-                    loader={<div key={0}>Loading ...</div>}
-                    useWindow={false}>
-                    {this.state.albumsToDisplay}
-                </InfiniteScroll>
+                <PlaylistSelectorDropdown onPlaylistSelected={this.onPlaylistSelected} onFavouritesSelected={this.onFavouritesSelected} disabled={!hasSongsSelected} />
+                <div style={{flexGrow:1}}>
+                    <AutoSizer disableWidth>
+                    {({height}) => (
+                        <SongsTable songs={songs} height={height} onSongsSelected={this.onSongsSelected} columns={COLUMNS_TO_SHOW} />
+                    )}
+                    </AutoSizer>
+                </div>
             </div>
         )
     }
 }
 
-const mapDispatchToProps = { beginAsyncTask, asyncTaskSuccess, asyncTaskError, clearAlbums }
+const mapStateToProps = (state, props) => {
+    return {
+        artist : state.artists.byId[props.artistId],
+        songs: songsOfArtistSelector(state, props),
+    }
+}
+
+const mapDispatchToProps = { loadOneArtist, addSongsToPlaylist, setStarOnSongs }
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Artist)

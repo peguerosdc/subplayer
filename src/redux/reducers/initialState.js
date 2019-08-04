@@ -1,18 +1,24 @@
 export default {
     asyncTasksInProgress: 0,
     alert : {},
-    artists : [],
+    artists : {
+        byIndex : [],
+        byId : {}
+    },
     albums : {
         byId : {}
     },
     playlists : {
-        byId : {},
-        currentPlaylist : { songs: [] }
+        byId : {}
     },
+    favourites : [],
     songs : {
+        byId : {}
+    },
+    musicPlayer : {
         queue : [],
-        currentSongPlaying : null,
-        currentSongIndex : null
+        songsById : {},
+        currentSongIndex : null,
     },
     auth : {
         isAuthenticated: false,

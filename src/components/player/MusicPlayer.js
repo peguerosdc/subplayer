@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { Howl } from 'howler';
-import { playNextSong, playPreviousSong, setStarOnSongs } from "../../redux/actions/songsActions";
+import { playNextSong, playPreviousSong } from "../../redux/actions/songsActions"
+import { setStarOnSongs } from "../../redux/actions/favouritesActions"
 import subsonic from "../../api/subsonicApi";
 import { seconds_to_mss } from "../../utils/formatting.js"
+import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
 // UI
 import { IconButton, Icon, Slider } from 'rsuite';
 import "./MusicPlayer.less"
@@ -23,10 +25,7 @@ class MusicPlayer extends React.Component {
             var previousSong = prevProps.song ? prevProps.song : {}
             if( this.props.song.id !== previousSong.id) {
                 // Stop the current song if playing
-                if( this.streamer ) {
-                    this.streamer.stop()
-                    this.streamer.unload()
-                }
+                this.clearMusicPlayer()
                 // Stop the previous song to prevent both songs to play at the same time
                 this.streamer = new Howl({
                     src: [subsonic.getStreamUrl(this.props.song.id)],
@@ -45,6 +44,10 @@ class MusicPlayer extends React.Component {
                 this.startSongTicker()
                 this.setState({playing : true, tick: 0})
             }
+        }
+        // If there is no song to play, stop whatever was playing
+        else {
+            this.clearMusicPlayer()
         }
     }
 
@@ -66,7 +69,7 @@ class MusicPlayer extends React.Component {
     componentWillUnmount() {
         clearInterval(this.timerID)
         // Stop the current song if playing
-        this.streamer && (this.streamer.stop() && this.streamer.unload() )
+        this.clearMusicPlayer()
     }
 
     changeVolume = (newVolume) => {
@@ -92,6 +95,16 @@ class MusicPlayer extends React.Component {
         }
     }
 
+    clearMusicPlayer = () => {
+        if( this.streamer ) {
+            this.streamer.stop()
+            this.streamer.unload()
+        }
+        clearInterval(this.timerID)
+        // "Reset" UI
+        this.state.playing && this.setState({playing : false, tick: 0})
+    }
+
     render () {
         const song = this.props.song ? this.props.song : {}
         const playing = this.state.playing
@@ -113,8 +126,8 @@ class MusicPlayer extends React.Component {
                 <IconButton appearance="primary" icon={<Icon icon={playing ? "pause" : "play"} />} circle size="sm" onClick={this.togglePlayerState} />
                 <IconButton icon={<Icon icon="step-forward" />} appearance="link" size="sm" onClick={this.props.playNextSong} style={{color:"white"}} />
                 <span className="rs-hidden-xs rs-hidden-sm">{seconds_to_mss(seek)}</span>
-                <Slider className="song_progress_bar rs-hidden-xs rs-hidden-sm" progress value={seek} max={song.duration} />
-                <span className="rs-hidden-xs rs-hidden-sm">{seconds_to_mss(song.duration ? song.duration : 0)}</span>
+                <Slider className="song_progress_bar rs-hidden-xs rs-hidden-sm" progress value={seek} max={song.duration || 0} />
+                <span className="rs-hidden-xs rs-hidden-sm">{seconds_to_mss(song.duration || 0)}</span>
                 <Icon className="volume_control_mute rs-hidden-xs rs-hidden-sm" icon='volume-up' />
                 <Slider tooltip={false} progress className="volume_control_bar rs-hidden-xs rs-hidden-sm" onChange={this.changeVolume} defaultValue={1} max={1} step={0.1} />
             </div>
@@ -124,7 +137,7 @@ class MusicPlayer extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        "song" : state.songs.currentSongPlaying
+        "song" : getSongCurrentlyPlayingSelector(state)
     }
 }
 

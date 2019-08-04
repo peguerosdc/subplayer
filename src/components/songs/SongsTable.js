@@ -1,8 +1,11 @@
 import React from "react";
+// Redux
 import { connect } from "react-redux";
-import PropTypes from 'prop-types'
 import { addSongsToQueue } from "../../redux/actions/songsActions";
+import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
+// Utils
 import { seconds_to_mss } from "../../utils/formatting.js"
+import PropTypes from 'prop-types'
 import subsonic from "../../api/subsonicApi"
 // UI
 import "./SongsTable.less"
@@ -77,6 +80,12 @@ class SongsTable extends React.Component {
             if( this.state.checkedKeys.length > 0 ) {
                 this.setState({ checkedKeys: [] })
             }
+        }
+        // Update the songs that are stored in nextCheckedKeys with the new objects
+        if( prevProps.songs !== this.props.songs ) {
+            this.props.onSongsSelected && this.props.onSongsSelected(
+                this.state.checkedKeys.map(key => this.props.songs.find(s => s.id === key) )
+            )
         }
     }
 
@@ -195,7 +204,7 @@ class SongsTable extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        currentSongPlaying : state.songs.currentSongPlaying
+        currentSongPlaying : getSongCurrentlyPlayingSelector(state)
     }
 }
 
