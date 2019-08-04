@@ -78,6 +78,12 @@ class SongsTable extends React.Component {
                 this.setState({ checkedKeys: [] })
             }
         }
+        // Update the songs that are stored in nextCheckedKeys with the new objects
+        if( prevProps.songs !== this.props.songs ) {
+            this.props.onSongsSelected && this.props.onSongsSelected(
+                this.state.checkedKeys.map(key => this.props.songs.find(s => s.id === key) )
+            )
+        }
     }
 
     render() {

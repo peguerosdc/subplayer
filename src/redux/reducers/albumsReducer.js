@@ -5,6 +5,7 @@ import {createReducer} from '../../utils/redux.js';
 export default createReducer(initialState.albums, {
     [types.LOAD_ALBUM_SUCCESS]: (state, payload) => {
         const album = payload.album
+        album.song = album.song.map(song => song.id)
         return {
             ...state,
             byId : {

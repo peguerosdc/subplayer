@@ -1,14 +1,14 @@
 import { createSelector } from 'reselect'
 
-const getAlbum = (state, props) => state.albums[props.albumId]
+const getAlbum = (state, props) => state.albums.byId[props.albumId]
 
 const getSongs = (state, props) => state.songs.byId
 
-export const makeGetSongsOfAlbums = () => {
+export const makeGetSongsOfAlbum = () => {
     return createSelector (
         [ getAlbum, getSongs ],
         (album, songs) => {
-            return album ? album.song.map(id => songs[id]) : []
+            return album ? Object.keys(songs).map(id => songs[id]).filter(song => song.albumId === album.id) : []
         }
     )
 }

@@ -2,9 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import subsonic from "../../api/subsonicApi";
 import { addSongsToPlaylist } from "../../redux/actions/playlistsActions";
-import { loadAlbum } from "../../redux/actions/albumActions";
-import { beginAsyncTask, asyncTaskSuccess } from "../../redux/actions/apiStatusActions"
 import { setStarOnSongs } from "../../redux/actions/favouritesActions";
+// Utils
+import { makeGetSongsOfAlbum } from '../../redux/selectors/songSelectors'
 // UI
 import { Grid, Row, Col, Panel } from 'rsuite';
 import SongsTable from '../songs/SongsTable'
@@ -16,10 +16,6 @@ class Album extends React.Component {
     constructor(props) {
         super(props)
         this.state = { selectedSongs : []}
-    }
-
-    componentDidMount() {
-        this.props.loadAlbum(this.props.albumId)
     }
 
     onPlaylistSelected = (playlist) => {
@@ -36,7 +32,7 @@ class Album extends React.Component {
 
     render() {
         const album = this.props.album || {}
-        const songs = (album && album.song) || []
+        const songs = this.props.songs || []
         const disableDropdown = this.state.selectedSongs.length === 0
         // Render all
         return (
@@ -62,12 +58,14 @@ class Album extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+    const getSongsOfAlbum = makeGetSongsOfAlbum()
     return {
-        "album" : state.albums.byId[ownProps.albumId]
+        "album" : state.albums.byId[ownProps.albumId],
+        "songs" : getSongsOfAlbum(state, ownProps),
     }
 }
 
-const mapDispatchToProps = { addSongsToPlaylist, beginAsyncTask, asyncTaskSuccess, setStarOnSongs, loadAlbum }
+const mapDispatchToProps = { addSongsToPlaylist, setStarOnSongs }
 
 export default connect(
     mapStateToProps,

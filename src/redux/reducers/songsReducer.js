@@ -76,5 +76,6 @@ export default createReducer(initialState.songs, {
     },
     [types.PUT_SONGS_RESULT] : (state, payload) => put_songs_in_store(state, payload.songs, payload.clearCurrentList),
     [types.LOAD_ONE_ARTIST_SUCCESS] : (state, payload) => put_songs_in_store(state, payload.songs, true),
+    [types.LOAD_ALBUM_SUCCESS] : (state, payload) => put_songs_in_store(state, payload.album.song, true),
     [types.LOGOUT_USER]: (state, payload) => initialState.songs
 })
