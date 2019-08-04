@@ -14,50 +14,8 @@ function put_songs_in_store(state, songs, clearCurrentList = true) {
 }
 
 export default createReducer(initialState.songs, {
-    [types.ADD_SONGS_TO_QUEUE]: (state, payload) => {
-        return {
-            ...state,
-            currentSongIndex : 0,
-            currentSongPlaying : payload.songs[0],
-            queue : payload.songs
-        }
-    },
-    [types.PLAY_NEXT_SONG]: (state, payload) => {
-        const hasNext = (state.currentSongIndex != null) && (state.currentSongIndex + 1 < state.queue.length)
-        return Object.assign({}, state,
-            hasNext ? {
-                currentSongIndex : state.currentSongIndex + 1,
-                currentSongPlaying : state.queue[state.currentSongIndex + 1]
-            }
-            : { currentSongIndex : null, currentSongPlaying : null })
-    },
-    [types.PLAY_PREVIOUS_SONG]: (state, payload) => {
-        const hasPrevious = state.currentSongIndex > 0
-        return Object.assign({}, state,
-            hasPrevious ? {
-                currentSongIndex : state.currentSongIndex-1,
-                currentSongPlaying : state.queue[state.currentSongIndex-1]
-            } 
-            : {})
-    },
     [types.STAR_SONG_RESULT] : (state, payload) => {
         let newState = state
-        const currentSongPlaying = state.currentSongPlaying
-        // We are relying on the current song being edited
-        if( currentSongPlaying ) {
-            payload.songIds.forEach( (starredSongId, index) => {
-                if(currentSongPlaying.id === starredSongId) {
-                    const star = payload.starred ? new Date().toISOString() : false
-                    const newSong = { ...state.currentSongPlaying, starred : star }
-                    const newQueue = state.queue.slice(0, state.currentSongIndex).concat( [newSong], state.queue.slice(state.currentSongIndex+1))
-                    newState = {
-                        ...state,
-                        currentSongPlaying : newSong,
-                        queue : newQueue
-                    }
-                }
-            })
-        }
         // Toggle if it is found in the DB of songs
         const modifiedSongsInDB = payload.songIds.filter(id => state.byId[id])
         modifiedSongsInDB.forEach( (id) => {

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import subsonic from "../../api/subsonicApi";
 import { navigate } from "@reach/router"
 import { search } from "../../redux/actions/searchActions";
+import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
 // UI
 import SearchBar from "./SearchBar"
 import SongsTable from '../songs/SongsTable'
@@ -98,7 +99,7 @@ const mapStateToProps = (state, ownProps) => {
         "artists" : state.search.artists,
         "albums" : state.search.albums,
         "songs" : state.search.songs,
-        currentSongPlaying : state.songs.currentSongPlaying,
+        currentSongPlaying : getSongCurrentlyPlayingSelector(state),
     }
 }
 

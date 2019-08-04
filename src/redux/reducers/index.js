@@ -8,6 +8,7 @@ import search from "./searchReducer"
 import alert from "./alertsReducer"
 import albums from "./albumsReducer"
 import favourites from "./favouritesReducer"
+import musicPlayer from "./musicPlayerReducer"
 
 export default combineReducers({
     asyncTasksInProgress,
@@ -18,5 +19,6 @@ export default combineReducers({
     search,
     alert,
     albums,
-    favourites
+    favourites,
+    musicPlayer
 });

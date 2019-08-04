@@ -1,8 +1,11 @@
 import React from "react";
+// Redux
 import { connect } from "react-redux";
-import PropTypes from 'prop-types'
 import { addSongsToQueue } from "../../redux/actions/songsActions";
+import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
+// Utils
 import { seconds_to_mss } from "../../utils/formatting.js"
+import PropTypes from 'prop-types'
 import subsonic from "../../api/subsonicApi"
 // UI
 import "./SongsTable.less"
@@ -201,7 +204,7 @@ class SongsTable extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        currentSongPlaying : state.songs.currentSongPlaying
+        currentSongPlaying : getSongCurrentlyPlayingSelector(state)
     }
 }
 

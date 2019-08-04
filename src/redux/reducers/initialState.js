@@ -15,10 +15,12 @@ export default {
         songs : []
     },
     songs : {
-        queue : [],
-        currentSongPlaying : null,
-        currentSongIndex : null,
         byId : {}
+    },
+    musicPlayer : {
+        queue : [],
+        songsById : {},
+        currentSongIndex : null,
     },
     auth : {
         isAuthenticated: false,
