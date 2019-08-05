@@ -17,7 +17,7 @@ export function loadArtists() {
         }
         catch(error) {
             console.error(error)
-            dispatch(asyncTaskError(error.message))
+            dispatch(asyncTaskError("Could not load artists"))
         }
     }
 }
@@ -62,7 +62,7 @@ export function loadOneArtist(artistId) {
         }
         catch(error) {
             console.error(error)
-            dispatch(asyncTaskError(error.message))
+            dispatch(asyncTaskError("Unable to load artist"))
         }
     }
 }
