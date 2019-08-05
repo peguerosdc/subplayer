@@ -1,16 +1,16 @@
-import React from 'react';
-import { connect } from "react-redux";
-import './App.css';
-import 'rsuite/styles/index.less';
+import React from 'react'
+import { connect } from "react-redux"
+import './App.css'
+import 'rsuite/styles/index.less'
 import './index.less'
-import { Router } from "@reach/router";
-import { logout } from "./redux/actions/authActions";
-import { createPlaylist, loadPlaylists } from "./redux/actions/playlistsActions";
+import { Router } from "@reach/router"
+import { logout } from "./redux/actions/authActions"
+import { createPlaylist, loadPlaylists } from "./redux/actions/playlistsActions"
 // UI
-import { Container, Content, Footer, Sidebar, Header } from 'rsuite';
-import MySidebar from './components/sidebar/Sidebar';
-import Navbar from './components/navbar/Navbar';
-import MusicPlayer from './components/player/MusicPlayer';
+import { Container, Content, Footer, Sidebar, Header } from 'rsuite'
+import MySidebar from './components/sidebar/Sidebar'
+import Navbar from './components/navbar/Navbar'
+import MusicPlayer from './components/player/MusicPlayer'
 import InfiniteLineLoader from './components/common/InfiniteLineLoader'
 import ArtistsList from './components/artists/ArtistsList'
 import Artist from './components/artists/Artist'
@@ -82,7 +82,7 @@ class App extends React.Component  {
         { /* component to handle the alerts */ }
         <AlertsManager />
       </Container>
-    );
+    )
   }
 
 }

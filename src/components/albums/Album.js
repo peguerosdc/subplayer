@@ -1,13 +1,13 @@
-import React from "react";
+import React from "react"
 // Redux
-import { connect } from "react-redux";
-import { addSongsToPlaylist } from "../../redux/actions/playlistsActions";
-import { setStarOnSongs } from "../../redux/actions/favouritesActions";
+import { connect } from "react-redux"
+import { addSongsToPlaylist } from "../../redux/actions/playlistsActions"
+import { setStarOnSongs } from "../../redux/actions/favouritesActions"
 import { makeGetSongsOfAlbum } from '../../redux/selectors/songSelectors'
 // Utils
-import subsonic from "../../api/subsonicApi";
+import subsonic from "../../api/subsonicApi"
 // UI
-import { Grid, Row, Col, Panel } from 'rsuite';
+import { Grid, Row, Col, Panel } from 'rsuite'
 import SongsTable from '../songs/SongsTable'
 import SongsTableEnhanced from '../songs/SongsTableEnhanced'
 import "./Album.less"

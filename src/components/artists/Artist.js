@@ -1,6 +1,6 @@
-import React from "react";
+import React from "react"
 // Redux
-import { connect } from "react-redux";
+import { connect } from "react-redux"
 import { loadOneArtist } from "../../redux/actions/artistsActions"
 // UI
 import { Nav, Icon } from 'rsuite'

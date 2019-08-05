@@ -1,10 +1,10 @@
-import React from "react";
+import React from "react"
 import PropTypes from 'prop-types'
 // Redux
-import { connect } from "react-redux";
-import { editPlaylist } from "../../../redux/actions/playlistsActions";
+import { connect } from "react-redux"
+import { editPlaylist } from "../../../redux/actions/playlistsActions"
 // UI
-import { Button, Modal, Form, FormGroup, ControlLabel, Input, Checkbox } from 'rsuite';
+import { Button, Modal, Form, FormGroup, ControlLabel, Input, Checkbox } from 'rsuite'
 
 class EditPlaylistModal extends React.Component {
 

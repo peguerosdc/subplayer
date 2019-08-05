@@ -1,7 +1,7 @@
-import React from "react";
+import React from "react"
 import { navigate } from "@reach/router"
 // Redux
-import { connect } from "react-redux";
+import { connect } from "react-redux"
 import { search } from "../../redux/actions/searchActions"
 // UI
 import { Input, InputGroup, Icon } from 'rsuite'

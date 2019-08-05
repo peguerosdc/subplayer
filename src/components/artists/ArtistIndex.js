@@ -1,11 +1,11 @@
-import React from "react";
+import React from "react"
 // Redux
-import { connect } from "react-redux";
+import { connect } from "react-redux"
 import { navigate } from "@reach/router"
 import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
 // UI
 import "./ArtistsList.less"
-import { Icon, Col } from 'rsuite';
+import { Icon, Col } from 'rsuite'
 
 class ArtistIndex extends React.Component {
 

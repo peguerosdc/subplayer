@@ -1,6 +1,6 @@
 import * as types from "../actions/actionTypes"
 import initialState from "./initialState"
-import {createReducer} from '../../utils/redux.js';
+import {createReducer} from '../../utils/redux.js'
 
 export default createReducer(initialState.search, {
     [types.SEARCH_RESULT]: (state, payload) => {

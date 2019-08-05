@@ -1,7 +1,7 @@
-import React from "react";
+import React from "react"
 // Redux
-import { connect } from "react-redux";
-import { removeSongsFromPlaylist, loadSinglePlaylist } from "../../redux/actions/playlistsActions";
+import { connect } from "react-redux"
+import { removeSongsFromPlaylist, loadSinglePlaylist } from "../../redux/actions/playlistsActions"
 import { songsOfPlaylistSelector } from '../../redux/selectors/songSelectors'
 // Utils
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
@@ -10,7 +10,7 @@ import SongsTable from '../songs/SongsTable'
 import SongsTableEnhanced from '../songs/SongsTableEnhanced'
 import DeletePlaylistModal from './DeletePlaylistModal/DeletePlaylistModal'
 import EditPlaylistModal from './EditPlaylistModal/EditPlaylistModal'
-import { Button, Icon, IconButton } from 'rsuite';
+import { Button, Icon, IconButton } from 'rsuite'
 
 const NOT_MINE_COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download]
 const MINE_COLUMNS_TO_SHOW = [...NOT_MINE_COLUMNS_TO_SHOW, SongsTable.columns.selectable]

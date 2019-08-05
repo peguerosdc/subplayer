@@ -1,6 +1,6 @@
-import * as types from "../actions/actionTypes";
-import initialState from "./initialState";
-import {createReducer} from '../../utils/redux.js';
+import * as types from "../actions/actionTypes"
+import initialState from "./initialState"
+import {createReducer} from '../../utils/redux.js'
 
 function put_songs_in_store(state, songs, clearCurrentList = true) {
     // Transform the array of songs coming in the payload to a normalized object

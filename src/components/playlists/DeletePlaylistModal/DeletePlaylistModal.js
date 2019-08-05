@@ -1,11 +1,11 @@
-import React from "react";
+import React from "react"
 import { navigate } from "@reach/router"
 import PropTypes from 'prop-types'
 // Redux
-import { connect } from "react-redux";
-import { deletePlaylist } from "../../../redux/actions/playlistsActions";
+import { connect } from "react-redux"
+import { deletePlaylist } from "../../../redux/actions/playlistsActions"
 // UI
-import { Button, Modal, Icon } from 'rsuite';
+import { Button, Modal, Icon } from 'rsuite'
 
 class DeletePlaylistModal extends React.Component {
 

@@ -1,8 +1,8 @@
-import React from "react";
+import React from "react"
 // Redux
-import { connect } from "react-redux";
-import { addSongsToPlaylist } from "../../redux/actions/playlistsActions";
-import { setStarOnSongs } from "../../redux/actions/favouritesActions";
+import { connect } from "react-redux"
+import { addSongsToPlaylist } from "../../redux/actions/playlistsActions"
+import { setStarOnSongs } from "../../redux/actions/favouritesActions"
 // UI
 import AutoSizer from 'react-virtualized-auto-sizer'
 import SongsTable from './SongsTable'

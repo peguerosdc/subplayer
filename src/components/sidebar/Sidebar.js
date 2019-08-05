@@ -1,10 +1,10 @@
-import React from 'react';
+import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from '@reach/router'
 // Redux
-import { connect } from "react-redux";
+import { connect } from "react-redux"
 // UI
-import { Button, Icon, Divider } from 'rsuite';
+import { Button, Icon, Divider } from 'rsuite'
 import { ConnectedSearchBar } from "../search/SearchBar"
 import "./sidebar.less"
 

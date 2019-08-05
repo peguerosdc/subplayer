@@ -1,7 +1,7 @@
-import React from "react";
+import React from "react"
 // Redux
-import { loadArtists } from "../../redux/actions/artistsActions";
-import { connect } from "react-redux";
+import { loadArtists } from "../../redux/actions/artistsActions"
+import { connect } from "react-redux"
 // UI
 import "./ArtistsList.less"
 import ArtistIndex from "./ArtistIndex.js"

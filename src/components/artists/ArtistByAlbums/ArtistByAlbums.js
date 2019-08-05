@@ -1,9 +1,9 @@
-import React from "react";
+import React from "react"
 // Redux
-import { connect } from "react-redux";
+import { connect } from "react-redux"
 import { getAlbumsOfArtist } from "../../../redux/selectors/albumSelectors"
 // Utils
-import subsonic from "../../../api/subsonicApi";
+import subsonic from "../../../api/subsonicApi"
 // UI
 import Album from "../../albums/Album.js"
 import { Divider, Nav, SelectPicker } from 'rsuite'

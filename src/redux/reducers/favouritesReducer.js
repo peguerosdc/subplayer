@@ -1,6 +1,6 @@
-import * as types from "../actions/actionTypes";
-import initialState from "./initialState";
-import {createReducer} from '../../utils/redux.js';
+import * as types from "../actions/actionTypes"
+import initialState from "./initialState"
+import {createReducer} from '../../utils/redux.js'
 
 export default createReducer(initialState.favourites, {
     [types.LOAD_FAVOURITES_RESULT] : (state, payload) => payload.songs.map(song => song.id),
@@ -12,7 +12,7 @@ export default createReducer(initialState.favourites, {
         }
         // Or create a new array without the deleted songs as the songs' array
         else {
-            newSongs = state.filter(s => !payload.songIds.includes(s));
+            newSongs = state.filter(s => !payload.songIds.includes(s))
         }
         return newSongs
     },

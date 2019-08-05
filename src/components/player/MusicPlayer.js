@@ -1,15 +1,15 @@
-import React from 'react';
+import React from 'react'
 // Redux
-import { connect } from "react-redux";
+import { connect } from "react-redux"
 import { playNextSong, playPreviousSong } from "../../redux/actions/songsActions"
 import { setStarOnSongs } from "../../redux/actions/favouritesActions"
 import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
 // Utils
-import { Howl } from 'howler';
-import subsonic from "../../api/subsonicApi";
+import { Howl } from 'howler'
+import subsonic from "../../api/subsonicApi"
 import { seconds_to_mss } from "../../utils/formatting.js"
 // UI
-import { IconButton, Icon, Slider } from 'rsuite';
+import { IconButton, Icon, Slider } from 'rsuite'
 import "./MusicPlayer.less"
 
 class MusicPlayer extends React.Component {
@@ -54,7 +54,7 @@ class MusicPlayer extends React.Component {
     }
 
     startSongTicker() {
-        clearInterval(this.timerID);
+        clearInterval(this.timerID)
         this.timerID = setInterval(() => {
             if( this.state.playing ) {
                 this.tick()
@@ -65,7 +65,7 @@ class MusicPlayer extends React.Component {
     tick() {
         this.setState({
             tick: Math.ceil(this.streamer.seek())
-        });
+        })
     }
 
     componentWillUnmount() {

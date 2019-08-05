@@ -1,6 +1,6 @@
-import * as types from "./actionTypes";
-import subsonic from "../../api/subsonicApi";
-import { beginAsyncTask, asyncTaskSuccess, asyncTaskError, asyncTaskWarning } from "./apiStatusActions";
+import * as types from "./actionTypes"
+import subsonic from "../../api/subsonicApi"
+import { beginAsyncTask, asyncTaskSuccess, asyncTaskError, asyncTaskWarning } from "./apiStatusActions"
 
 /* Load multiple playlists */
 export function loadPlaylistsSuccess(playlists) {
