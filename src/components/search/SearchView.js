@@ -5,11 +5,12 @@ import { navigate } from "@reach/router"
 import { search } from "../../redux/actions/searchActions";
 import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
 // UI
-import SearchBar from "./SearchBar"
+import { ConnectedSearchBar } from "./SearchBar"
 import SongsTable from '../songs/SongsTable'
+import SongsTableEnhanced from '../songs/SongsTableEnhanced'
 import { Col, Icon } from 'rsuite';
 
-const SONG_COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download]
+const SONG_COLUMNS_TO_SHOW = [SongsTable.columns.selectable, SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download]
 
 function AlbumElement(props) {
     const album = props.album
@@ -41,7 +42,7 @@ class SearchView extends React.Component {
         return (
             <div style={{padding:"20px", display:"flex", flexDirection:"column", height:"100%", overflow:"auto"}}>
                 <Col className="rs-hidden-lg rs-hidden-md">
-                    <SearchBar />
+                    <ConnectedSearchBar />
                 </Col>
 
                 {
@@ -84,7 +85,7 @@ class SearchView extends React.Component {
                     songs.length > 0 ? (
                         <>
                             <h1 className="artists_list_title">Songs</h1>
-                            <SongsTable style={{marginBottom:"20px"}} songs={songs} columns={SONG_COLUMNS_TO_SHOW} />
+                            <SongsTableEnhanced style={{marginBottom:"20px"}} songs={songs} columns={SONG_COLUMNS_TO_SHOW} sortable={true} />
                         </>
                     ) : null
                 }

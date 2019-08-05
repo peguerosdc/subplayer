@@ -6,10 +6,11 @@ import { favouriteSongsSelector } from '../../redux/selectors/songSelectors'
 // Utils
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
 // UI
-import AutoSizer from 'react-virtualized-auto-sizer'
+import SongsTableEnhanced from '../songs/SongsTableEnhanced'
 import { Button } from 'rsuite';
 import SongsTable from '../songs/SongsTable'
 
+const COLUMNS_TO_SHOW = [SongsTable.columns.selectable, SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download, SongsTable.columns.starred]
 
 class FavouritesView extends React.Component {
 
@@ -55,13 +56,7 @@ class FavouritesView extends React.Component {
                         <Button onClick={this.removeSelectedSongs} disabled={disableButton}>Remove from favourites</Button>
                     </div>
                 </div>
-                <div style={{flexGrow:1}}>
-                    <AutoSizer disableWidth>
-                    {({height}) => (
-                        <SongsTable songs={songs} onSongsSelected={this.onSongsSelected} height={height} />
-                    )}
-                    </AutoSizer>
-                </div>
+                <SongsTableEnhanced style={{flexGrow:1}} songs={songs} onSongsSelected={this.onSongsSelected} columns={COLUMNS_TO_SHOW} fixedHeightToFill={true} withPlaylistDropdown={false} sortable={true} />
             </div>
         )
     }

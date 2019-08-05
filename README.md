@@ -54,9 +54,7 @@ $ docker stop mysubplayer
 ## TODO
 - Implement CI to push Docker image automatically when merged to `master`
 - Add unit tests
-- Improve performance when loading an Artist's page
 - `feature`: Playing queue's management (add songs at position, re-order, etc)
-- `feature`: Play Songs from an Artist
 - `feature`: "Recently added" view
 - `feature`: Toggle "shuffle" on/off
 - `feature`: Song seeking
