@@ -6,7 +6,7 @@ import { setStarOnSongs } from "../../redux/actions/favouritesActions"
 // UI
 import AutoSizer from 'react-virtualized-auto-sizer'
 import SongsTable from './SongsTable'
-import PlaylistSelectorDropdown from '../common/PlaylistSelectorDropdown.js'
+import PlaylistSelectorDropdown from '../common/PlaylistSelectorDropdown/PlaylistSelectorDropdown'
 import { SearchBar } from "../search/SearchBar"
 
 class SongsTableEnhanced extends React.Component {

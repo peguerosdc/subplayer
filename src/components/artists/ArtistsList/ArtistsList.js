@@ -1,6 +1,6 @@
 import React from "react"
 // Redux
-import { loadArtists } from "../../redux/actions/artistsActions"
+import { loadArtists } from "../../../redux/actions/artistsActions"
 import { connect } from "react-redux"
 // UI
 import "./ArtistsList.less"
