@@ -1,6 +1,6 @@
-import * as types from "./actionTypes";
-import subsonic from "../../api/subsonicApi";
-import { beginAsyncTask, asyncTaskSuccess, asyncTaskError, asyncTaskWarning } from "./apiStatusActions";
+import * as types from "./actionTypes"
+import subsonic from "../../api/subsonicApi"
+import { beginAsyncTask, asyncTaskSuccess, asyncTaskError, asyncTaskWarning } from "./apiStatusActions"
 
 /* Load multiple playlists */
 export function loadPlaylistsSuccess(playlists) {
@@ -158,11 +158,17 @@ export function editPlaylist(id, name, comment, isPublic) {
 export function loadSinglePlaylist(id) {
     return async (dispatch) => {
         dispatch(beginAsyncTask())
-        const playlist = await subsonic.getPlaylistById(id)
-        if( playlist ) {
-            playlist.entry = playlist.entry || [] 
-            dispatch({type: types.LOAD_SINGLE_PLAYLIST_SUCCESS, payload: {playlist : playlist} })
+        try {
+            const playlist = await subsonic.getPlaylistById(id)
+            if( playlist ) {
+                playlist.entry = playlist.entry || [] 
+                dispatch({type: types.LOAD_SINGLE_PLAYLIST_SUCCESS, payload: {playlist : playlist} })
+            }
+            dispatch(asyncTaskSuccess())
         }
-        dispatch(asyncTaskSuccess())
+        catch(error) {
+            console.error(error)
+            dispatch(asyncTaskError(error.message))
+        }
     }
 }

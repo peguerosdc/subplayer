@@ -1,5 +1,5 @@
 
-import initialState from "./initialState";
+import initialState from "./initialState"
 
 function build_last_operation_result(type, message) {
     return { id: Date.now(), type:type, message:message }

@@ -12,7 +12,7 @@ export function search(query) {
         }
         catch(error) {
             console.error(error)
-            dispatch(asyncTaskError(error.message))
+            dispatch(asyncTaskError("Unable to perform search"))
         }
     }
 }

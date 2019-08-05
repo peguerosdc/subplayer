@@ -7,7 +7,7 @@ import { favouriteSongsSelector } from '../../redux/selectors/songSelectors'
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
 // UI
 import SongsTableEnhanced from '../songs/SongsTableEnhanced'
-import { Button } from 'rsuite';
+import { Button } from 'rsuite'
 import SongsTable from '../songs/SongsTable'
 
 const COLUMNS_TO_SHOW = [SongsTable.columns.selectable, SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download, SongsTable.columns.starred]

@@ -1,12 +1,12 @@
-import React from "react";
+import React from "react"
 // Redux
-import { connect } from "react-redux";
-import { addSongsToPlaylist } from "../../redux/actions/playlistsActions";
-import { setStarOnSongs } from "../../redux/actions/favouritesActions";
+import { connect } from "react-redux"
+import { addSongsToPlaylist } from "../../redux/actions/playlistsActions"
+import { setStarOnSongs } from "../../redux/actions/favouritesActions"
 // UI
 import AutoSizer from 'react-virtualized-auto-sizer'
 import SongsTable from './SongsTable'
-import PlaylistSelectorDropdown from '../common/PlaylistSelectorDropdown.js'
+import PlaylistSelectorDropdown from '../common/PlaylistSelectorDropdown/PlaylistSelectorDropdown'
 import { SearchBar } from "../search/SearchBar"
 
 class SongsTableEnhanced extends React.Component {

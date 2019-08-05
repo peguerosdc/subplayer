@@ -1,8 +1,9 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from "react"
 import PropTypes from 'prop-types'
+// Redux
+import { connect } from "react-redux"
 // UI
-import { Dropdown, Icon } from 'rsuite';
+import { Dropdown, Icon } from 'rsuite'
 
 class PlaylistSelectorDropdown extends React.Component {
 

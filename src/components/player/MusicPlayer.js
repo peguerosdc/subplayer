@@ -1,13 +1,15 @@
-import React from 'react';
-import { connect } from "react-redux";
-import { Howl } from 'howler';
+import React from 'react'
+// Redux
+import { connect } from "react-redux"
 import { playNextSong, playPreviousSong } from "../../redux/actions/songsActions"
 import { setStarOnSongs } from "../../redux/actions/favouritesActions"
-import subsonic from "../../api/subsonicApi";
-import { seconds_to_mss } from "../../utils/formatting.js"
 import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
+// Utils
+import { Howl } from 'howler'
+import subsonic from "../../api/subsonicApi"
+import { seconds_to_mss } from "../../utils/formatting.js"
 // UI
-import { IconButton, Icon, Slider } from 'rsuite';
+import { IconButton, Icon, Slider } from 'rsuite'
 import "./MusicPlayer.less"
 
 class MusicPlayer extends React.Component {
@@ -52,7 +54,7 @@ class MusicPlayer extends React.Component {
     }
 
     startSongTicker() {
-        clearInterval(this.timerID);
+        clearInterval(this.timerID)
         this.timerID = setInterval(() => {
             if( this.state.playing ) {
                 this.tick()
@@ -63,7 +65,7 @@ class MusicPlayer extends React.Component {
     tick() {
         this.setState({
             tick: Math.ceil(this.streamer.seek())
-        });
+        })
     }
 
     componentWillUnmount() {
@@ -112,24 +114,36 @@ class MusicPlayer extends React.Component {
         const starIcon = song.starred ? "star" : "star-o"
         return (
             <div className="darkMusicPlayer">
-                <img src={song.coverArt ? subsonic.getCoverArtUrl(song.coverArt) : "/currently_placeholder.png"} alt="cover" width="45" height="45"/>
-                <div className="song_metadata_container" style={{display:"flex", flexFlow:"row"}}>
+                {/* Currently playing information */}
+                <div className="song_metadata_container">
+                    <img src={song.coverArt ? subsonic.getCoverArtUrl(song.coverArt) : "/currently_placeholder.png"} alt="cover" width="45" height="45"/>
                     <div style={{overflow:"hidden"}}>
                         <p><b>{song.title}</b></p>
                         {song.artist}
                     </div>
-                    <div>
-                        <IconButton icon={<Icon icon={starIcon} />} onClick={this.toggleStarOnSong} appearance="link" size="lg" style={{color:"white"}}/>
+                    <IconButton icon={<Icon icon={starIcon} />} onClick={this.toggleStarOnSong} appearance="link" size="lg"/>
+                </div>
+                {/* Music player controls */}
+                <div className="currently_playing_controls">
+                    <IconButton icon={<Icon icon="step-backward" />} appearance="link" size="sm" onClick={this.props.playPreviousSong}/>
+                    <IconButton appearance="primary" icon={<Icon icon={playing ? "pause" : "play"} />} circle size="sm" onClick={this.togglePlayerState} />
+                    <IconButton icon={<Icon icon="step-forward" />} appearance="link" size="sm" onClick={this.props.playNextSong} />
+                </div>
+                {/* Song seeking controls */}
+                <div style={{flexGrow:1}} className="rs-hidden-xs">
+                    <div className="song_progress_bar_container">
+                        <span>{seconds_to_mss(seek)}</span>
+                        <Slider tooltip={false} className="song_progress_bar" progress value={seek} max={song.duration || 0} />
+                        <span>{seconds_to_mss(song.duration || 0)}</span>
                     </div>
                 </div>
-                <IconButton icon={<Icon icon="step-backward" />} appearance="link" size="sm" onClick={this.props.playPreviousSong} style={{color:"white"}}/>
-                <IconButton appearance="primary" icon={<Icon icon={playing ? "pause" : "play"} />} circle size="sm" onClick={this.togglePlayerState} />
-                <IconButton icon={<Icon icon="step-forward" />} appearance="link" size="sm" onClick={this.props.playNextSong} style={{color:"white"}} />
-                <span className="rs-hidden-xs rs-hidden-sm">{seconds_to_mss(seek)}</span>
-                <Slider className="song_progress_bar rs-hidden-xs rs-hidden-sm" progress value={seek} max={song.duration || 0} />
-                <span className="rs-hidden-xs rs-hidden-sm">{seconds_to_mss(song.duration || 0)}</span>
-                <Icon className="volume_control_mute rs-hidden-xs rs-hidden-sm" icon='volume-up' />
-                <Slider tooltip={false} progress className="volume_control_bar rs-hidden-xs rs-hidden-sm" onChange={this.changeVolume} defaultValue={1} max={1} step={0.1} />
+                {/* Volume controls */}
+                <div className="rs-hidden-xs">
+                    <div className="volume_controls_container">
+                        <Icon className="volume_control_mute" icon='volume-up' />
+                        <Slider tooltip={false} progress className="volume_control_bar" onChange={this.changeVolume} defaultValue={1} max={1} step={0.1} />
+                    </div>
+                </div>
             </div>
         )
     }

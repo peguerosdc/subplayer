@@ -1,22 +1,22 @@
-import React from 'react';
-import { connect } from "react-redux";
-import './App.css';
-import 'rsuite/styles/index.less';
+import React from 'react'
+import { connect } from "react-redux"
+import './App.css'
+import 'rsuite/styles/index.less'
 import './index.less'
-import { Router } from "@reach/router";
-import { logout } from "./redux/actions/authActions";
-import { createPlaylist, loadPlaylists } from "./redux/actions/playlistsActions";
+import { Router } from "@reach/router"
+import { logout } from "./redux/actions/authActions"
+import { createPlaylist, loadPlaylists } from "./redux/actions/playlistsActions"
 // UI
-import { Container, Content, Footer, Sidebar, Header } from 'rsuite';
-import MySidebar from './components/sidebar/Sidebar';
-import Navbar from './components/navbar/Navbar';
-import MusicPlayer from './components/player/MusicPlayer';
-import InfiniteLineLoader from './components/common/InfiniteLineLoader'
-import ArtistsList from './components/artists/ArtistsList'
+import { Container, Content, Footer, Sidebar, Header } from 'rsuite'
+import MySidebar from './components/sidebar/Sidebar'
+import Navbar from './components/navbar/Navbar'
+import MusicPlayer from './components/player/MusicPlayer'
+import InfiniteLineLoader from './components/common/InfiniteLineLoader/InfiniteLineLoader'
+import ArtistsList from './components/artists/ArtistsList/ArtistsList'
 import Artist from './components/artists/Artist'
 import AlbumView from './components/albums/AlbumView'
 import Playlist from './components/playlists/Playlist'
-import CreatePlaylistModal from './components/common/CreatePlaylistModal'
+import CreatePlaylistModal from './components/common/CreatePlaylistModal/CreatePlaylistModal'
 import SearchView from './components/search/SearchView'
 import FavouritesView from './components/favourites/FavouritesView'
 import AlertsManager from './components/alerts/AlertsManager'
@@ -82,7 +82,7 @@ class App extends React.Component  {
         { /* component to handle the alerts */ }
         <AlertsManager />
       </Container>
-    );
+    )
   }
 
 }

@@ -1,6 +1,6 @@
-import * as types from "../actions/actionTypes";
-import initialState from "./initialState";
-import {createReducer} from '../../utils/redux.js';
+import * as types from "../actions/actionTypes"
+import initialState from "./initialState"
+import {createReducer} from '../../utils/redux.js'
 
 export default createReducer(initialState.artists, {
     [types.LOAD_ARTISTS_INDEX_SUCCESS]: (state, payload) => {

@@ -1,6 +1,6 @@
-import React from "react";
+import React from "react"
 // Redux
-import { connect } from "react-redux";
+import { connect } from "react-redux"
 import { songsOfArtistSelector } from '../../../redux/selectors/songSelectors'
 // UI
 import SongsTableEnhanced from '../../songs/SongsTableEnhanced'

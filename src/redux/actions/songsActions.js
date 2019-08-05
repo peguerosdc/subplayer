@@ -1,4 +1,4 @@
-import * as types from "./actionTypes";
+import * as types from "./actionTypes"
 
 // "position" and "clear" are meant to be used when implementing queue management
 export function addSongsToQueue(songs, position=0, clear=true) {

@@ -1,7 +1,7 @@
-import * as types from "../actions/actionTypes";
-import {isPlaylistMineByOwner} from "../../utils/utils";
-import initialState from "./initialState";
-import {createReducer} from '../../utils/redux.js';
+import * as types from "../actions/actionTypes"
+import {isPlaylistMineByOwner} from "../../utils/utils"
+import initialState from "./initialState"
+import {createReducer} from '../../utils/redux.js'
 
 export default createReducer(initialState.playlists, {
     [types.LOAD_PLAYLISTS_SUCCESS]: (state, payload) => {

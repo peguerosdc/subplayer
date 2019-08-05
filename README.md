@@ -58,6 +58,7 @@ $ docker stop mysubplayer
 - `feature`: "Recently added" view
 - `feature`: Toggle "shuffle" on/off
 - `feature`: Song seeking
+- `feature`: Muting
 
 ## Contributions
 Any TODO item, any bug you find and want to fix, any architecture/performance/Docker improvements, any new feature you think would be cool to have is welcomed :) Just keep in mind that this project is meant to be a lightweight application capable of running on low-end devices.

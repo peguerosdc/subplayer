@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 import PropTypes from 'prop-types'
 // UI
-import { Button, Modal, Form, FormGroup, FormControl, ControlLabel } from 'rsuite';
+import { Button, Modal, Form, FormGroup, FormControl, ControlLabel } from 'rsuite'
 
 class CreatePlaylistModal extends React.Component {
 

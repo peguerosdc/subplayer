@@ -1,7 +1,7 @@
-import React from "react";
+import React from "react"
 // Redux
-import { connect } from "react-redux";
-import { addSongsToQueue } from "../../redux/actions/songsActions";
+import { connect } from "react-redux"
+import { addSongsToQueue } from "../../redux/actions/songsActions"
 import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
 // Utils
 import { seconds_to_mss, display_starred } from "../../utils/formatting.js"
@@ -11,8 +11,8 @@ import subsonic from "../../api/subsonicApi"
 // UI
 import "./SongsTable.less"
 // Table components
-import { Table, Icon, Checkbox, Whisper, Tooltip } from 'rsuite';
-const { Column, HeaderCell, Cell } = Table;
+import { Table, Icon, Checkbox, Whisper, Tooltip } from 'rsuite'
+const { Column, HeaderCell, Cell } = Table
 
 const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => {
 
@@ -146,16 +146,16 @@ class SongsTable extends React.Component {
         const columnsToShow = this.props.columns || defaultColumns
         // Define Checkbox's data
         const checkedKeys = this.state.checkedKeys
-        let checked = false;
-        let indeterminate = false;
+        let checked = false
+        let indeterminate = false
         if (checkedKeys.length === songs.length) {
-            checked = true;
+            checked = true
         }
         else if (checkedKeys.length === 0) {
-            checked = false;
+            checked = false
         }
         else if (checkedKeys.length > 0 && checkedKeys.length < songs.length) {
-            indeterminate = true;
+            indeterminate = true
         }
         // Render
         const heightProps = this.props.height === -1

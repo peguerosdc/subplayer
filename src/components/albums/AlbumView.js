@@ -1,7 +1,7 @@
-import React from "react";
+import React from "react"
 // Redux
-import { connect } from "react-redux";
-import { loadAlbum } from "../../redux/actions/albumActions";
+import { connect } from "react-redux"
+import { loadAlbum } from "../../redux/actions/albumActions"
 // UI
 import Album from './Album'
 

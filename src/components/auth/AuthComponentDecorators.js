@@ -1,7 +1,8 @@
 import React from "react"
-import { Redirect } from "@reach/router";
-import { connect } from "react-redux";
-import { lazyLoginUser } from "../../redux/actions/authActions";
+import { Redirect } from "@reach/router"
+// Redux
+import { connect } from "react-redux"
+import { lazyLoginUser } from "../../redux/actions/authActions"
 
 class AuthenticatedComponent extends React.Component {
 

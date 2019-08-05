@@ -1,14 +1,16 @@
-import React from "react";
-import { connect } from "react-redux";
-import subsonic from "../../api/subsonicApi";
+import React from "react"
 import { navigate } from "@reach/router"
-import { search } from "../../redux/actions/searchActions";
+// Redux
+import { connect } from "react-redux"
+import { search } from "../../redux/actions/searchActions"
 import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
+// Utils
+import subsonic from "../../api/subsonicApi"
 // UI
 import { ConnectedSearchBar } from "./SearchBar"
 import SongsTable from '../songs/SongsTable'
 import SongsTableEnhanced from '../songs/SongsTableEnhanced'
-import { Col, Icon } from 'rsuite';
+import { Col, Icon } from 'rsuite'
 
 const SONG_COLUMNS_TO_SHOW = [SongsTable.columns.selectable, SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download]
 
