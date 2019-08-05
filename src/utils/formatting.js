@@ -18,3 +18,5 @@ export function seconds_to_hhmmss(d){
     }
     return display
 }
+
+export const display_starred = (starred) => starred.split("T")[0]

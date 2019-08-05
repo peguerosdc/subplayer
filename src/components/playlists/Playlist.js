@@ -7,8 +7,8 @@ import { songsOfPlaylistSelector } from '../../redux/selectors/songSelectors'
 // Utils
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
 // UI
-import AutoSizer from 'react-virtualized-auto-sizer'
 import SongsTable from '../songs/SongsTable'
+import SongsTableEnhanced from '../songs/SongsTableEnhanced'
 import { Button, Modal, Icon, IconButton, Form, FormGroup, ControlLabel, Checkbox, Input } from 'rsuite';
 
 const NOT_MINE_COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download]
@@ -137,13 +137,7 @@ class Playlist extends React.Component {
                         : null
                     }
                 </div>
-                <div style={{flexGrow:1}}>
-                    <AutoSizer disableWidth>
-                    {({height}) => (
-                        <SongsTable songs={songs} onSongsSelected={this.onSongsSelected} columns={columnsToShow} height={height} />
-                    )}
-                    </AutoSizer>
-                </div>
+                <SongsTableEnhanced style={{flexGrow:1}} songs={songs} onSongsSelected={this.onSongsSelected} columns={columnsToShow} fixedHeightToFill={true} withPlaylistDropdown={false} sortable={true} />
                 {/* Playlist deletion confirmation */}
                 <Modal className="subplayer-modal" backdrop="static" show={this.state.showDeleteModal} onHide={this.closeDeleteModal} size="xs">
                     <Modal.Body>

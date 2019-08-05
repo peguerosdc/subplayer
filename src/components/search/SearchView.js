@@ -85,7 +85,6 @@ class SearchView extends React.Component {
                     songs.length > 0 ? (
                         <>
                             <h1 className="artists_list_title">Songs</h1>
-
                             <SongsTableEnhanced style={{marginBottom:"20px"}} songs={songs} columns={SONG_COLUMNS_TO_SHOW} sortable={true} />
                         </>
                     ) : null

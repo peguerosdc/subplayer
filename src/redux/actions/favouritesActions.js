@@ -40,6 +40,7 @@ export function setStarOnSongs(songs, setStarred) {
                 if( setStarred ) {
                     result = await subsonic.star(songIds)
                     message = result ? "Songs added to favs!" : "Unable to add songs"
+                    setStarred = new Date().toISOString()
                 }
                 else {
                     result = await subsonic.unstar(songIds)   
