@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Link } from '@reach/router'
 // UI
 import { Button, Icon, Divider } from 'rsuite';
-import SearchBar from "../search/SearchBar"
+import { ConnectedSearchBar } from "../search/SearchBar"
 import "./sidebar.less"
 
 class Sidebar extends React.Component {
@@ -28,7 +28,7 @@ class Sidebar extends React.Component {
         return (
             <div style={{padding:"10px", display:"flex", flexDirection:"column", height:"100%"}}>
 
-                <SearchBar />
+                <ConnectedSearchBar />
 
                 <h3 className="title">LIBRARY</h3>
 
