@@ -1,9 +1,11 @@
 import React from "react";
-import { connect } from "react-redux";
-import subsonic from "../../api/subsonicApi";
 import { navigate } from "@reach/router"
+// Redux
+import { connect } from "react-redux";
 import { search } from "../../redux/actions/searchActions";
 import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
+// Utils
+import subsonic from "../../api/subsonicApi";
 // UI
 import { ConnectedSearchBar } from "./SearchBar"
 import SongsTable from '../songs/SongsTable'

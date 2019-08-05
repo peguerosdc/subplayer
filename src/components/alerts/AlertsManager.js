@@ -1,6 +1,8 @@
 import React from "react";
+// Redux
 import { connect } from "react-redux";
 import * as alerts from "../../redux/actions/alertsActions";
+// UI
 import { Alert } from 'rsuite';
 
 class AlertsManager extends React.Component {

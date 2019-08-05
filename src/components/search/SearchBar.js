@@ -1,9 +1,12 @@
 import React from "react";
-import { connect } from "react-redux";
 import { navigate } from "@reach/router"
+// Redux
+import { connect } from "react-redux";
 import { search } from "../../redux/actions/searchActions"
 // UI
 import { Input, InputGroup, Icon } from 'rsuite'
+
+/* Create a presentational SearchBar */
 
 export class SearchBar extends React.PureComponent {
 
@@ -29,8 +32,9 @@ export class SearchBar extends React.PureComponent {
 
 SearchBar.defaultProps = {
     size : "lg",
-    onSearch : (query) => {}
 }
+
+/* Create a SearchBar connected to the store to automatically perform searches in the App */
 
 class HOCSearchBar extends React.Component {
 

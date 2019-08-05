@@ -1,6 +1,7 @@
 import React from 'react';
-import { connect } from "react-redux";
 import PropTypes from 'prop-types'
+// Redux
+import { connect } from "react-redux";
 import { navigate } from "@reach/router";
 // UI
 import {Navbar, Icon, Nav, Dropdown } from 'rsuite'

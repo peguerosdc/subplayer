@@ -1,6 +1,7 @@
 import React from "react";
-import { connect } from "react-redux";
 import PropTypes from 'prop-types'
+// Redux
+import { connect } from "react-redux";
 // UI
 import { Dropdown, Icon } from 'rsuite';
 

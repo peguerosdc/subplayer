@@ -1,11 +1,13 @@
 import React from 'react';
+// Redux
 import { connect } from "react-redux";
-import { Howl } from 'howler';
 import { playNextSong, playPreviousSong } from "../../redux/actions/songsActions"
 import { setStarOnSongs } from "../../redux/actions/favouritesActions"
+import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
+// Utils
+import { Howl } from 'howler';
 import subsonic from "../../api/subsonicApi";
 import { seconds_to_mss } from "../../utils/formatting.js"
-import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
 // UI
 import { IconButton, Icon, Slider } from 'rsuite';
 import "./MusicPlayer.less"

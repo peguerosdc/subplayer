@@ -1,10 +1,11 @@
 import React from "react";
+// Redux
 import { connect } from "react-redux";
-import subsonic from "../../api/subsonicApi";
 import { addSongsToPlaylist } from "../../redux/actions/playlistsActions";
 import { setStarOnSongs } from "../../redux/actions/favouritesActions";
-// Utils
 import { makeGetSongsOfAlbum } from '../../redux/selectors/songSelectors'
+// Utils
+import subsonic from "../../api/subsonicApi";
 // UI
 import { Grid, Row, Col, Panel } from 'rsuite';
 import SongsTable from '../songs/SongsTable'
