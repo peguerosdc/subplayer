@@ -1,7 +1,7 @@
 import React from "react";
 // Redux
 import { connect } from "react-redux";
-import { removeSongsFromPlaylist, editPlaylist, loadSinglePlaylist } from "../../redux/actions/playlistsActions";
+import { removeSongsFromPlaylist, loadSinglePlaylist } from "../../redux/actions/playlistsActions";
 import { songsOfPlaylistSelector } from '../../redux/selectors/songSelectors'
 // Utils
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
@@ -9,7 +9,8 @@ import { seconds_to_hhmmss } from "../../utils/formatting.js"
 import SongsTable from '../songs/SongsTable'
 import SongsTableEnhanced from '../songs/SongsTableEnhanced'
 import DeletePlaylistModal from './DeletePlaylistModal/DeletePlaylistModal'
-import { Button, Modal, Icon, IconButton, Form, FormGroup, ControlLabel, Checkbox, Input } from 'rsuite';
+import EditPlaylistModal from './EditPlaylistModal/EditPlaylistModal'
+import { Button, Icon, IconButton } from 'rsuite';
 
 const NOT_MINE_COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download]
 const MINE_COLUMNS_TO_SHOW = [...NOT_MINE_COLUMNS_TO_SHOW, SongsTable.columns.selectable]
@@ -18,9 +19,7 @@ class Playlist extends React.Component {
     
     constructor(props) {
         super(props)
-        this.state = {selectedSongs : [], showDeleteModal : false, 
-            showEditModal : false, editNameError : false}
-        this.tempPlaylist = {}
+        this.state = {selectedSongs : [], showDeleteModal : false, showEditModal : false}
         this.deletedIndexes = []
     }
     
@@ -52,10 +51,6 @@ class Playlist extends React.Component {
         }
     }
 
-    setTempPlaylistToDefault = (playlist) => {
-        this.tempPlaylist = { name: playlist.name, comment : playlist.comment, public : playlist.public }
-    }
-
     formatExternalPlaylistName = (name) => {
         const regex = /^\[.*?\] /
         return name.replace(regex, "")
@@ -64,26 +59,11 @@ class Playlist extends React.Component {
     /* Edition modal */
 
     triggerEditModal = () => {
-        this.setTempPlaylistToDefault(this.props.playlist)
         this.setState({showEditModal:true})
     }
 
     closeEditModal = () => {
-        this.setState({showEditModal:false, editNameError : false})
-        this.setTempPlaylistToDefault(this.props.playlist)
-    }
-
-    closeModalAndEdit = (e) => {
-        // Do not submit form until data is checked
-        e.stopPropagation()
-        e.preventDefault()
-        if( !this.tempPlaylist.name ) {
-            this.setState({editNameError : true})
-        }
-        else {
-            this.props.editPlaylist(this.props.playlist.id, this.tempPlaylist.name, this.tempPlaylist.comment, this.tempPlaylist.public)
-            this.setState({showEditModal:false, editNameError : false})
-        }
+        this.setState({showEditModal:false})
     }
 
     /* Deletion Modal */
@@ -129,31 +109,7 @@ class Playlist extends React.Component {
                 {/* Playlist deletion confirmation */}
                 <DeletePlaylistModal playlistId={playlist.id} show={this.state.showDeleteModal} onHide={this.closeDeleteModal} />
                 {/* Playlist edition form */}
-                <Modal className="subplayer-modal" backdrop="static" show={this.state.showEditModal} onHide={this.closeEditModal} size="xs">
-                    <Modal.Header>
-                        <Modal.Title>Edit Playlist</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form fluid onSubmit={this.closeModalAndEdit}>
-                            <FormGroup>
-                                <ControlLabel>Name</ControlLabel>
-                                <Input name="name" defaultValue={playlist.name} onChange={(value => {this.tempPlaylist.name = value})} style={{width:"100%"}} />
-                                <span style={{color:"red", display:(this.state.editNameError ? "initial" : "none") }}>A name is required</span>
-                            </FormGroup>
-                            <FormGroup>
-                                <ControlLabel>Comment</ControlLabel>
-                                <Input name="comment" defaultValue={playlist.comment} style={{width:"100%"}} onChange={(value => {this.tempPlaylist.comment = value})} />
-                            </FormGroup>
-                            <FormGroup>
-                                <Checkbox name="isPublic" defaultChecked={playlist.public} onChange={((value, checked) => {this.tempPlaylist.public = checked})}>Public</Checkbox>
-                            </FormGroup>
-                        </Form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button type="submit" appearance="primary" onClick={this.closeModalAndEdit}> Save </Button>
-                        <Button onClick={this.closeEditModal} appearance="subtle"> Cancel </Button>
-                    </Modal.Footer>
-                </Modal>
+                <EditPlaylistModal playlistId={playlist.id} show={this.state.showEditModal} onHide={this.closeEditModal} />
             </div>
         )
     }
@@ -166,7 +122,7 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-const mapDispatchToProps = { removeSongsFromPlaylist, editPlaylist, loadSinglePlaylist }
+const mapDispatchToProps = { removeSongsFromPlaylist, loadSinglePlaylist }
 
 
 export default connect(
