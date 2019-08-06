@@ -53,7 +53,7 @@ class Sidebar extends React.Component {
                     )
                 }
                 </div>
-                <Divider style={{margin:"15px 0"}} />
+                <Divider className="sidebar-divider" />
                 <Button appearance="ghost" block={true} onClick={this.showCreatePlaylistModal} >Create new playlist</Button>
                 <Button appearance="link" block={true} onClick={this.onLogOut}>Log out</Button>
             </div>
