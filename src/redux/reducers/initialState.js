@@ -25,5 +25,10 @@ export default {
         isAuthenticating: true,
         statusText: null
     },
-    search : {}
+    search : {
+        albums : [],
+        artists : [],
+        songs : [],
+        songsById : {}
+    }
 }
