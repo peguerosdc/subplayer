@@ -7,7 +7,7 @@ export default createReducer(initialState.search, {
         return {
             'albums': payload.album,
             'artists': payload.artist,
-            'songs': payload.song.map(song => song.id),
+            'songs': payload.song ? payload.song.map(song => song.id) : [],
             'songsById' : get_normalized_songs(payload.song)
         }
     },
