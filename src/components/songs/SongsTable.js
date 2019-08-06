@@ -67,7 +67,7 @@ class SongsTable extends React.Component {
 
     songClicked = (song) => {
         // Build queue randomly with this song at the top
-        var queue = this.state.songs.filter(s => s.id !== song.id)
+        var queue = this.props.songs.filter(s => s.id !== song.id)
         queue.sort(() => Math.random() - 0.5)
         queue = [song, ...queue]
         this.props.addSongsToQueue(queue)

@@ -11,6 +11,13 @@ As many existing solutions for self-streaming audio are either unmaintained, dif
 After some research, I found Supysonic which works really well on my ARM device as it provides no fancy unnecessary features (and has a Subsonic back-end which is a **must** in my requirements), but still I wanted a Spotify-like experience where I can stream and manage my media directly on any web browser.
 As Supysonic doesn't have its own UI and almost all of the existing solutions compatible with the Subsonic API are shipped `backend + frontend`, I decided to create my own following a one simple mantra: *"keep it simple and make it look good".*
 
+## Features
+- Play audio
+- View/create/edit playlists
+- Add/remove from Favourites
+- Search artists/albums/songs
+- Browse your music by Artist
+
 ## Installation
 
 ### Running the source code

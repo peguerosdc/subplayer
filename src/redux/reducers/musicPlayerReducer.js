@@ -1,11 +1,6 @@
 import * as types from "../actions/actionTypes"
 import initialState from "./initialState"
-import {createReducer} from '../../utils/redux.js'
-
-function get_normalized_songs(songs) {
-    // Transform the array of songs coming in the payload to a normalized object
-    return songs.reduce( (current,song) => ({...current, [song.id] : song }), {} )
-}
+import {createReducer, get_normalized_songs} from '../../utils/redux.js'
 
 export default createReducer(initialState.musicPlayer, {
     [types.ADD_SONGS_TO_QUEUE]: (state, payload) => {
