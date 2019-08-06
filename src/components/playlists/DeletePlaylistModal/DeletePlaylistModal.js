@@ -5,13 +5,15 @@ import PropTypes from 'prop-types'
 import { connect } from "react-redux"
 import { deletePlaylist } from "../../../redux/actions/playlistsActions"
 // UI
-import { Button, Modal, Icon } from 'rsuite'
+import { Button, Modal, Icon, Input } from 'rsuite'
 
 class DeletePlaylistModal extends React.Component {
 
     constructor(props) {
         super(props)
         this.waitingForDeletion = false
+        this.state = {deleteNameError : false}
+        this.confirmation_name = ""
     }
 
     componentDidUpdate(prevProps) {
@@ -23,9 +25,15 @@ class DeletePlaylistModal extends React.Component {
     }
 
     closeModalAndDelete = () => {
-        this.waitingForDeletion = true
-        this.props.deletePlaylist( this.props.playlist )
-        this.props.onHide && this.props.onHide()
+        // validate playlist name
+        if( this.confirmation_name === this.props.playlist.name ) {
+            this.waitingForDeletion = true
+            this.props.deletePlaylist( this.props.playlist )
+            this.props.onHide && this.props.onHide()
+        }
+        else {
+            this.setState({deleteNameError : true})
+        }
     }
 
     closeDeleteModal = () => {
@@ -33,12 +41,15 @@ class DeletePlaylistModal extends React.Component {
     }
 
     render() {
+        const playlistToDelete = this.props.playlist || {}
         return (
             <Modal {...this.props} className="subplayer-modal" backdrop="static" onHide={this.closeDeleteModal} size="xs">
                 <Modal.Body>
                     <Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }} />
                     {'  '}
-                    Once a playlist is deleted, it can't be recovered. Are you sure you want to proceed?
+                    Once a playlist is deleted, it can't be recovered. If you want to proceed, write the name of the playlist "<b>{playlistToDelete.name}</b>":
+                    <Input name="confirm_name" onChange={(value => {this.confirmation_name = value})} style={{width:"100%", marginTop:"10px"}} />
+                    <span style={{color:"red", display:(this.state.deleteNameError ? "initial" : "none") }}>Name does not match</span>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.closeModalAndDelete} appearance="primary"> Ok </Button>
