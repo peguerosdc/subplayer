@@ -12,6 +12,7 @@ After some research, I found Supysonic which works really well on my ARM device 
 As Supysonic doesn't have its own UI and almost all of the existing solutions compatible with the Subsonic API are shipped `backend + frontend`, I decided to create my own following a one simple mantra: *"keep it simple and make it look good".*
 
 ## Features
+
 - Play audio
 - View/create/edit playlists
 - Add/remove from Favourites
