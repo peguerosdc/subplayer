@@ -1,10 +1,11 @@
-import React from 'react';
-import { connect } from "react-redux";
+import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from '@reach/router'
+// Redux
+import { connect } from "react-redux"
 // UI
-import { Grid, Row, Col, Button, Icon } from 'rsuite';
-import SearchBar from "../search/SearchBar"
+import { Button, Icon, Divider } from 'rsuite'
+import { ConnectedSearchBar } from "../search/SearchBar"
 import "./sidebar.less"
 
 class Sidebar extends React.Component {
@@ -26,43 +27,36 @@ class Sidebar extends React.Component {
     render() {
         const playlists = this.props.playlists
         return (
-            <Grid fluid style={{padding:"10px", display:"flex", flexDirection:"column", height:"100%"}}>
+            <div style={{padding:"10px", display:"flex", flexDirection:"column", height:"100%"}}>
 
-                <SearchBar />
+                <ConnectedSearchBar />
 
                 <h3 className="title">LIBRARY</h3>
-                <Link to="/artists" getProps={this.isRouteActive}>
-                    <Row>
-                        <Col md={24}>
-                            <Icon icon='group'/>{' '}Artists
-                        </Col>
-                    </Row>
+
+                <Link to="/artists" getProps={this.isRouteActive} >
+                    <Icon icon='group'/>{' '}Artists
                 </Link>
 
-                <Link to="/favourites" getProps={this.isRouteActive}>
-                    <Row>
-                        <Col md={24}>
-                            <Icon icon='star'/>{' '}Favourites
-                        </Col>
-                    </Row>
+                <Link to="/favourites" getProps={this.isRouteActive} >
+                    <Icon icon='star'/>{' '}Favourites
                 </Link>
 
-                <h3 className="title">PLAYLISTS</h3>
+                <h3 className="title">PLAYLISTS ({Object.keys(playlists).length})</h3>
+
+                <div style={{flexGrow:1, display:"flex", flexDirection:"column", overflow:"auto"}}>
                 {
                     Object.keys(playlists).map( id =>
-                        <Link key={id} to={`/playlist/${id}`} getProps={this.isRouteActive}>
-                            <Row>
-                                <Col md={24}>
+                        <Link key={id} to={`/playlist/${id}`} getProps={this.isRouteActive} >
                                     {playlists[id].name} ({playlists[id].songCount})
-                                </Col>
-                            </Row>
+                            
                         </Link>
                     )
                 }
-                <div style={{flexGrow:1}} />
+                </div>
+                <Divider style={{margin:"15px 0"}} />
                 <Button appearance="ghost" block={true} onClick={this.showCreatePlaylistModal} >Create new playlist</Button>
                 <Button appearance="link" block={true} onClick={this.onLogOut}>Log out</Button>
-            </Grid>
+            </div>
         )
     }
 

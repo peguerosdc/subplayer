@@ -1,5 +1,5 @@
-import * as types from "./actionTypes";
-import subsonic from "../../api/subsonicApi";
+import * as types from "./actionTypes"
+import subsonic from "../../api/subsonicApi"
 
 export function loginUserRequest() {
     return { type: types.LOGIN_USER_REQUEST }

@@ -1,14 +1,18 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from "react"
+// Redux
+import { connect } from "react-redux"
+import { addSongsToQueue } from "../../redux/actions/songsActions"
+import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
+// Utils
+import { seconds_to_mss, display_starred } from "../../utils/formatting.js"
+import { sortSongsByKey, filterSongsByValue } from "../../utils/utils.js"
 import PropTypes from 'prop-types'
-import { addSongsToQueue } from "../../redux/actions/songsActions";
-import { seconds_to_mss } from "../../utils/formatting.js"
 import subsonic from "../../api/subsonicApi"
 // UI
 import "./SongsTable.less"
 // Table components
-import { Table, Icon, Checkbox, Whisper, Tooltip } from 'rsuite';
-const { Column, HeaderCell, Cell } = Table;
+import { Table, Icon, Checkbox, Whisper, Tooltip } from 'rsuite'
+const { Column, HeaderCell, Cell } = Table
 
 const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => {
 
@@ -35,8 +39,31 @@ class SongsTable extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { checkedKeys: [] }
+        this.state = { checkedKeys: [], loading : false, songs : props.songs || [] }
     }
+
+    componentDidUpdate(prevProps) {
+        // Clear checked songs to prevent the SongsTable keeping track of deleted songs
+        if( prevProps.songs.length !== this.props.songs.length ) {
+            if( this.state.checkedKeys.length > 0 ) {
+                this.setState({ checkedKeys: [] })
+            }
+        }
+        // Update the songs that are stored in nextCheckedKeys with the new objects
+        if( prevProps.songs !== this.props.songs ) {
+            this.props.onSongsSelected && this.props.onSongsSelected(
+                this.state.checkedKeys.map(key => this.props.songs.find(s => s.id === key) )
+            )
+            // Reset the songs to show with filter and sorting
+            this.applyFilter(this.props.songsFilter)
+        }
+        // Update filter when changed
+        if( prevProps.songsFilter !== this.props.songsFilter ) {
+            this.applyFilter(this.props.songsFilter)
+        }
+    }
+
+    /* Handle clicking on a row */
 
     songClicked = (song) => {
         // Build queue randomly with this song at the top
@@ -50,12 +77,14 @@ class SongsTable extends React.Component {
         event.stopPropagation()
     }
 
+    /* Handle clicking on checkboxes */
+
     handleCheckAll = (value, checked) => {
-        const checkedKeys = checked ? this.props.songs.map(item => item.id) : []
+        const checkedKeys = checked ? this.state.songs.map(item => item.id) : []
         this.setState({ checkedKeys })
         // Notify the parent
         this.props.onSongsSelected && this.props.onSongsSelected(
-            checkedKeys.map(key => this.props.songs.find(s => s.id === key) )
+            checkedKeys.map(key => this.state.songs.find(s => s.id === key) )
         )
     }
 
@@ -67,36 +96,66 @@ class SongsTable extends React.Component {
         this.setState({ checkedKeys: nextCheckedKeys })
         // Notify the parent
         this.props.onSongsSelected && this.props.onSongsSelected(
-            nextCheckedKeys.map(key => this.props.songs.find(s => s.id === key) )
+            nextCheckedKeys.map(key => this.state.songs.find(s => s.id === key) )
         )
     }
 
-    componentDidUpdate(prevProps) {
-        // Clear checked songs to prevent the SongsTable keeping track of deleted songs
-        if( prevProps.songs.length !== this.props.songs.length ) {
-            if( this.state.checkedKeys.length > 0 ) {
-                this.setState({ checkedKeys: [] })
-            }
+    /* Handle sorting */
+
+    handleSortColumn = async (sortColumn, sortType) => {
+        this.setState({loading : true})
+        try {
+            // Only songs that are currently displayed (maybe some were filtered out)
+            // are needed to be sorted, so only sort songs in this.state.songs
+            const sorted = await sortSongsByKey(this.state.songs, sortColumn, sortType)
+            this.setState({sortColumn, sortType, songs: sorted })
         }
+        catch(err) {
+            console.log(err)
+        }
+        this.setState({loading : false})
+    }
+
+    /* Handle filtering */
+
+    applyFilter = async (filter) => {
+        this.setState({loading : true})
+        try {
+            // As every time the filter changes the songs displayed must change,
+            // we need to filter the complete list of songs, so filter this.props.songs
+            let filtered = await filterSongsByValue(this.props.songs, filter)
+            // Check if the table was already sorted. If thats the case, then sort the results
+            if( this.state.sortType && this.state.sortColumn ) {
+                filtered = await sortSongsByKey(filtered, this.state.sortColumn, this.state.sortType)
+            }
+            // Reset the checkedKeys to avoid having to update the checkedKeys as well
+            this.setState({songs: filtered, checkedKeys : [] })
+        }
+        catch(err) {
+            console.log(err)
+        }
+        this.setState({loading : false})
     }
 
     render() {
+        // Get table properties
+        const sortable = this.props.sortable
         // Define songs data
         const currentSongPlaying = this.props.currentSongPlaying || {}
-        const songs = this.props.songs || []
+        const songs = this.state.songs
         const columnsToShow = this.props.columns || defaultColumns
         // Define Checkbox's data
         const checkedKeys = this.state.checkedKeys
-        let checked = false;
-        let indeterminate = false;
+        let checked = false
+        let indeterminate = false
         if (checkedKeys.length === songs.length) {
-            checked = true;
+            checked = true
         }
         else if (checkedKeys.length === 0) {
-            checked = false;
+            checked = false
         }
         else if (checkedKeys.length > 0 && checkedKeys.length < songs.length) {
-            indeterminate = true;
+            indeterminate = true
         }
         // Render
         const heightProps = this.props.height === -1
@@ -109,6 +168,10 @@ class SongsTable extends React.Component {
                 virtualized
                 data={songs}
                 className="songs-table"
+                onSortColumn={this.handleSortColumn}
+                sortColumn={this.state.sortColumn}
+                sortType={this.state.sortType}
+                loading={this.state.loading}
                 rowClassName={(rowData) => rowData && rowData.id === currentSongPlaying.id ? "currently_playing" : null }>
                 { columnsToShow.includes(columns.selectable) ? 
                     <Column width={50} align="center">
@@ -128,7 +191,7 @@ class SongsTable extends React.Component {
                     </Column> : null
                 }
                 { columnsToShow.includes(columns.title) ? 
-                    <Column flexGrow={4}>
+                    <Column flexGrow={4} sortable={sortable}>
                         <HeaderCell> Title </HeaderCell>
                         <Cell dataKey="title">
                             { rowData => 
@@ -141,16 +204,26 @@ class SongsTable extends React.Component {
                 }
 
                 { columnsToShow.includes(columns.artist) ? 
-                    <Column flexGrow={3}>
+                    <Column flexGrow={3} sortable={sortable}>
                         <HeaderCell>Artist</HeaderCell>
                         <Cell dataKey="artist" />
                     </Column> : null
                 }
 
                 { columnsToShow.includes(columns.album) ? 
-                    <Column flexGrow={2}>
+                    <Column flexGrow={2} sortable={sortable}>
                         <HeaderCell>Album</HeaderCell>
                         <Cell dataKey="album" />
+                    </Column>
+                    : null
+                }
+
+                { columnsToShow.includes(columns.starred) ? 
+                    <Column flexGrow={2} sortable={sortable}>
+                        <HeaderCell>Starred</HeaderCell>
+                        <Cell dataKey="starred">
+                            {rowData => display_starred(rowData.starred) }
+                        </Cell>
                     </Column>
                     : null
                 }
@@ -195,7 +268,7 @@ class SongsTable extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        currentSongPlaying : state.songs.currentSongPlaying
+        currentSongPlaying : getSongCurrentlyPlayingSelector(state)
     }
 }
 
@@ -203,26 +276,31 @@ const mapDispatchToProps = { addSongsToQueue }
 
 /* Define possible columns to show */
 const columns = {
-  title: "title",
-  artist: "artist",
-  album: "album",
-  duration: "duration",
-  bitRate: "bitRate",
-  selectable: "selectable",
-  download: "download"
+    title: "title",
+    artist: "artist",
+    album: "album",
+    duration: "duration",
+    bitRate: "bitRate",
+    selectable: "selectable",
+    download: "download",
+    starred: "starred"
 }
-// Define defaults to show
-const defaultColumns = Object.keys(columns)
 
 // Properties
 SongsTable.propTypes = {
-  appearance: PropTypes.arrayOf(Object.keys(columns))
+  columns: PropTypes.arrayOf(PropTypes.string),
+  sortable : PropTypes.bool,
+  songsFilter : PropTypes.string
 }
 SongsTable.columns = columns
 
 // Defaults
+const defaultColumns = ["title", "artist", "album", "duration", "bitRate", "selectable", "download"]
 SongsTable.defaultProps = {
-    height : -1
+    height : -1,
+    sortable : false,
+    columns : defaultColumns,
+    songsFilter : null
 }
 
 export default connect(

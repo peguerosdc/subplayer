@@ -1,10 +1,10 @@
-import React from 'react';
-import './index.css';
-import App from './App';
-import { Router } from "@reach/router";
+import React from 'react'
+import './index.css'
+import App from './App'
+import { Router } from "@reach/router"
 // Redux imports
 import { Provider } from 'react-redux'
-import configureStore from "./redux/configureStore";
+import configureStore from "./redux/configureStore"
 // My components
 import AuthenticatedComponent from './components/auth/AuthComponentDecorators'
 import Login from './components/auth/Login'

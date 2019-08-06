@@ -1,9 +1,10 @@
-import React from "react";
-import { connect } from "react-redux";
-import { navigate } from "@reach/router";
-import { loginUser, lazyLoginUser } from "../../redux/actions/authActions";
+import React from "react"
+// Redux
+import { connect } from "react-redux"
+import { navigate } from "@reach/router"
+import { loginUser, lazyLoginUser } from "../../redux/actions/authActions"
 // UI
-import { Panel, Button, Form, FormGroup, FormControl, ControlLabel, HelpBlock, Alert } from 'rsuite';
+import { Panel, Button, Form, FormGroup, FormControl, ControlLabel, HelpBlock, Alert } from 'rsuite'
 
 class LoginComponent extends React.Component {
 

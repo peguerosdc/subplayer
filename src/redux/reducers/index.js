@@ -1,12 +1,14 @@
-import { combineReducers } from "redux";
-import asyncTasksInProgress from "./asyncTasksReducer";
-import artists from "./artistsReducer";
-import playlists from "./playlistsReducer";
-import songs from "./songsReducer";
+import { combineReducers } from "redux"
+import asyncTasksInProgress from "./asyncTasksReducer"
+import artists from "./artistsReducer"
+import playlists from "./playlistsReducer"
+import songs from "./songsReducer"
 import auth from "./authReducer"
 import search from "./searchReducer"
 import alert from "./alertsReducer"
 import albums from "./albumsReducer"
+import favourites from "./favouritesReducer"
+import musicPlayer from "./musicPlayerReducer"
 
 export default combineReducers({
     asyncTasksInProgress,
@@ -16,5 +18,7 @@ export default combineReducers({
     auth,
     search,
     alert,
-    albums
-});
+    albums,
+    favourites,
+    musicPlayer
+})

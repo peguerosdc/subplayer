@@ -1,9 +1,11 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from "react"
+// Redux
+import { connect } from "react-redux"
 import { navigate } from "@reach/router"
+import { getSongCurrentlyPlayingSelector } from '../../../redux/selectors/musicPlayerSelector'
 // UI
 import "./ArtistsList.less"
-import { Icon, Col } from 'rsuite';
+import { Icon, Col } from 'rsuite'
 
 class ArtistIndex extends React.Component {
 
@@ -53,8 +55,8 @@ class ArtistIndex extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        currentSongPlaying : state.songs.currentSongPlaying,
-        index: state.artists[ownProps.index]
+        currentSongPlaying : getSongCurrentlyPlayingSelector(state),
+        index: state.artists.byIndex[ownProps.index]
     }
 }
 

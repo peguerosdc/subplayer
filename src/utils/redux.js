@@ -6,3 +6,8 @@ export function createReducer(initialState, reducerMap) {
             : state
     }
 }
+
+export function get_normalized_songs(songs) {
+    // Transform the array of songs coming in the payload to a normalized object
+    return songs.reduce( (current,song) => ({...current, [song.id] : song }), {} )
+}

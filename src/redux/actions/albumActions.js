@@ -21,8 +21,3 @@ export function loadAlbum(albumId) {
         }
     }
 }
-
-
-export function clearAlbums(dispatch) {
-    return {type: types.CLEAR_ALL_ALBUMS }
-}

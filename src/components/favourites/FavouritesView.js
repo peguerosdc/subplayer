@@ -1,24 +1,32 @@
 import React from "react"
+// Redux
 import { connect } from "react-redux"
-import subsonic from "../../api/subsonicApi"
-import { beginAsyncTask, asyncTaskSuccess, asyncTaskError } from "../../redux/actions/apiStatusActions"
+import { loadFavouriteSongs, setStarOnSongs } from "../../redux/actions/favouritesActions"
+import { favouriteSongsSelector } from '../../redux/selectors/songSelectors'
+// Utils
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
-
 // UI
-import AutoSizer from 'react-virtualized-auto-sizer'
-import { Button } from 'rsuite';
+import SongsTableEnhanced from '../songs/SongsTableEnhanced'
+import { Button } from 'rsuite'
 import SongsTable from '../songs/SongsTable'
 
+const COLUMNS_TO_SHOW = [SongsTable.columns.selectable, SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download, SongsTable.columns.starred]
 
 class FavouritesView extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { songs : [], selectedSongs : [], waitingForDeletion: false}
+        this.state = { selectedSongs : [], duration : 0 }
     }
 
-    async componentDidMount() {
-        await this.loadStarred()
+    componentDidMount() {
+        this.props.loadFavouriteSongs()
+    }
+
+    componentDidUpdate(prevProps) {
+        if( prevProps.songs.length !== this.props.songs.length ) {
+            this.setState({duration : this.props.songs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration})
+        }
     }
 
     /* Listeners */
@@ -27,53 +35,14 @@ class FavouritesView extends React.Component {
         this.setState({selectedSongs: selectedSongs})
     }
 
-    removeSelectedSongs = async () => {
+    removeSelectedSongs = () => {
         if( this.state.selectedSongs.length > 0 ) {
-            const idsToRemove = this.state.selectedSongs.map(song => song.id)
-            await this.unstar(idsToRemove)
-        }
-    }
-
-    /* Starring methods  */
-    loadStarred = async () => {
-        this.props.beginAsyncTask()
-        try {
-            const favourites = await subsonic.getStarred()
-            const favSongs = favourites["song"] || []
-            // Set to state
-            const duration = favSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
-            this.setState({songs : favSongs, duration: duration})
-            this.props.asyncTaskSuccess()
-        }
-        catch(error) {
-            console.error(error)
-            this.props.asyncTaskError(error.message)
-        }
-    }
-
-    unstar = async (songIds) => {
-        this.props.beginAsyncTask()
-        try {
-            const result = await subsonic.unstar(songIds)
-            // Set to state without the old stared songs
-            if( result ) {
-                const newFavSongs = this.state.songs.filter( song => !songIds.includes(song.id) )
-                const duration = newFavSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
-                this.setState({songs : newFavSongs, duration: duration})
-                this.props.asyncTaskSuccess()
-            }
-            else {
-                this.props.asyncTaskError("Unable to remove from favourites")
-            }
-        }
-        catch(error) {
-            console.error(error)
-            this.props.asyncTaskError(error.message)
+            this.props.setStarOnSongs(this.state.selectedSongs, false)
         }
     }
 
     render() {
-        const songs = this.state.songs
+        const songs = this.props.songs
         const duration = this.state.duration
         const disableButton = this.state.selectedSongs && this.state.selectedSongs.length === 0
         return (
@@ -87,21 +56,22 @@ class FavouritesView extends React.Component {
                         <Button onClick={this.removeSelectedSongs} disabled={disableButton}>Remove from favourites</Button>
                     </div>
                 </div>
-                <div style={{flexGrow:1}}>
-                    <AutoSizer disableWidth>
-                    {({height}) => (
-                        <SongsTable songs={songs} onSongsSelected={this.onSongsSelected} height={height} />
-                    )}
-                    </AutoSizer>
-                </div>
+                <SongsTableEnhanced style={{flexGrow:1}} songs={songs} onSongsSelected={this.onSongsSelected} columns={COLUMNS_TO_SHOW} fixedHeightToFill={true} withPlaylistDropdown={false} sortable={true} />
             </div>
         )
     }
 }
 
-const mapDispatchToProps = { beginAsyncTask, asyncTaskSuccess, asyncTaskError }
+const mapStateToProps = (state, ownProps) => {
+    return {
+        "songs" : favouriteSongsSelector(state)
+    }
+}
+
+const mapDispatchToProps = { loadFavouriteSongs, setStarOnSongs }
+
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(FavouritesView)

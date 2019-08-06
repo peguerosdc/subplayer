@@ -1,6 +1,7 @@
-import React from "react";
-import { loadArtists } from "../../redux/actions/artistsActions";
-import { connect } from "react-redux";
+import React from "react"
+// Redux
+import { loadArtists } from "../../../redux/actions/artistsActions"
+import { connect } from "react-redux"
 // UI
 import "./ArtistsList.less"
 import ArtistIndex from "./ArtistIndex.js"
@@ -70,7 +71,7 @@ class ArtistsList extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        artists: state.artists,
+        artists: state.artists.byIndex,
     }
 }
 

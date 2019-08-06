@@ -1,14 +1,19 @@
-import React from "react";
-import { connect } from "react-redux";
-import subsonic from "../../api/subsonicApi";
+import React from "react"
 import { navigate } from "@reach/router"
-import { search } from "../../redux/actions/searchActions";
+// Redux
+import { connect } from "react-redux"
+import { search } from "../../redux/actions/searchActions"
+import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
+import { searchSongsSelector } from '../../redux/selectors/searchSelectors'
+// Utils
+import subsonic from "../../api/subsonicApi"
 // UI
-import SearchBar from "./SearchBar"
+import { ConnectedSearchBar } from "./SearchBar"
 import SongsTable from '../songs/SongsTable'
-import { Col, Icon } from 'rsuite';
+import SongsTableEnhanced from '../songs/SongsTableEnhanced'
+import { Col, Icon } from 'rsuite'
 
-const SONG_COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download]
+const SONG_COLUMNS_TO_SHOW = [SongsTable.columns.selectable, SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download]
 
 function AlbumElement(props) {
     const album = props.album
@@ -40,7 +45,7 @@ class SearchView extends React.Component {
         return (
             <div style={{padding:"20px", display:"flex", flexDirection:"column", height:"100%", overflow:"auto"}}>
                 <Col className="rs-hidden-lg rs-hidden-md">
-                    <SearchBar />
+                    <ConnectedSearchBar />
                 </Col>
 
                 {
@@ -83,7 +88,7 @@ class SearchView extends React.Component {
                     songs.length > 0 ? (
                         <>
                             <h1 className="artists_list_title">Songs</h1>
-                            <SongsTable style={{marginBottom:"20px"}} songs={songs} columns={SONG_COLUMNS_TO_SHOW} />
+                            <SongsTableEnhanced style={{marginBottom:"20px"}} songs={songs} columns={SONG_COLUMNS_TO_SHOW} sortable={true} />
                         </>
                     ) : null
                 }
@@ -97,8 +102,8 @@ const mapStateToProps = (state, ownProps) => {
     return {
         "artists" : state.search.artists,
         "albums" : state.search.albums,
-        "songs" : state.search.songs,
-        currentSongPlaying : state.songs.currentSongPlaying,
+        "songs" : searchSongsSelector(state),
+        currentSongPlaying : getSongCurrentlyPlayingSelector(state),
     }
 }
 
