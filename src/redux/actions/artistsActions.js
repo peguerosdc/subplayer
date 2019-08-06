@@ -23,7 +23,7 @@ export function loadArtists() {
 }
 
 /* Load songs of just one artist */
-const loadSongsOfArtistSuccess = songs => ({type : types.LOAD_SONGS_OF_ONE_ARTIST_SUCCESS, payload: { songs : songs} })
+export const loadSongsOfArtistSuccess = songs => ({type : types.LOAD_SONGS_OF_ONE_ARTIST_SUCCESS, payload: { songs : songs} })
 
 export function loadSongsOfArtist(artist) {
     return async (dispatch) => {
@@ -49,7 +49,7 @@ export function loadSongsOfArtist(artist) {
 
 /* Load information of one artist along with its songs */
 
-const loadOneArtistSuccess = artist => ({type: types.LOAD_ONE_ARTIST_SUCCESS, payload : {artist: artist}})
+export const loadOneArtistSuccess = artist => ({type: types.LOAD_ONE_ARTIST_SUCCESS, payload : {artist: artist}})
 
 export function loadOneArtist(artistId) {
     return async (dispatch) => {
