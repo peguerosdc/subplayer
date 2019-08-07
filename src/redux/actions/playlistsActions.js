@@ -104,7 +104,7 @@ export function deletePlaylist(playlist) {
         try {
             const result = await subsonic.deletePlaylist(playlist.id)
             if( result ) {
-                dispatch(deletePlaylistResult(playlist))
+                dispatch(deletePlaylistSuccess(playlist))
                 dispatch(asyncTaskSuccess(`${playlist.name} deleted!`))
             }
             else {
