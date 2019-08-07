@@ -155,6 +155,10 @@ export function editPlaylist(id, name, comment, isPublic) {
     }
 }
 
+export function singlePlaylistLoaded(playlist) {
+    return {type: types.LOAD_SINGLE_PLAYLIST_SUCCESS, payload: {playlist : playlist} }
+}
+
 export function loadSinglePlaylist(id) {
     return async (dispatch) => {
         dispatch(beginAsyncTask())
@@ -162,7 +166,7 @@ export function loadSinglePlaylist(id) {
             const playlist = await subsonic.getPlaylistById(id)
             if( playlist ) {
                 playlist.entry = playlist.entry || [] 
-                dispatch({type: types.LOAD_SINGLE_PLAYLIST_SUCCESS, payload: {playlist : playlist} })
+                dispatch(singlePlaylistLoaded(playlist))
             }
             dispatch(asyncTaskSuccess())
         }

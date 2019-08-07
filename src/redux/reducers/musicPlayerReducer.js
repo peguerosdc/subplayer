@@ -1,6 +1,6 @@
 import * as types from "../actions/actionTypes"
 import initialState from "./initialState"
-import {createReducer, get_normalized_songs} from '../../utils/redux.js'
+import {createReducer, get_normalized_songs, set_starred_song_on_state} from '../../utils/redux.js'
 
 export default createReducer(initialState.musicPlayer, {
     [types.ADD_SONGS_TO_QUEUE]: (state, payload) => {
@@ -29,18 +29,7 @@ export default createReducer(initialState.musicPlayer, {
         let newState = state
         // Toggle if it is found in the DB of songs
         payload.songIds.forEach( (id) => {
-            if( newState.songsById[id] ) {
-                newState = {
-                    ...newState,
-                    songsById : {
-                        ...newState.songsById,
-                        [id] : {
-                            ...newState.songsById[id],
-                            starred : payload.starred
-                        }
-                    }
-                }
-            }
+            newState = set_starred_song_on_state(newState, 'songsById', id, payload.starred)
         })
         return newState
     },

@@ -2,6 +2,10 @@ import * as types from "./actionTypes"
 import subsonic from "../../api/subsonicApi"
 import { beginAsyncTask, asyncTaskSuccess, asyncTaskError, asyncTaskWarning } from "./apiStatusActions"
 
+export function favouriteSongsLoaded(favSongs) {
+    return {type: types.LOAD_FAVOURITES_RESULT, payload: {songs : favSongs} }
+}
+
 export function loadFavouriteSongs() {
     return async (dispatch) => {
         dispatch(beginAsyncTask())
@@ -9,7 +13,7 @@ export function loadFavouriteSongs() {
             const favourites = await subsonic.getStarred()
             const favSongs = favourites["song"] || []
             // Set to state
-            dispatch({type: types.LOAD_FAVOURITES_RESULT, payload: {songs : favSongs} })
+            dispatch(favouriteSongsLoaded(favSongs))
             dispatch(asyncTaskSuccess())
         }
         catch(error) {
