@@ -19,7 +19,7 @@ export function loadFavouriteSongs() {
     }
 }
 
-function starredSongModified(songIds, setStarred) {
+export function starredSongModified(songIds, setStarred) {
     return { type: types.STAR_SONG_RESULT, payload : { songIds: songIds, starred : setStarred } }
 }
 
