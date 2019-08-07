@@ -22,6 +22,10 @@ export function loadPlaylists() {
     }
 }
 
+export function addSongsToPlaylistResult(playlistMetadata, songsAdded) {
+    return { type: types.ADD_SONGS_TO_PLAYLIST_RESULT, payload: {playlist: playlistMetadata, songsAdded: songsAdded } }
+}
+
 export function addSongsToPlaylist(playlistMetadata, songs) {
     return async (dispatch) => {
         dispatch(beginAsyncTask())
@@ -42,7 +46,7 @@ export function addSongsToPlaylist(playlistMetadata, songs) {
                     if( songsAdded !== songs.length ) {
                         msg += ` ${songs.length - songsAdded} already added.`
                     }
-                    dispatch({ type: types.ADD_SONGS_TO_PLAYLIST_RESULT, payload: {playlist: playlistMetadata, songsAdded: songsToAdd } })
+                    dispatch(addSongsToPlaylistResult(playlistMetadata, songsToAdd))
                     dispatch(asyncTaskSuccess(msg))
                 }
                 else {
@@ -61,10 +65,13 @@ export function addSongsToPlaylist(playlistMetadata, songs) {
         }
         catch(error) {
             console.error(error)
-
-            dispatch(asyncTaskError(error.message))
+            dispatch(asyncTaskError("Unable to add songs to playlist"))
         }
     }
+}
+
+export function removeSongsFromPlaylistResult(playlist, removedSongs) {
+    return { type: types.REMOVE_SONGS_FROM_PLAYLIST_RESULT, payload:{ playlist: playlist, removedSongs:removedSongs } }
 }
 
 export function removeSongsFromPlaylist(playlist, songs, songIndexes) {
@@ -73,7 +80,7 @@ export function removeSongsFromPlaylist(playlist, songs, songIndexes) {
         try {
             const result = await subsonic.removeSongsFromPlaylist(playlist.id, songIndexes)
             if( result ) {
-                dispatch({ type: types.REMOVE_SONGS_FROM_PLAYLIST_RESULT, payload:{ playlist: playlist, removedSongs:songs, removedSongsIndexes: songIndexes } })
+                dispatch(removeSongsFromPlaylistResult(playlist, songs))
                 dispatch(asyncTaskSuccess(`${songIndexes.length} songs removed from ${playlist.name}`))
             }
             else {
@@ -87,13 +94,17 @@ export function removeSongsFromPlaylist(playlist, songs, songIndexes) {
     }
 }
 
+export function deletePlaylistSuccess(playlist) {
+    return { type: types.DELETE_PLAYLIST_RESULT, payload:{ playlist:playlist } }
+}
+
 export function deletePlaylist(playlist) {
     return async (dispatch) => {
         dispatch(beginAsyncTask())
         try {
             const result = await subsonic.deletePlaylist(playlist.id)
             if( result ) {
-                dispatch({ type: types.DELETE_PLAYLIST_RESULT, payload:{ playlist:playlist } })
+                dispatch(deletePlaylistResult(playlist))
                 dispatch(asyncTaskSuccess(`${playlist.name} deleted!`))
             }
             else {
@@ -132,6 +143,9 @@ export function createPlaylist(name) {
     }
 }
 
+export function editPlaylistSuccess(id, name, comment, isPublic) {
+    return {type: types.EDIT_PLAYLIST_RESULT, payload: { id:id, name:name, comment:comment, public:isPublic} }
+}
 
 export function editPlaylist(id, name, comment, isPublic) {
     return async (dispatch) => {
@@ -140,7 +154,7 @@ export function editPlaylist(id, name, comment, isPublic) {
             const result = await subsonic.updatePlaylist(id, encodeURIComponent(name), encodeURIComponent(comment), isPublic)
             // Edit playlist in state
             if( result ) {
-                dispatch({type: types.EDIT_PLAYLIST_RESULT, payload: { id:id, name:name, comment:comment, public:isPublic} })
+                dispatch(editPlaylistSuccess(id, name, comment, isPublic))
                 dispatch(asyncTaskSuccess("Playlist successfully edited"))
             }
             else {
