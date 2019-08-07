@@ -17,7 +17,7 @@ export function loadAlbum(albumId) {
         }
         catch(error) {
             console.error(error)
-            dispatch(asyncTaskError())
+            dispatch(asyncTaskError("Unable to load album"))
         }
     }
 }
