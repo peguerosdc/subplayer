@@ -157,6 +157,23 @@ describe('playlists reducer', () => {
         expect( newState.byId['1'] ).toEqual(initialState.byId['1'])
     })
 
+    it('should return the state when a playlist is edited with the same values', () => {
+        // Define initial state
+        const initialState = {
+            byId : {
+                '1' : { id : '1' },
+                '2' : {
+                    id : '2',
+                    name : 'name2',
+                    comment : 'comment2',
+                    public : true
+                }
+            }
+        }
+        const newState = playlistsReducer(initialState, actions.editPlaylistSuccess('2', 'name2', 'comment2', true))
+        expect( newState ).toEqual(initialState)
+    })
+
     it('should put a normalized playlist when it is loaded with its songs', () => {
         // Define initial state
         const playlist = {

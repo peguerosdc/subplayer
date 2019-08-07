@@ -1,6 +1,6 @@
 import * as selectors from "./songSelectors"
 
-describe('search selectors', () => {
+describe('songs selectors', () => {
 
     it('should get the songs of 1 album', () => {
         // The store has 2 songs and 1 album
@@ -27,6 +27,25 @@ describe('search selectors', () => {
         // to album 'a1'
         const albumSelector = selectors.makeGetSongsOfAlbum()
         const songs = albumSelector(state, props)
+        expect(songs).toEqual( [ state.songs.byId['2'] ] )
+    })
+
+    it('should get the songs of 1 artist', () => {
+        // The store has 2 songs
+        const state = {
+            songs : {
+                byId : {
+                    '1' : { id : '1'},
+                    '2' : { id : '2', artistId : 'a1' }
+                }
+            }
+        }
+        const props = {
+            artistId : 'a1'
+        }
+        // Should return an array containing song '2' which is the only one belonging
+        // to album 'a1'
+        const songs = selectors.songsOfArtistSelector(state, props)
         expect(songs).toEqual( [ state.songs.byId['2'] ] )
     })
 
