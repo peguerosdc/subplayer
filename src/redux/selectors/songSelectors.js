@@ -12,7 +12,14 @@ export const makeGetSongsOfAlbum = () => {
     return createSelector (
         [ getAlbum, getSongs ],
         (album, songs) => {
-            return album ? Object.keys(songs).map(id => songs[id]).filter(song => song.albumId === album.id) : []
+            return (album && album.song)
+                ? album.song.reduce( (accum,songId) => {
+                    if( songs[songId] ) {
+                        accum.push(songs[songId])
+                    }
+                    return accum
+                }, [])
+                : []
         }
     )
 }
