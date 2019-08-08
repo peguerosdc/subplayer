@@ -35,7 +35,7 @@ function perform_api_call(url) {
             if(contentType && contentType.includes('application/json')) {
                 return response.json()
             }
-            throw new Error(`${response.status}, ${response.body}`)
+            return Promise.reject(new Error(`${response.status}, ${response.body}`) )
         })
         .then(data => {
             // Get subsonic response
