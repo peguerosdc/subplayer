@@ -38,7 +38,7 @@ describe('music player reducer', () => {
         }
         // Add new songs to queue
         const songsToAdd = [ {id: 's1'}, {id: 's2'} ]
-        const newState = musicPlayerReducer(initialState, actions.addSongsToQueueAction(songsToAdd))
+        const newState = musicPlayerReducer(initialState, actions.addSongsToQueue(songsToAdd))
         // Expect it to:
         // Store normalized songs
         expect( newState.songsById ).toEqual({
@@ -59,7 +59,7 @@ describe('music player reducer', () => {
             },
             currentSongIndex : 0
         }
-        const newState = musicPlayerReducer(initialState, actions.playNextSongAction())
+        const newState = musicPlayerReducer(initialState, actions.playNextSong())
         // Expect it to:
         // dont alter the queue
         expect( newState.queue ).toEqual( initialState.queue )
@@ -78,7 +78,7 @@ describe('music player reducer', () => {
             },
             currentSongIndex : 1
         }
-        const newState = musicPlayerReducer(initialState, actions.playNextSongAction())
+        const newState = musicPlayerReducer(initialState, actions.playNextSong())
         // Expect it to:
         // dont alter the queue
         expect( newState.queue ).toEqual( initialState.queue )
@@ -97,7 +97,7 @@ describe('music player reducer', () => {
             },
             currentSongIndex : 1
         }
-        const newState = musicPlayerReducer(initialState, actions.playPreviousSongAction())
+        const newState = musicPlayerReducer(initialState, actions.playPreviousSong())
         // Expect it to:
         // dont alter the queue
         expect( newState.queue ).toEqual( initialState.queue )
@@ -116,7 +116,7 @@ describe('music player reducer', () => {
             },
             currentSongIndex : 0
         }
-        const newState = musicPlayerReducer(initialState, actions.playPreviousSongAction())
+        const newState = musicPlayerReducer(initialState, actions.playPreviousSong())
         // Expect it to:
         // dont alter the queue
         expect( newState.queue ).toEqual( initialState.queue )
