@@ -5,5 +5,4 @@ node_js:
 install:
   - yarn global add codecov
 script:
-  - yarn test --coverage --watchAll=false
-  - codecov
+  - yarn test --coverage --watchAll=false && codecov
