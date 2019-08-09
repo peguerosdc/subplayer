@@ -128,8 +128,8 @@ export function createPlaylist(name) {
             if( result ) {
                 // We can't directly add to the playlist because Subsonic API doesnt return the ID
                 const playlists = await subsonic.getPlaylists()
-                dispatch(loadPlaylistsSuccess(playlists))
                 dispatch(asyncTaskSuccess(`Playlist ${name} was created!`))
+                dispatch(loadPlaylistsSuccess(playlists))
             }
             else {
                 dispatch(asyncTaskError("Could not create playlist"))
@@ -164,7 +164,7 @@ export function editPlaylist(id, name, comment, isPublic) {
         }
         catch(error) {
             console.error(error)
-            dispatch(asyncTaskError(error.message))
+            dispatch(asyncTaskError("Could not edit playlist"))
         }
     }
 }
@@ -178,15 +178,13 @@ export function loadSinglePlaylist(id) {
         dispatch(beginAsyncTask())
         try {
             const playlist = await subsonic.getPlaylistById(id)
-            if( playlist ) {
-                playlist.entry = playlist.entry || [] 
-                dispatch(singlePlaylistLoaded(playlist))
-            }
+            playlist.entry = playlist.entry || [] 
+            dispatch(singlePlaylistLoaded(playlist))
             dispatch(asyncTaskSuccess())
         }
         catch(error) {
             console.error(error)
-            dispatch(asyncTaskError(error.message))
+            dispatch(asyncTaskError("Could not load playlist"))
         }
     }
 }
