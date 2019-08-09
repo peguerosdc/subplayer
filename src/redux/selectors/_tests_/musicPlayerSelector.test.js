@@ -1,4 +1,4 @@
-import * as selectors from "./musicPlayerSelector"
+import * as selectors from "../musicPlayerSelector"
 
 describe('music player selectors', () => {
 

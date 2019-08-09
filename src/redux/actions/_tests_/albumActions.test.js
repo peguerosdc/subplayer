@@ -3,9 +3,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import fetchMock from 'fetch-mock'
 // Own imports to test
-import * as actions from './albumActions'
-import * as types from './actionTypes'
-import * as alerts from "./alertsActions"
+import * as actions from '../albumActions'
+import * as types from '../actionTypes'
+import * as alerts from "../alertsActions"
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

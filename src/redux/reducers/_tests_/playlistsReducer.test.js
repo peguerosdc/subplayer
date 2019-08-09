@@ -1,6 +1,6 @@
-import playlistsReducer from "./playlistsReducer"
-import { logout } from "../actions/authActions"
-import * as actions from "../actions/playlistsActions"
+import playlistsReducer from "../playlistsReducer"
+import { logout } from "../../actions/authActions"
+import * as actions from "../../actions/playlistsActions"
 
 describe('playlists reducer', () => {
 

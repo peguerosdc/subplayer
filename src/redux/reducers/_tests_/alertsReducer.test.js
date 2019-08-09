@@ -1,4 +1,4 @@
-import alertsReducer from "./alertsReducer"
+import alertsReducer from "../alertsReducer"
 
 describe('alerts reducer', () => {
 

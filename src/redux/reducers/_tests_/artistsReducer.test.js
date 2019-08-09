@@ -1,6 +1,6 @@
-import artistsReducer from "./artistsReducer"
-import { logout } from "../actions/authActions"
-import * as actions from "../actions/artistsActions"
+import artistsReducer from "../artistsReducer"
+import { logout } from "../../actions/authActions"
+import * as actions from "../../actions/artistsActions"
 
 describe('artists reducer', () => {
 

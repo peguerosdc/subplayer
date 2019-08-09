@@ -1,7 +1,7 @@
-import musicPlayerReducer from "./musicPlayerReducer"
-import { logout } from "../actions/authActions"
-import * as actions from "../actions/songsActions"
-import { starredSongModified } from "../actions/favouritesActions"
+import musicPlayerReducer from "../musicPlayerReducer"
+import { logout } from "../../actions/authActions"
+import * as actions from "../../actions/songsActions"
+import { starredSongModified } from "../../actions/favouritesActions"
 
 describe('music player reducer', () => {
 

@@ -1,6 +1,6 @@
 // Own imports to test
-import * as actions from './songsActions'
-import * as types from './actionTypes'
+import * as actions from '../songsActions'
+import * as types from '../actionTypes'
 
 describe('search actions', () => {
 

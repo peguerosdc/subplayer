@@ -1,4 +1,4 @@
-import * as selectors from "./searchSelectors"
+import * as selectors from "../searchSelectors"
 
 describe('search selectors', () => {
 

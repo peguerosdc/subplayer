@@ -1,4 +1,4 @@
-import * as selectors from "./albumSelectors"
+import * as selectors from "../albumSelectors"
 
 describe('album selectors', () => {
 

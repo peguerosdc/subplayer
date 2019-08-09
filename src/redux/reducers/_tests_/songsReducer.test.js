@@ -1,9 +1,9 @@
-import songsReducer from "./songsReducer"
-import { logout } from "../actions/authActions"
-import { favouriteSongsLoaded, starredSongModified } from "../actions/favouritesActions"
-import { loadSongsOfArtistSuccess } from "../actions/artistsActions"
-import { loadAlbumSuccess } from "../actions/albumActions"
-import { singlePlaylistLoaded } from "../actions/playlistsActions"
+import songsReducer from "../songsReducer"
+import { logout } from "../../actions/authActions"
+import { favouriteSongsLoaded, starredSongModified } from "../../actions/favouritesActions"
+import { loadSongsOfArtistSuccess } from "../../actions/artistsActions"
+import { loadAlbumSuccess } from "../../actions/albumActions"
+import { singlePlaylistLoaded } from "../../actions/playlistsActions"
 
 describe('songs reducer', () => {
 

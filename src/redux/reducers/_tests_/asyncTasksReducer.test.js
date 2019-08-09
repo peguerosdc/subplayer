@@ -1,5 +1,5 @@
-import asyncTasksReducer from "./asyncTasksReducer"
-import * as apiStatusActions from "../actions/apiStatusActions"
+import asyncTasksReducer from "../asyncTasksReducer"
+import * as apiStatusActions from "../../actions/apiStatusActions"
 
 describe('async tasks reducer', () => {
 

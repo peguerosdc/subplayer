@@ -1,7 +1,7 @@
 // Own imports to test
-import * as actions from './apiStatusActions'
-import * as types from './actionTypes'
-import * as alerts from './alertsActions'
+import * as actions from '../apiStatusActions'
+import * as types from '../actionTypes'
+import * as alerts from '../alertsActions'
 
 describe('async tasks actions', () => {
 

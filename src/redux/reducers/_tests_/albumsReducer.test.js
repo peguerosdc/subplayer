@@ -1,7 +1,7 @@
-import albumsReducer from "./albumsReducer"
-import * as actions from "../actions/albumActions"
-import { logout } from "../actions/authActions"
-import { loadOneArtistSuccess, loadSongsOfArtistSuccess } from "../actions/artistsActions"
+import albumsReducer from "../albumsReducer"
+import * as actions from "../../actions/albumActions"
+import { logout } from "../../actions/authActions"
+import { loadOneArtistSuccess, loadSongsOfArtistSuccess } from "../../actions/artistsActions"
 
 describe('albums reducer', () => {
 

@@ -1,7 +1,7 @@
-import searchReducer from "./searchReducer"
-import { logout } from "../actions/authActions"
-import * as actions from "../actions/searchActions"
-import { starredSongModified } from "../actions/favouritesActions"
+import searchReducer from "../searchReducer"
+import { logout } from "../../actions/authActions"
+import * as actions from "../../actions/searchActions"
+import { starredSongModified } from "../../actions/favouritesActions"
 
 describe('search reducer', () => {
 

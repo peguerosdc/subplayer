@@ -1,6 +1,6 @@
-import favouritesReducer from "./favouritesReducer"
-import * as actions from "../actions/favouritesActions"
-import { logout } from "../actions/authActions"
+import favouritesReducer from "../favouritesReducer"
+import * as actions from "../../actions/favouritesActions"
+import { logout } from "../../actions/authActions"
 
 describe('async tasks reducer', () => {
 

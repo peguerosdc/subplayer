@@ -1,4 +1,4 @@
-import * as selectors from "./songSelectors"
+import * as selectors from "../songSelectors"
 
 describe('songs selectors', () => {
 

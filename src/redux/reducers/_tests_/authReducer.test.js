@@ -1,5 +1,5 @@
-import authReducer from "./authReducer"
-import * as actions from "../actions/authActions"
+import authReducer from "../authReducer"
+import * as actions from "../../actions/authActions"
 
 describe('async tasks reducer', () => {
 
