@@ -3,6 +3,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import fetchMock from 'fetch-mock'
 // Own imports to test
+import * as alerts from "./alertsActions"
 import * as actions from './favouritesActions'
 import * as types from './actionTypes'
 
@@ -39,7 +40,7 @@ describe('favourites actions', () => {
 
         const expectedActions = [
             { type: types.BEGIN_ASYNC_OPERATION },
-            { type: types.END_ASYNC_OPERATION, alert : { type : 'ALERT_TYPE_ERROR' } }
+            { type: types.END_ASYNC_OPERATION, alert : { type : alerts.ALERT_TYPE_ERROR } }
         ]
         
         const store = mockStore({})
@@ -78,7 +79,7 @@ describe('favourites actions', () => {
 
         const expectedActions = [
             { type: types.BEGIN_ASYNC_OPERATION },
-            { type: types.END_ASYNC_OPERATION, alert : { type : 'ALERT_TYPE_WARNING' } },
+            { type: types.END_ASYNC_OPERATION, alert : { type : alerts.ALERT_TYPE_WARNING } },
         ]
         
         const store = mockStore({})
@@ -94,7 +95,7 @@ describe('favourites actions', () => {
 
         const expectedActions = [
             { type: types.BEGIN_ASYNC_OPERATION },
-            { type: types.END_ASYNC_OPERATION, alert : {type : 'ALERT_TYPE_ERROR'} }
+            { type: types.END_ASYNC_OPERATION, alert : {type : alerts.ALERT_TYPE_ERROR} }
         ]
         
         const store = mockStore({})
@@ -130,7 +131,7 @@ describe('favourites actions', () => {
 
         const expectedActions = [
             { type: types.BEGIN_ASYNC_OPERATION },
-            { type: types.END_ASYNC_OPERATION, alert : {type : 'ALERT_TYPE_ERROR'} }
+            { type: types.END_ASYNC_OPERATION, alert : {type : alerts.ALERT_TYPE_ERROR} }
         ]
         
         const store = mockStore({})
