@@ -6,6 +6,8 @@
     "@reach/router": "^1.2.1",
     "@welldone-software/why-did-you-render": "^3.2.3",
     "customize-cra": "^0.4.1",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
     "fetch-mock": "^7.3.9",
     "howler": "^2.1.2",
     "less": "^3.9.0",

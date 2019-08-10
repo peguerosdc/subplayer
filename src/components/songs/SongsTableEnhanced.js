@@ -9,7 +9,7 @@ import SongsTable from './SongsTable'
 import PlaylistSelectorDropdown from '../common/PlaylistSelectorDropdown/PlaylistSelectorDropdown'
 import { SearchBar } from "../search/SearchBar"
 
-class SongsTableEnhanced extends React.Component {
+export class SongsTableEnhanced extends React.Component {
 
     constructor(props) {
         super(props)
