@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from 'prop-types'
 // Redux
 import { connect } from "react-redux"
 import { songsOfArtistSelector } from '../../../redux/selectors/songSelectors'
@@ -8,19 +9,21 @@ import SongsTable from '../../songs/SongsTable'
 
 const COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.selectable, SongsTable.columns.download]
 
-class ArtistAllSongs extends React.Component {
+export function ArtistAllSongs(props) {
+    const songs = props.songs
+    return (
+        <SongsTableEnhanced style={{...props.style}} songs={songs} columns={COLUMNS_TO_SHOW} fixedHeightToFill={true} sortable={true} />
+    )
+}
 
-    constructor(props) {
-        super(props)
-        this.state = { selectedSongs : [] }
-    }
+ArtistAllSongs.propTypes = {
+    style : PropTypes.object,
+    songs : PropTypes.array,
+}
 
-    render() {
-        const songs = this.props.songs
-        return (
-            <SongsTableEnhanced style={{...this.props.style}} songs={songs} columns={COLUMNS_TO_SHOW} fixedHeightToFill={true} sortable={true} />
-        )
-    }
+ArtistAllSongs.defaultProps = {
+    style : {},
+    songs : [],
 }
 
 const mapStateToProps = (state, props) => {
