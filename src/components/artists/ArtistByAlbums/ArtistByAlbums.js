@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from 'prop-types'
 // Redux
 import { connect } from "react-redux"
 import { getAlbumsOfArtist } from "../../../redux/selectors/albumSelectors"
@@ -9,7 +10,7 @@ import Album from "../../albums/Album.js"
 import { Divider, Nav, SelectPicker } from 'rsuite'
 import "./ArtistByAlbums.less"
 
-class ArtistByAlbums extends React.Component {
+export class ArtistByAlbums extends React.Component {
 
     constructor(props) {
         super(props)
@@ -49,6 +50,14 @@ class ArtistByAlbums extends React.Component {
             </div>
         )
     }
+}
+
+ArtistByAlbums.propTypes = {
+    albums : PropTypes.array,
+}
+
+ArtistByAlbums.defaultProps = {
+    albums : [],
 }
 
 const mapStateToProps = (state, props) => {
