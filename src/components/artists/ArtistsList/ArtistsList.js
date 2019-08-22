@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from 'prop-types'
 // Redux
 import { loadArtists } from "../../../redux/actions/artistsActions"
 import { connect } from "react-redux"
@@ -7,7 +8,7 @@ import "./ArtistsList.less"
 import ArtistIndex from "./ArtistIndex.js"
 import InfiniteScroll from 'react-infinite-scroller'
 
-class ArtistsList extends React.Component {
+export class ArtistsList extends React.Component {
 
     constructor(props) {
         super(props)
@@ -30,22 +31,23 @@ class ArtistsList extends React.Component {
     cacheArtistsIndex = (page) => {
         // Define each page with 3 elements
         const pageSize = 3
-        if( page*pageSize + pageSize < this.props.artists.length + pageSize) {
+        if( page*pageSize < this.props.artists.length) {
             let hasMoreToLoad = true
             // Cap maximum value
             let maximumValue = page*pageSize + pageSize
-            if( page*pageSize + pageSize > this.props.artists.length) {
+            if( maximumValue > this.props.artists.length) {
                 maximumValue = this.props.artists.length
                 hasMoreToLoad = false
             }
             // Add new artists
             let toAdd = []
             for (var i = page*pageSize; i < maximumValue; i++) {
-                toAdd.push( <ArtistIndex key={i} index={i} /> )
+                toAdd.push( <ArtistIndex key={i} indexObject={ this.props.artists.byIndex[i] } /> )
             }
             this.setState({
                 artistsToDisplay : this.state.artistsToDisplay.concat(toAdd),
-                hasMoreToLoad : hasMoreToLoad})
+                hasMoreToLoad : hasMoreToLoad
+            })
         }
         else {
             this.setState({hasMoreToLoad : false})
@@ -67,6 +69,16 @@ class ArtistsList extends React.Component {
             </div>
         )
     }
+}
+
+ArtistsList.propTypes = {
+    artists : PropTypes.array,
+    loadArtists : PropTypes.func.isRequired
+}
+
+ArtistsList.defaultProps = {
+    artists : [],
+    loadArtists : () => (null)
 }
 
 const mapStateToProps = (state) => {

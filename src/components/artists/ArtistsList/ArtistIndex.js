@@ -57,20 +57,17 @@ export class ArtistIndex extends React.Component {
 
 ArtistIndex.propTypes = {
     currentSongPlaying : PropTypes.object,
-    index : PropTypes.number.isRequired,
     indexObject : PropTypes.object,
 }
 
 ArtistIndex.defaultProps = {
     currentSongPlaying : {},
-    index : 0,
     indexObject : { artist : [] }
 }
 
 const mapStateToProps = (state, ownProps) => {
     return {
         currentSongPlaying : getSongCurrentlyPlayingSelector(state),
-        indexObject: state.artists.byIndex[ownProps.index]
     }
 }
 
