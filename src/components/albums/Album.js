@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from 'prop-types'
 // Redux
 import { connect } from "react-redux"
 import { addSongsToPlaylist } from "../../redux/actions/playlistsActions"
@@ -14,31 +15,39 @@ import "./Album.less"
 
 const COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.selectable, SongsTable.columns.download]
 
-class Album extends React.Component {
+export function Album(props) {
+    const { album, songs, style } = props
+    // Render all
+    return (
+        <Panel bordered className="album-card" style={{...style}}>
+            <Grid fluid>
+                <Row>
+                    <Col smHidden xsHidden md={6} lg={6}>
+                        <img src={album.coverArt ? subsonic.getCoverArtUrl(album.coverArt) : null} alt="Album Cover" width="100%" />
+                    </Col>
+                    <Col sm={24} md={18} style={{paddingLeft:"10px"}}>
+                        <h2 id="albumHeader">
+                            <img className="rs-hidden-md rs-hidden-lg" src={album.coverArt ? subsonic.getCoverArtUrl(album.coverArt) : null} alt="Album Cover" width="45" height="45" />
+                            {album ? album.name : "..."}
+                        </h2>
+                        <SongsTableEnhanced songs={songs} columns={COLUMNS_TO_SHOW} fixedHeightToFill={false} withSearchFilter={false} />
+                    </Col>
+                </Row>
+            </Grid>
+        </Panel>
+    )
+}
 
-    render() {
-        const album = this.props.album || {}
-        const songs = this.props.songs || []
-        // Render all
-        return (
-            <Panel bordered className="album-card" style={{...this.props.style}}>
-                <Grid fluid>
-                    <Row>
-                        <Col smHidden xsHidden md={6} lg={6}>
-                            <img src={album.coverArt ? subsonic.getCoverArtUrl(album.coverArt) : null} alt="Album Cover" width="100%" />
-                        </Col>
-                        <Col sm={24} md={18} style={{paddingLeft:"10px"}}>
-                            <h2>
-                                <img className="rs-hidden-md rs-hidden-lg" src={album.coverArt ? subsonic.getCoverArtUrl(album.coverArt) : null} alt="Album Cover" width="45" height="45" />
-                                {album ? album.name : "..."}
-                            </h2>
-                            <SongsTableEnhanced songs={songs} columns={COLUMNS_TO_SHOW} fixedHeightToFill={false} withSearchFilter={false} />
-                        </Col>
-                    </Row>
-                </Grid>
-            </Panel>
-        )
-    }
+Album.propTypes = {
+    album : PropTypes.object,
+    style : PropTypes.object,
+    songs : PropTypes.array,
+}
+
+Album.defaultProps = {
+    album : {},
+    style : {},
+    songs : [],
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -51,7 +60,4 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = { addSongsToPlaylist, setStarOnSongs }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Album)
+export default connect(mapStateToProps, mapDispatchToProps)(Album)

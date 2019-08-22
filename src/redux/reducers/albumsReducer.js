@@ -30,12 +30,14 @@ export default createReducer(initialState.albums, {
         // put its corresponding IDs
         let newByIdState = {...state.byId}
         payload.songs.forEach(song => {
-            const thisAlbum = state.byId[song.albumId]
-            newByIdState = {
-                ...newByIdState,
-                [song.albumId] : {
-                    ...thisAlbum,
-                    song : thisAlbum.song ? thisAlbum.song.concat(song.id) : [song.id]
+            const thisAlbum = newByIdState[song.albumId]
+            if( thisAlbum ){
+                newByIdState = {
+                    ...newByIdState,
+                    [song.albumId] : {
+                        ...thisAlbum,
+                        song : thisAlbum.song ? thisAlbum.song.concat(song.id) : [song.id]
+                    }
                 }
             }
         })

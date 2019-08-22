@@ -1,6 +1,6 @@
 import * as types from "../actions/actionTypes"
 import initialState from "./initialState"
-import {createReducer} from '../../utils/redux.js'
+import { createReducer, set_starred_song_on_state } from '../../utils/redux.js'
 
 function put_songs_in_store(state, songs, clearCurrentList = true) {
     // Transform the array of songs coming in the payload to a normalized object
@@ -19,16 +19,7 @@ export default createReducer(initialState.songs, {
         // Toggle if it is found in the DB of songs
         const modifiedSongsInDB = payload.songIds.filter(id => state.byId[id])
         modifiedSongsInDB.forEach( (id) => {
-            newState = {
-                ...newState,
-                byId : {
-                    ...newState.byId,
-                    [id] : {
-                        ...newState.byId[id],
-                        starred : payload.starred
-                    }
-                }
-            }
+            newState = set_starred_song_on_state(newState, 'byId', id, payload.starred)
         })
         return newState
     },

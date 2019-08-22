@@ -42,3 +42,7 @@ export function filterSongsByValue(songs, filter) {
         }
     })
 }
+
+export function computeJointDurationOfSongs(songs) {
+    return songs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration
+}

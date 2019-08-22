@@ -5,7 +5,7 @@ import * as alerts from "../../redux/actions/alertsActions"
 // UI
 import { Alert } from 'rsuite'
 
-class AlertsManager extends React.Component {
+export class AlertsManager extends React.Component {
 
     componentDidUpdate(prevProps) {
         // Only show alerts if there is a new alert pending to show

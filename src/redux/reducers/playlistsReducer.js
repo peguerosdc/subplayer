@@ -1,7 +1,7 @@
 import * as types from "../actions/actionTypes"
-import {isPlaylistMineByOwner} from "../../utils/utils"
+import { isPlaylistMineByOwner, computeJointDurationOfSongs } from "../../utils/utils"
 import initialState from "./initialState"
-import {createReducer} from '../../utils/redux.js'
+import { createReducer } from '../../utils/redux.js'
 
 export default createReducer(initialState.playlists, {
     [types.LOAD_PLAYLISTS_SUCCESS]: (state, payload) => {
@@ -21,7 +21,10 @@ export default createReducer(initialState.playlists, {
         // Return mixed with the state
         return {
             ...state,
-            byId : playlists
+            byId : {
+                ...state.byId,
+                ...playlists
+            }
         }
     },
     [types.ADD_SONGS_TO_PLAYLIST_RESULT]: (state, payload) => {
@@ -37,7 +40,7 @@ export default createReducer(initialState.playlists, {
                 [payload.playlist.id] : {
                     ...payload.playlist,
                     songCount : payload.playlist.songCount + songsAdded.length,
-                    duration: payload.playlist.duration + payload.songsAdded.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration,
+                    duration: payload.playlist.duration + computeJointDurationOfSongs(payload.songsAdded),
                     songs : state.byId[payload.playlist.id].songs.concat(songsAdded.map(song => song.id))
                 }
             }
@@ -47,15 +50,17 @@ export default createReducer(initialState.playlists, {
         // Update count in current playlist. When updating the state, in here it is
         // necessary to remove the song from the list as songs are only removed when
         // the playlist's page is loaded and the UI needs to be refreshed
+        const playlist = payload.playlist
+        const removedSongsIds = payload.removedSongs.map(song => song.id)
         return {
             ...state,
             byId: {
                 ...state.byId,
-                [payload.playlist.id] : {
-                    ...payload.playlist,
-                    songCount : payload.playlist.songCount - payload.removedSongsIndexes.length,
-                    duration : payload.playlist.duration - payload.removedSongs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration,
-                    songs : payload.playlist.songs.filter((song, index) => !payload.removedSongsIndexes.includes(index) )
+                [playlist.id] : {
+                    ...playlist,
+                    songCount : playlist.songCount - payload.removedSongs.length,
+                    duration : playlist.duration - computeJointDurationOfSongs(payload.removedSongs),
+                    songs : playlist.songs.filter(songId => !removedSongsIds.includes(songId) )
                 }
             }
         }
