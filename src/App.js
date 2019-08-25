@@ -5,7 +5,7 @@ import 'rsuite/styles/index.less'
 import './index.less'
 import { Router } from "@reach/router"
 import { logout } from "./redux/actions/authActions"
-import { createPlaylist, loadPlaylists } from "./redux/actions/playlistsActions"
+import { loadPlaylists } from "./redux/actions/playlistsActions"
 // UI
 import { Container, Content, Footer, Sidebar, Header } from 'rsuite'
 import MySidebar from './components/sidebar/Sidebar'
@@ -38,11 +38,6 @@ class App extends React.Component  {
 
   onCreatePlaylist = () => {
     this.setState({showModal : true})
-  }
-
-  onPlaylistCreated = (name) => {
-    this.props.createPlaylist(name)
-    this.setState({showModal : false})
   }
 
   onClosePlaylistModal = () => {
@@ -78,7 +73,7 @@ class App extends React.Component  {
           <MusicPlayer />
         </Footer>
         { /* playlist creation modal */ }
-        <CreatePlaylistModal showModal={this.state.showModal} createPlaylist={this.onPlaylistCreated} onClosePlaylistModal={this.onClosePlaylistModal} />
+        <CreatePlaylistModal showModal={this.state.showModal} onClosePlaylistModal={this.onClosePlaylistModal} />
         { /* component to handle the alerts */ }
         <AlertsManager />
       </Container>
@@ -93,7 +88,7 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = { logout, createPlaylist, loadPlaylists }
+const mapDispatchToProps = { logout, loadPlaylists }
 
 export default connect(
     mapStateToProps,
