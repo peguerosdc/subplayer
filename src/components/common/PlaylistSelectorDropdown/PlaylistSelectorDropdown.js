@@ -5,21 +5,21 @@ import { connect } from "react-redux"
 // UI
 import { Dropdown, Icon } from 'rsuite'
 
-class PlaylistSelectorDropdown extends React.Component {
+export class PlaylistSelectorDropdown extends React.Component {
 
     constructor(props) {
         super(props)
         // Create a random key for favourites to avoid constraining the names of the playlists
-        // i.e. if we assign eventKey="favs", then a playlist could not have to name "favs"
+        // i.e. if we assign eventKey="favs", then a playlist could not be named "favs"
         this.favourites_key = `${Date.now()}`
     }
 
     onItemSelected = (eventKey) => {
-        if( eventKey === this.favourites_key ) {
-            this.props.onFavouritesSelected && this.props.onFavouritesSelected()
+        if(this.props.playlists[eventKey]) {
+            this.props.onPlaylistSelected && this.props.onPlaylistSelected(this.props.playlists[eventKey])
         }
         else {
-            this.props.onPlaylistSelected && this.props.onPlaylistSelected(this.props.playlists[eventKey])
+            this.props.onFavouritesSelected && this.props.onFavouritesSelected()
         }
     }
 
@@ -29,7 +29,7 @@ class PlaylistSelectorDropdown extends React.Component {
             <Dropdown title="Add to ..." trigger="click" onSelect={this.onItemSelected} disabled={this.props.disabled} >
                 {
                     showFavourites ? 
-                        <Dropdown.Item eventKey={this.favourites_key} icon={<Icon icon="star" />}>Favourites</Dropdown.Item>
+                        <Dropdown.Item id="favourites_item" eventKey={this.favourites_key} icon={<Icon icon="star" />}>Favourites</Dropdown.Item>
                         : null
                 }
                 {
@@ -55,12 +55,14 @@ const mapStateToProps = (state) => {
 }
 
 PlaylistSelectorDropdown.propTypes = {
+    playlists : PropTypes.object.isRequired,
     onFavouritesSelected : PropTypes.func,
     onPlaylistSelected : PropTypes.func,
-    showFavourites : PropTypes.bool
+    showFavourites : PropTypes.bool.isRequired
 }
 
 PlaylistSelectorDropdown.defaultProps = {
+    playlists : {},
     showFavourites : true
 }
 
