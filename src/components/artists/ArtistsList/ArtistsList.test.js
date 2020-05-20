@@ -3,34 +3,15 @@ import { shallow } from 'enzyme'
 import { ArtistsList } from "./ArtistsList"
 
 const props = {
-    artists : [
-        {
-            name : "A",
-            artist : [
-                {
-                    id : "1",
-                    name : "an artist 1"
-                },
-                {
-                    id : "2",
-                    name : "an artist 2"
-                }
-            ]
-        },
-        {
-            name : "B",
-            artist : [
-                {
-                    id : "3",
-                    name : "an artist 3"
-                },
-                {
-                    id : "4",
-                    name : "an artist 4"
-                }
-            ]
-        }
-    ]
+    artists : ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+        .map(i => {
+            return {
+                name:i,
+                artist : [1,2,3,4,5].map(n => {
+                    return { id : i+n, name : n }
+                }) 
+            }
+        })
 }
 
 describe("<ArtistsList />", () => {
