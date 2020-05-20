@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 // Redux
 import { connect } from "react-redux"
 import { playNextSong, playPreviousSong } from "../../redux/actions/songsActions"
@@ -12,7 +13,7 @@ import { seconds_to_mss } from "../../utils/formatting.js"
 import { IconButton, Icon, Slider } from 'rsuite'
 import "./MusicPlayer.less"
 
-class MusicPlayer extends React.Component {
+export class MusicPlayer extends React.Component {
     
     constructor(props) {
         super(props)
@@ -92,9 +93,17 @@ class MusicPlayer extends React.Component {
     }
 
     toggleStarOnSong = () => {
-        if( this.props.song ){
+        if( this.props.song && this.props.setStarOnSongs ){
             this.props.setStarOnSongs([this.props.song], !this.props.song.starred)
         }
+    }
+
+    playNextSong = () => {
+        this.props.playNextSong && this.props.playNextSong()
+    }
+
+    playPreviousSong = () => {
+        this.props.playPreviousSong && this.props.playPreviousSong()
     }
 
     clearMusicPlayer = () => {
@@ -118,16 +127,16 @@ class MusicPlayer extends React.Component {
                 <div className="song_metadata_container">
                     <img src={song.coverArt ? subsonic.getCoverArtUrl(song.coverArt) : "/currently_placeholder.png"} alt="cover" width="45" height="45"/>
                     <div style={{overflow:"hidden"}}>
-                        <p><b>{song.title}</b></p>
-                        {song.artist}
+                        <p id="song_name"><b>{song.title}</b></p>
+                        <span id="song_artist">{song.artist}</span>
                     </div>
-                    <IconButton icon={<Icon icon={starIcon} />} onClick={this.toggleStarOnSong} appearance="link" size="lg"/>
+                    <IconButton id="star_button" icon={<Icon icon={starIcon} />} onClick={this.toggleStarOnSong} appearance="link" size="lg"/>
                 </div>
                 {/* Music player controls */}
                 <div className="currently_playing_controls">
-                    <IconButton icon={<Icon icon="step-backward" />} appearance="link" size="sm" onClick={this.props.playPreviousSong}/>
-                    <IconButton appearance="primary" icon={<Icon icon={playing ? "pause" : "play"} />} circle size="sm" onClick={this.togglePlayerState} />
-                    <IconButton icon={<Icon icon="step-forward" />} appearance="link" size="sm" onClick={this.props.playNextSong} />
+                    <IconButton id="previous_button" icon={<Icon icon="step-backward" />} appearance="link" size="sm" onClick={this.playPreviousSong}/>
+                    <IconButton id="play_pause_button" appearance="primary" icon={<Icon icon={playing ? "pause" : "play"} />} circle size="sm" onClick={this.togglePlayerState} />
+                    <IconButton id="next_button" icon={<Icon icon="step-forward" />} appearance="link" size="sm" onClick={this.playNextSong} />
                 </div>
                 {/* Song seeking controls */}
                 <div style={{flexGrow:1}} className="rs-hidden-xs">
@@ -156,6 +165,13 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = { playNextSong, playPreviousSong, setStarOnSongs }
+
+MusicPlayer.propTypes = {
+    playNextSong : PropTypes.func,
+    playPreviousSong : PropTypes.func,
+    setStarOnSongs : PropTypes.func,
+    song : PropTypes.object
+}
 
 export default connect(
     mapStateToProps,
