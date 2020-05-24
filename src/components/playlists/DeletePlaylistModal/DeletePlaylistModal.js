@@ -7,7 +7,7 @@ import { deletePlaylist } from "../../../redux/actions/playlistsActions"
 // UI
 import { Button, Modal, Icon, Input } from 'rsuite'
 
-class DeletePlaylistModal extends React.Component {
+export class DeletePlaylistModal extends React.Component {
 
     constructor(props) {
         super(props)
@@ -28,8 +28,8 @@ class DeletePlaylistModal extends React.Component {
         // validate playlist name
         if( this.confirmation_name === this.props.playlist.name ) {
             this.waitingForDeletion = true
-            this.props.deletePlaylist( this.props.playlist )
-            this.props.onHide && this.props.onHide()
+            this.props.deletePlaylist(this.props.playlist)
+            this.closeDeleteModal()
         }
         else {
             this.setState({deleteNameError : true})
@@ -48,12 +48,12 @@ class DeletePlaylistModal extends React.Component {
                     <Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }} />
                     {'  '}
                     Once a playlist is deleted, it can't be recovered. If you want to proceed, write the name of the playlist "<b>{playlistToDelete.name}</b>":
-                    <Input name="confirm_name" onChange={(value => {this.confirmation_name = value})} style={{width:"100%", marginTop:"10px"}} />
-                    <span style={{color:"red", display:(this.state.deleteNameError ? "initial" : "none") }}>Name does not match</span>
+                    <Input id="confirm_name" name="confirm_name" onChange={(value => {this.confirmation_name = value})} style={{width:"100%", marginTop:"10px"}} />
+                    {this.state.deleteNameError ? <span id="errorMessage" style={{color:"red"}}>Name does not match</span> : null}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.closeModalAndDelete} appearance="primary"> Ok </Button>
-                    <Button onClick={this.closeDeleteModal} appearance="subtle"> Cancel </Button>
+                    <Button id="deleteButton" onClick={this.closeModalAndDelete} appearance="primary"> Ok </Button>
+                    <Button id="cancelButton" onClick={this.closeDeleteModal} appearance="subtle"> Cancel </Button>
                 </Modal.Footer>
             </Modal>
         )
@@ -63,6 +63,7 @@ class DeletePlaylistModal extends React.Component {
 // Properties
 DeletePlaylistModal.propTypes = {
     onHide: PropTypes.func,
+    deletePlaylist: PropTypes.func.isRequired,
     playlistId : PropTypes.string.isRequired
 }
 
