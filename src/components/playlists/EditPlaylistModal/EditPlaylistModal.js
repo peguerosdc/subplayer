@@ -6,7 +6,7 @@ import { editPlaylist } from "../../../redux/actions/playlistsActions"
 // UI
 import { Button, Modal, Form, FormGroup, ControlLabel, Input, Checkbox } from 'rsuite'
 
-class EditPlaylistModal extends React.Component {
+export class EditPlaylistModal extends React.Component {
 
     constructor(props) {
         super(props)
@@ -30,10 +30,13 @@ class EditPlaylistModal extends React.Component {
         this.setTempPlaylistToDefault(this.props.playlist)
     }
 
-    closeModalAndEdit = (e) => {
+    closeModalAndEdit = (event) => {
         // Do not submit form until data is checked
-        e.stopPropagation()
-        e.preventDefault()
+        if( event ){
+            event.stopPropagation()
+            event.preventDefault()
+        }
+        // Check data
         if( !this.tempPlaylist.name ) {
             this.setState({editNameError : true})
         }
@@ -55,21 +58,21 @@ class EditPlaylistModal extends React.Component {
                     <Form fluid onSubmit={this.closeModalAndEdit}>
                         <FormGroup>
                             <ControlLabel>Name</ControlLabel>
-                            <Input name="name" defaultValue={playlist.name} onChange={(value => {this.tempPlaylist.name = value})} style={{width:"100%"}} />
-                            <span style={{color:"red", display:(this.state.editNameError ? "initial" : "none") }}>A name is required</span>
+                            <Input id="name" name="name" defaultValue={playlist.name} onChange={(value => {this.tempPlaylist.name = value})} style={{width:"100%"}} />
+                            { this.state.editNameError ? <span id="nameErrorMessage" style={{color:"red"}}>A name is required</span> : null }
                         </FormGroup>
                         <FormGroup>
                             <ControlLabel>Comment</ControlLabel>
-                            <Input name="comment" defaultValue={playlist.comment} style={{width:"100%"}} onChange={(value => {this.tempPlaylist.comment = value})} />
+                            <Input id="comment" name="comment" defaultValue={playlist.comment} style={{width:"100%"}} onChange={(value => {this.tempPlaylist.comment = value})} />
                         </FormGroup>
                         <FormGroup>
-                            <Checkbox name="isPublic" defaultChecked={playlist.public} onChange={((value, checked) => {this.tempPlaylist.public = checked})}>Public</Checkbox>
+                            <Checkbox id="isPublic" name="isPublic" defaultChecked={playlist.public} onChange={((value, checked) => {this.tempPlaylist.public = checked})}>Public</Checkbox>
                         </FormGroup>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" appearance="primary" onClick={this.closeModalAndEdit}> Save </Button>
-                    <Button onClick={this.closeEditModal} appearance="subtle"> Cancel </Button>
+                    <Button id="editButton" type="submit" appearance="primary" onClick={this.closeModalAndEdit}> Save </Button>
+                    <Button id="cancelButton" onClick={this.closeEditModal} appearance="subtle"> Cancel </Button>
                 </Modal.Footer>
             </Modal>
         )
@@ -79,7 +82,8 @@ class EditPlaylistModal extends React.Component {
 // Properties
 EditPlaylistModal.propTypes = {
     onHide: PropTypes.func,
-    playlistId : PropTypes.string.isRequired
+    playlistId : PropTypes.string.isRequired,
+    editPlaylist : PropTypes.func.isRequired,
 }
 
 // Redux
