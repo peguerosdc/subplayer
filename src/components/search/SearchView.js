@@ -12,7 +12,7 @@ import {ArtistResult} from "./results/ArtistResult"
 import {SongsResult} from "./results/SongsResult"
 // UI
 import { ConnectedSearchBar } from "./SearchBar"
-import { Col, Icon } from 'rsuite'
+import { Col } from 'rsuite'
 
 export class SearchView extends React.Component {
 
