@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from 'prop-types'
 import { navigate } from "@reach/router"
 // Redux
 import { connect } from "react-redux"
@@ -23,11 +24,16 @@ export class SearchBar extends React.PureComponent {
     render() {
         return (
             <InputGroup inside size={this.props.size} style={{...this.props.style}}>
-                <Input placeholder="Search" onChange={(value => {this.query = value})} onKeyDown={this.handleKeyDown} />
-                <InputGroup.Button onClick={this.performSearch}><Icon icon="search" /></InputGroup.Button>
+                <Input id="query" placeholder="Search" onChange={(value => {this.query = value})} onKeyDown={this.handleKeyDown} />
+                <InputGroup.Button id="searchButton" onClick={this.performSearch}><Icon icon="search" /></InputGroup.Button>
             </InputGroup>
         )
     }
+}
+
+SearchBar.propTypes = {
+    size : PropTypes.string,
+    onSearch : PropTypes.func.isRequired
 }
 
 SearchBar.defaultProps = {
