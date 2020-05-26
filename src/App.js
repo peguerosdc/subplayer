@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from "react-redux"
 import './App.css'
 import 'rsuite/styles/index.less'
@@ -21,7 +22,7 @@ import SearchView from './components/search/SearchView'
 import FavouritesView from './components/favourites/FavouritesView'
 import AlertsManager from './components/alerts/AlertsManager'
 
-class App extends React.Component  {
+export class App extends React.Component  {
 
   constructor(props) {
     super(props)
@@ -49,13 +50,13 @@ class App extends React.Component  {
       <Container style={{ display : "flex", height: "100vh", flexDirection:"column" }}>
         { /* Navbar for mobile navigation */ }
         <Header className="rs-hidden-lg rs-hidden-md">
-          <Navbar onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
+          <Navbar id="mobileNavbar" onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
         </Header>
-        <InfiniteLineLoader isLoading={this.props.asyncTasksInProgress > 0 } />
+        <InfiniteLineLoader id="loader" isLoading={this.props.asyncTasksInProgress > 0 } />
         { /* Main content */ }
         <Container style={{flex: 1, "overflow":"auto"}}>
           <Sidebar className="rs-hidden-xs rs-hidden-sm sidebar">
-            <MySidebar onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
+            <MySidebar id="sidebar" onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
           </Sidebar>
           <Content className="main-content" style={{"overflow":"auto"}}>
             <Router style={{height:"100%"}}>
@@ -73,7 +74,7 @@ class App extends React.Component  {
           <MusicPlayer />
         </Footer>
         { /* playlist creation modal */ }
-        <CreatePlaylistModal showModal={this.state.showModal} onClosePlaylistModal={this.onClosePlaylistModal} />
+        <CreatePlaylistModal id="createPlaylistModal" showModal={this.state.showModal} onClosePlaylistModal={this.onClosePlaylistModal} />
         { /* component to handle the alerts */ }
         <AlertsManager />
       </Container>
@@ -89,6 +90,16 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = { logout, loadPlaylists }
+
+App.propTypes = {
+    asyncTasksInProgress : PropTypes.number,
+    loadPlaylists : PropTypes.func.isRequired,
+    logout : PropTypes.func.isRequired
+}
+
+App.defaultProps = {
+    asyncTasksInProgress : 0
+}
 
 export default connect(
     mapStateToProps,
