@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 // UI
 import SongsTable from '../../songs/SongsTable'
 import SongsTableEnhanced from '../../songs/SongsTableEnhanced'
-import { Col, Icon } from 'rsuite'
 
 const SONG_COLUMNS_TO_SHOW = [SongsTable.columns.selectable, SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download]
 
