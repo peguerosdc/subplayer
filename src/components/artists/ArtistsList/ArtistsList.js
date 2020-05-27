@@ -42,7 +42,7 @@ export class ArtistsList extends React.Component {
             // Add new artists
             let toAdd = []
             for (var i = page*pageSize; i < maximumValue; i++) {
-                toAdd.push( <ArtistIndex key={i} indexObject={ this.props.artists.byIndex[i] } /> )
+                toAdd.push( <ArtistIndex key={i} indexObject={ this.props.artists[i] } /> )
             }
             this.setState({
                 artistsToDisplay : this.state.artistsToDisplay.concat(toAdd),

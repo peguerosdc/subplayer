@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from 'prop-types'
 // Redux
 import { connect } from "react-redux"
 import { addSongsToPlaylist } from "../../redux/actions/playlistsActions"
@@ -44,21 +45,19 @@ export class SongsTableEnhanced extends React.Component {
         return (
             <div style={{backgroundColor:"white", padding:"5px", ...style, display:"flex", flexFlow:"column"}}>
                 <div style={{display:"flex", flexFlow:"row"}}>
-                    {showSearchFilter && <SearchBar size="md" style={{margin:"0px 10px"}} onSearch={this.onFilterSongs}/> }
-                    {showPlaylistDropdown && <PlaylistSelectorDropdown onPlaylistSelected={this.onPlaylistSelected} onFavouritesSelected={this.onFavouritesSelected} disabled={!hasSongsSelected} />}
+                    {showSearchFilter && <SearchBar id="searchBar" size="md" style={{margin:"0px 10px"}} onSearch={this.onFilterSongs}/> }
+                    {showPlaylistDropdown && <PlaylistSelectorDropdown id="playlistSelector" onPlaylistSelected={this.onPlaylistSelected} onFavouritesSelected={this.onFavouritesSelected} disabled={!hasSongsSelected} />}
                 </div>
                 {
                     rest.fixedHeightToFill ? (
                         <div style={{flexGrow:1}}>
-                            <AutoSizer disableWidth>
+                            <AutoSizer id="autosizerContainer" disableWidth>
                             {({height}) => (
-                                <SongsTable songsFilter={filterValue} height={height} onSongsSelected={this.onSongsSelected} {...rest} />
+                                <SongsTable id="songsTable" songsFilter={filterValue} height={height} onSongsSelected={this.onSongsSelected} {...rest} />
                             )}
                             </AutoSizer>
                         </div>
-                    ) : (
-                        <SongsTable songsFilter={filterValue} onSongsSelected={this.onSongsSelected} {...rest} />
-                    )
+                    ) : ( <SongsTable id="songsTable" songsFilter={filterValue} onSongsSelected={this.onSongsSelected} {...rest} /> )
                 }
             </div>
         )
@@ -66,10 +65,20 @@ export class SongsTableEnhanced extends React.Component {
 
 }
 
+SongsTableEnhanced.propTypes = {
+    withPlaylistDropdown : PropTypes.bool,
+    withSearchFilter : PropTypes.bool,
+    fixedHeightToFill : PropTypes.bool,
+    addSongsToPlaylist : PropTypes.func,
+    setStarOnSongs : PropTypes.func
+}
+
 SongsTableEnhanced.defaultProps = {
     withPlaylistDropdown : true,
     withSearchFilter : true,
     fixedHeightToFill : false,
+    addSongsToPlaylist: () => null,
+    setStarOnSongs: () => null,
 }
 
 const mapDispatchToProps = { addSongsToPlaylist, setStarOnSongs }

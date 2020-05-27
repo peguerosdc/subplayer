@@ -1,9 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from "react-redux"
+import { createPlaylist } from "../../../redux/actions/playlistsActions"
 // UI
 import { Button, Modal, Form, FormGroup, FormControl, ControlLabel } from 'rsuite'
 
-class CreatePlaylistModal extends React.Component {
+export class CreatePlaylistModal extends React.Component {
 
     constructor(props) {
         super(props)
@@ -21,8 +23,9 @@ class CreatePlaylistModal extends React.Component {
 
     closeModalAndCreate = () => {
         if( this.newPlaylist.name.length > 0 ) {
-            this.setState({showModal:false, playlistNameErrorMessage : null})
-            this.props.createPlaylist && this.props.createPlaylist( this.newPlaylist.name )
+            this.setState({playlistNameErrorMessage : null})
+            this.props.createPlaylist( this.newPlaylist.name )
+            this.closeModal()
         }
         else {
             this.setState({playlistNameErrorMessage : "Name required"})
@@ -50,8 +53,8 @@ class CreatePlaylistModal extends React.Component {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.closeModalAndCreate} appearance="primary"> Create </Button>
-                    <Button onClick={this.closeModal} appearance="subtle"> Cancel </Button>
+                    <Button id="create_playlist" onClick={this.closeModalAndCreate} appearance="primary"> Create </Button>
+                    <Button id="close" onClick={this.closeModal} appearance="subtle"> Cancel </Button>
                 </Modal.Footer>
             </Modal>    
         )
@@ -59,8 +62,19 @@ class CreatePlaylistModal extends React.Component {
 }
 
 CreatePlaylistModal.propTypes = {
+    showModal : PropTypes.bool.isRequired,
     onClosePlaylistModal : PropTypes.func,
-    createPlaylist : PropTypes.func,
+    createPlaylist : PropTypes.func.isRequired,
 }
 
-export default CreatePlaylistModal
+CreatePlaylistModal.defaultProps = {
+    showModal : false,
+    createPlaylist : () => (null),
+}
+
+const mapDispatchToProps = { createPlaylist }
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(CreatePlaylistModal)

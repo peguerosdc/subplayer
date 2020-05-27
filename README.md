@@ -1,5 +1,7 @@
 # Subplayer
 
+[![codecov](https://codecov.io/gh/peguerosdc/subplayer/branch/develop/graph/badge.svg)](https://codecov.io/gh/peguerosdc/subplayer)
+
 This is a front-end application designed to be a simple, functional and nice looking web player to be used with a Subsonic back-end (originally developed to work with [spl0k/supysonic](https://github.com/spl0k/supysonic)).
 
 ![Overview](/docs/collage.png)
@@ -61,15 +63,17 @@ $ docker stop mysubplayer
 
 ## TODO
 - Implement CI to push Docker image automatically when merged to `master`
-- Add unit tests
-- `feature`: Playing queue's management (add songs at position, re-order, etc)
+- There are some `TODO`s in the unit tests, but most features are tested.
+- `feature`: Playing queue's management (add songs at a certain position, re-order, etc)
 - `feature`: "Recently added" view
 - `feature`: Toggle "shuffle" on/off
 - `feature`: Song seeking
 - `feature`: Muting
 
 ## Contributions
-Any TODO item, any bug you find and want to fix, any architecture/performance/Docker improvements, any new feature you think would be cool to have is welcomed :) Just keep in mind that this project is meant to be a lightweight application capable of running on low-end devices.
+Any TODO item, any bug you find and want to fix, any architecture/performance/Docker improvements, any new feature you think would be cool to have is welcomed :) Just keep in mind that this project is meant to be a lightweight application.
+
+**NOTE**: if you want to add new features, please implement at least the basic unit tests you can think of. Pull-requests will not be merged without testing.
 
 ## Acknowledgements
 - Favicon made by Freepik from www.flaticon.com

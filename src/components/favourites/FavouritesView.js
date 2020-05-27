@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from 'prop-types'
 // Redux
 import { connect } from "react-redux"
 import { loadFavouriteSongs, setStarOnSongs } from "../../redux/actions/favouritesActions"
@@ -12,7 +13,7 @@ import SongsTable from '../songs/SongsTable'
 
 const COLUMNS_TO_SHOW = [SongsTable.columns.selectable, SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download, SongsTable.columns.starred]
 
-class FavouritesView extends React.Component {
+export class FavouritesView extends React.Component {
 
     constructor(props) {
         super(props)
@@ -50,10 +51,10 @@ class FavouritesView extends React.Component {
                 <div style={{ display:"flex", flexFlow: "row", marginBottom:"15px"}}>
                     <div style={{flexGrow:1}}>
                         <h1 style={{color:"white", fontWeight: "bold"}}>Favourites</h1>
-                        <span>{ songs.length } songs, {seconds_to_hhmmss(duration)}</span>
+                        <span id="description">{ songs.length } songs, {seconds_to_hhmmss(duration)}</span>
                     </div>
                     <div style={{ display:"flex", flexFlow: "column"}}>
-                        <Button onClick={this.removeSelectedSongs} disabled={disableButton}>Remove from favourites</Button>
+                        <Button id="removeFromFavourites" onClick={this.removeSelectedSongs} disabled={disableButton}>Remove from favourites</Button>
                     </div>
                 </div>
                 <SongsTableEnhanced style={{flexGrow:1}} songs={songs} onSongsSelected={this.onSongsSelected} columns={COLUMNS_TO_SHOW} fixedHeightToFill={true} withPlaylistDropdown={false} sortable={true} />
@@ -69,6 +70,17 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = { loadFavouriteSongs, setStarOnSongs }
+
+FavouritesView.propTypes = {
+    loadFavouriteSongs : PropTypes.func.isRequired,
+    setStarOnSongs : PropTypes.func,
+    songs : PropTypes.array,
+
+}
+
+FavouritesView.defaultProps = {
+    songs : []
+}
 
 
 export default connect(

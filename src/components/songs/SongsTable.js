@@ -35,7 +35,7 @@ const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => {
     )
 }
 
-class SongsTable extends React.Component {
+export class SongsTable extends React.Component {
 
     constructor(props) {
         super(props)
@@ -164,6 +164,7 @@ class SongsTable extends React.Component {
         return (
             <Table
                 {...heightProps}
+                id="songsTable"
                 onRowClick={this.songClicked}
                 virtualized
                 data={songs}
@@ -178,6 +179,7 @@ class SongsTable extends React.Component {
                         <HeaderCell style={{ padding: 0 }}>
                             <div style={{ lineHeight: '40px' }}>
                                 <Checkbox
+                                    id="checkAllCell"
                                     inline
                                     checked={checked}
                                     indeterminate={indeterminate}
@@ -185,6 +187,7 @@ class SongsTable extends React.Component {
                             </div>
                         </HeaderCell>
                         <CheckCell
+                            id="checkColumn"
                             dataKey="id"
                             checkedKeys={checkedKeys}
                             onChange={this.handleCheck} />
@@ -288,9 +291,12 @@ const columns = {
 
 // Properties
 SongsTable.propTypes = {
+  height : PropTypes.number,
   columns: PropTypes.arrayOf(PropTypes.string),
   sortable : PropTypes.bool,
-  songsFilter : PropTypes.string
+  songsFilter : PropTypes.string,
+  addSongsToQueue : PropTypes.func,
+  onSongsSelected : PropTypes.func,
 }
 SongsTable.columns = columns
 
@@ -300,7 +306,9 @@ SongsTable.defaultProps = {
     height : -1,
     sortable : false,
     columns : defaultColumns,
-    songsFilter : null
+    songsFilter : null,
+    addSongsToQueue: () => null,
+    onSongsSelected: () => null,
 }
 
 export default connect(

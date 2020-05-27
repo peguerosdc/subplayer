@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from 'prop-types'
 // Redux
 import { connect } from "react-redux"
 import { navigate } from "@reach/router"
@@ -6,7 +7,7 @@ import { loginUser, lazyLoginUser } from "../../redux/actions/authActions"
 // UI
 import { Panel, Button, Form, FormGroup, FormControl, ControlLabel, HelpBlock, Alert } from 'rsuite'
 
-class LoginComponent extends React.Component {
+export class LoginComponent extends React.Component {
 
     constructor(props) {
         super(props)
@@ -21,7 +22,7 @@ class LoginComponent extends React.Component {
     componentDidMount() {
         // Check if we need to lazy login
         if( !this.props.isAuthenticated ) {
-            this.props.lazyLoginUser()
+            this.props.lazyLoginUser && this.props.lazyLoginUser()
         }
         else {
             navigate("/artists", { replace: true })
@@ -105,6 +106,21 @@ class LoginComponent extends React.Component {
             </div>
         )
     }
+}
+
+LoginComponent.propTypes = {
+    isAuthenticated : PropTypes.bool.isRequired,
+    isAuthenticating : PropTypes.bool.isRequired,
+    statusText : PropTypes.string,
+    loginUser : PropTypes.func.isRequired,
+    lazyLoginUser : PropTypes.func,
+}
+
+LoginComponent.defaultProps = {
+    isAuthenticated : false,
+    isAuthenticating : false,
+    statusText: null,
+    loginUser: () => (null)
 }
 
 const mapStateToProps = (state) => ({

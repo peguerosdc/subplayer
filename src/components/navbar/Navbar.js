@@ -6,7 +6,7 @@ import { navigate } from "@reach/router"
 // UI
 import {Navbar, Icon, Nav, Dropdown } from 'rsuite'
 
-class MyNavbar extends React.Component {
+export class MyNavbar extends React.Component {
 
     constructor(props) {
         super(props)
@@ -37,18 +37,18 @@ class MyNavbar extends React.Component {
             <Navbar>
                 <Navbar.Body>
                     <Nav onSelect={this.onNavSelected}>
-                        <Nav.Item eventKey="/search" icon={<Icon icon="search" />} active={this.isRouteActive("/search")} />
-                        <Nav.Item eventKey="/artists/" icon={<Icon icon="group" />} active={this.isRouteActive("/artists")} />
-                        <Nav.Item eventKey="/favourites/" icon={<Icon icon="star" />} active={this.isRouteActive("/favourites")} />
-                        <Dropdown title="Playlists">
-                            <Dropdown.Item eventKey="newPlaylist" icon={<Icon icon="plus" />} >New playlist</Dropdown.Item>
+                        <Nav.Item id="search" eventKey="/search" icon={<Icon icon="search" />} active={this.isRouteActive("/search")} />
+                        <Nav.Item id="artists" eventKey="/artists/" icon={<Icon icon="group" />} active={this.isRouteActive("/artists")} />
+                        <Nav.Item id="favourites" eventKey="/favourites/" icon={<Icon icon="star" />} active={this.isRouteActive("/favourites")} />
+                        <Dropdown id="playlists" title="Playlists">
+                            <Dropdown.Item id="createPlaylist" eventKey="newPlaylist" icon={<Icon icon="plus" />} >New playlist</Dropdown.Item>
                             {Object.keys(playlists).map( id =>
                                 <Dropdown.Item active={this.isRouteActive(`/playlist/${id}`)} key={id} eventKey={`/playlist/${id}`}>{playlists[id].name} ({playlists[id].songCount})</Dropdown.Item>
                             )}
                         </Dropdown>
                     </Nav>
                     <Nav onSelect={this.onNavSelected} pullRight>
-                        <Nav.Item eventKey="logout">Log out</Nav.Item>
+                        <Nav.Item id="logout" eventKey="logout">Log out</Nav.Item>
                     </Nav>
                 </Navbar.Body>
             </Navbar>
@@ -63,9 +63,13 @@ const mapStateToProps = (state) => {
 }
 
 MyNavbar.propTypes = {
-    onNavigateTo : PropTypes.func,
     onCreatePlaylistTrigger : PropTypes.func,
-    onLogOut : PropTypes.func
+    onLogOut : PropTypes.func,
+    playlists : PropTypes.object.isRequired
+}
+
+MyNavbar.defaultProps = {
+    playlists : {}
 }
 
 export default connect(

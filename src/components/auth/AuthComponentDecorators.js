@@ -1,15 +1,16 @@
 import React from "react"
+import PropTypes from 'prop-types'
 import { Redirect } from "@reach/router"
 // Redux
 import { connect } from "react-redux"
 import { lazyLoginUser } from "../../redux/actions/authActions"
 
-class AuthenticatedComponent extends React.Component {
+export class AuthenticatedComponent extends React.Component {
 
     componentDidMount() {
         // Check if we need to lazy login
         if( !this.props.isAuthenticated ) {
-            this.props.lazyLoginUser()
+            this.props.lazyLoginUser && this.props.lazyLoginUser()
         }
     }
 
@@ -28,6 +29,17 @@ class AuthenticatedComponent extends React.Component {
         )
 
     }
+}
+
+AuthenticatedComponent.propTypes = {
+    isAuthenticated : PropTypes.bool.isRequired,
+    isAuthenticating : PropTypes.bool.isRequired,
+    lazyLoginUser : PropTypes.func
+}
+
+AuthenticatedComponent.defaultProps = {
+    isAuthenticated : false,
+    isAuthenticating : false,
 }
 
 const mapStateToProps = (state) => ({
