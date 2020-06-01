@@ -12,6 +12,8 @@ export default createReducer(initialState.artists, {
     [types.LOAD_ONE_ARTIST_SUCCESS]: (state, payload) => {
         // Normalize the albums of the artist to just contain the IDs
         const normalized_albums = payload.artist.album.map(album => album.id)
+        // As only the details of one artist is displayed at a time
+        // we can replace the existing content of byId with the new artist
         return {
             ...state,
             byId : {

@@ -1,41 +1,20 @@
 import React from "react"
+import PropTypes from 'prop-types'
 import { navigate } from "@reach/router"
 // Redux
 import { connect } from "react-redux"
 import { search } from "../../redux/actions/searchActions"
 import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
 import { searchSongsSelector } from '../../redux/selectors/searchSelectors'
-// Utils
-import subsonic from "../../api/subsonicApi"
+// Results
+import {AlbumResult} from "./results/AlbumResult"
+import {ArtistResult} from "./results/ArtistResult"
+import {SongsResult} from "./results/SongsResult"
 // UI
 import { ConnectedSearchBar } from "./SearchBar"
-import SongsTable from '../songs/SongsTable'
-import SongsTableEnhanced from '../songs/SongsTableEnhanced'
-import { Col, Icon } from 'rsuite'
+import { Col } from 'rsuite'
 
-const SONG_COLUMNS_TO_SHOW = [SongsTable.columns.selectable, SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download]
-
-function AlbumElement(props) {
-    const album = props.album
-    return (
-        <div style={{display:"flex", flexDirection:"column", alignItems:"center", textAlign:"center"}}>
-            <div
-                style={{
-                    width: 100,
-                    height: 100,
-                    background: '#f5f5f5',
-                    borderRadius: "50%",
-                    overflow: 'hidden',
-                    display: 'inline-block'
-                }}>
-                <img alt="" src={album.coverArt ? subsonic.getCoverArtUrl(album.coverArt) : "album_placeholder.jpg"} width="100" />
-            </div>
-            {`"${album.name}" by "${album.artist}"`}
-        </div>
-    )
-}
-
-class SearchView extends React.Component {
+export class SearchView extends React.Component {
 
     render() {
         const currentArtistPlayingId = this.props.currentSongPlaying && this.props.currentSongPlaying.artistId
@@ -61,7 +40,7 @@ class SearchView extends React.Component {
                             <div style={{display:"flex", flexDirection:"row", flexWrap:"wrap"}}>
                                 { artists.map( a =>
                                     <Col key={a.id} sm={6} xs={12} className={currentArtistPlayingId === a.id ? "link_to_artist playing" : "link_to_artist"} onClick={ (e) => {navigate("/artists/"+a.id)} }>
-                                        {a.name} <Icon icon='volume-up' />
+                                        <ArtistResult artist={a}/>
                                     </Col>
                                 )}
                             </div>
@@ -76,7 +55,7 @@ class SearchView extends React.Component {
                             <div style={{display:"flex", flexDirection:"row", flexWrap:"wrap"}}>
                                 { albums.map( a =>
                                     <Col className="link_to_artist" key={a.id} sm={6} xs={12} onClick={ (e) => {navigate("/album/"+a.id)} }>
-                                        <AlbumElement album={a} />
+                                        <AlbumResult album={a} />
                                     </Col>
                                 )}
                             </div>
@@ -88,7 +67,7 @@ class SearchView extends React.Component {
                     songs.length > 0 ? (
                         <>
                             <h1 className="artists_list_title">Songs</h1>
-                            <SongsTableEnhanced style={{marginBottom:"20px"}} songs={songs} columns={SONG_COLUMNS_TO_SHOW} sortable={true} />
+                            <SongsResult songs={songs} />
                         </>
                     ) : null
                 }
@@ -109,6 +88,12 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = { search }
 
+SearchView.propTypes = {
+    "artists" : PropTypes.array,
+    "albums" : PropTypes.array,
+    "songs" : PropTypes.array,
+    currentSongPlaying : PropTypes.object
+}
 
 export default connect(
     mapStateToProps,

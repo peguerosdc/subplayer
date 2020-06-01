@@ -8,7 +8,7 @@ import { Button, Icon, Divider } from 'rsuite'
 import { ConnectedSearchBar } from "../search/SearchBar"
 import "./sidebar.less"
 
-class Sidebar extends React.Component {
+export class Sidebar extends React.Component {
 
     isSelected = (link) => this.state.path.startsWith(link)
 
@@ -43,19 +43,18 @@ class Sidebar extends React.Component {
 
                 <h3 className="title">PLAYLISTS ({Object.keys(playlists).length})</h3>
 
-                <div style={{flexGrow:1, display:"flex", flexDirection:"column", overflow:"auto"}}>
+                <div id="playlists" style={{flexGrow:1, display:"flex", flexDirection:"column", overflow:"auto"}}>
                 {
                     Object.keys(playlists).map( id =>
-                        <Link key={id} to={`/playlist/${id}`} getProps={this.isRouteActive} >
-                                    {playlists[id].name} ({playlists[id].songCount})
-                            
+                        <Link className="playlist-item" key={id} to={`/playlist/${id}`} getProps={this.isRouteActive} >
+                            {playlists[id].name} ({playlists[id].songCount}) 
                         </Link>
                     )
                 }
                 </div>
                 <Divider className="sidebar-divider" />
-                <Button appearance="ghost" block={true} onClick={this.showCreatePlaylistModal} >Create new playlist</Button>
-                <Button appearance="link" block={true} onClick={this.onLogOut}>Log out</Button>
+                <Button id="createPlaylistButton" appearance="ghost" block={true} onClick={this.showCreatePlaylistModal} >Create new playlist</Button>
+                <Button id="logoutButton" appearance="link" block={true} onClick={this.onLogOut}>Log out</Button>
             </div>
         )
     }
@@ -70,7 +69,12 @@ const mapStateToProps = (state) => {
 
 Sidebar.propTypes = {
     onCreatePlaylistTrigger : PropTypes.func,
-    onLogOut : PropTypes.func
+    onLogOut : PropTypes.func,
+    playlists : PropTypes.object
+}
+
+Sidebar.defaultProps = {
+    playlists : {}
 }
 
 export default connect(

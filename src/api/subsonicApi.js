@@ -30,7 +30,13 @@ function buildUrl(config, action, params = {}) {
 
 function perform_api_call(url) {
     return fetch(url)
-        .then(res => res.json() )
+        .then(response => {
+            var contentType = response.headers.get('content-type')
+            if(contentType && contentType.includes('application/json')) {
+                return response.json()
+            }
+            return Promise.reject(new Error(`${response.status}, ${response.body}`) )
+        })
         .then(data => {
             // Get subsonic response
             const response = data["subsonic-response"]

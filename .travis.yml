@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - node
+  - lts/*
+install:
+  - yarn global add codecov
+  - yarn
+script:
+  - yarn test --coverage --watchAll=false && codecov

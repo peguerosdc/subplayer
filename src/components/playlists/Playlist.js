@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from 'prop-types'
 // Redux
 import { connect } from "react-redux"
 import { removeSongsFromPlaylist, loadSinglePlaylist } from "../../redux/actions/playlistsActions"
@@ -15,7 +16,7 @@ import { Button, Icon, IconButton } from 'rsuite'
 const NOT_MINE_COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download]
 const MINE_COLUMNS_TO_SHOW = [...NOT_MINE_COLUMNS_TO_SHOW, SongsTable.columns.selectable]
 
-class Playlist extends React.Component {
+export class Playlist extends React.Component {
     
     constructor(props) {
         super(props)
@@ -24,7 +25,7 @@ class Playlist extends React.Component {
     }
     
     componentDidMount() {
-        this.props.loadSinglePlaylist(this.props.playlistId)
+        this.props.playlistId && this.props.loadSinglePlaylist(this.props.playlistId)
     }
 
     componentDidUpdate(prevProps) {
@@ -42,7 +43,7 @@ class Playlist extends React.Component {
     }
 
     removeSelectedSongs = () => {
-        if( this.state.selectedSongs.length > 0 ) {
+        if( this.props.removeSongsFromPlaylist && this.state.selectedSongs.length > 0 ) {
             // Get indexes of this playlist because of stupid Subsonic API
             const selectedIndexes = this.state.selectedSongs.map( selectedSong => this.props.songs.findIndex(song => song.id === selectedSong.id) )
             this.deletedIndexes = selectedIndexes 
@@ -85,31 +86,29 @@ class Playlist extends React.Component {
             <div style={{display:"flex", flexFlow:"column", padding:"20px", height:"100%", width:"100%"}}>
                 <div style={{ display:"flex", flexFlow: "row", marginBottom:"15px"}}>
                     <div style={{flexGrow:1}}>
-                        <h1 style={{color:"white", fontWeight:"bold"}}>
+                        <h1 id="title" style={{color:"white", fontWeight:"bold", display: "inline-block"}}>
                             {playlist.isMine ? playlist.name : this.formatExternalPlaylistName(playlist.name) }
-                            {playlist.isMine ?
-                                <IconButton onClick={this.triggerEditModal} icon={<Icon icon="pencil" />} appearance="link" />
-                                : null
-                            }
                         </h1>
-                        <span>{playlist.songCount} songs, {seconds_to_hhmmss(playlist.duration)} by <b>{playlist.owner}</b> </span>
-                        { playlist.comment ?
-                            <p>{`"${playlist.comment}"`}</p>
-                            : null }
+                        {playlist.isMine ?
+                            <IconButton id="editButton" style={{verticalAlign : "top"}} onClick={this.triggerEditModal} icon={<Icon icon="pencil" />} appearance="link" />
+                            : null
+                        }
+                        <p id="details">{playlist.songCount} songs, {seconds_to_hhmmss(playlist.duration)} by <b>{playlist.owner}</b></p>
+                        { playlist.comment ? <p id="comment">{`"${playlist.comment}"`}</p> : null }
                     </div>
                     {playlist.isMine ?
                         <div style={{ display:"flex", flexFlow: "column"}}>
-                            <Button color="red" onClick={this.askDeletionConfirmation} style={{marginBottom:"5px"}}>Delete playlist</Button>
-                            <Button onClick={this.removeSelectedSongs} disabled={disableButton}>Remove from playlist</Button>
+                            <Button id="deleteButton" color="red" onClick={this.askDeletionConfirmation} style={{marginBottom:"5px"}}>Delete playlist</Button>
+                            <Button id="removeButton" onClick={this.removeSelectedSongs} disabled={disableButton}>Remove from playlist</Button>
                         </div>
                         : null
                     }
                 </div>
-                <SongsTableEnhanced style={{flexGrow:1}} songs={songs} onSongsSelected={this.onSongsSelected} columns={columnsToShow} fixedHeightToFill={true} withPlaylistDropdown={false} sortable={true} />
+                <SongsTableEnhanced id="songsComponent" style={{flexGrow:1}} songs={songs} onSongsSelected={this.onSongsSelected} columns={columnsToShow} fixedHeightToFill={true} withPlaylistDropdown={false} sortable={true} />
                 {/* Playlist deletion confirmation */}
-                <DeletePlaylistModal playlistId={playlist.id} show={this.state.showDeleteModal} onHide={this.closeDeleteModal} />
+                <DeletePlaylistModal id="deleteComponent" playlistId={playlist.id} show={this.state.showDeleteModal} onHide={this.closeDeleteModal} />
                 {/* Playlist edition form */}
-                <EditPlaylistModal playlistId={playlist.id} show={this.state.showEditModal} onHide={this.closeEditModal} />
+                <EditPlaylistModal id="editComponent" playlistId={playlist.id} show={this.state.showEditModal} onHide={this.closeEditModal} />
             </div>
         )
     }
@@ -124,6 +123,13 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = { removeSongsFromPlaylist, loadSinglePlaylist }
 
+Playlist.propTypes = {
+    playlistId : PropTypes.string,
+    playlist : PropTypes.object,
+    songs : PropTypes.array,
+    removeSongsFromPlaylist : PropTypes.func,
+    loadSinglePlaylist : PropTypes.func
+}
 
 export default connect(
     mapStateToProps,

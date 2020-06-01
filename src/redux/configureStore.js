@@ -1,5 +1,5 @@
 // Use CommonJS require below so we can dynamically import during build-time.
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "test") {
     module.exports = require("./configureStore.prod");
 }
 else {
