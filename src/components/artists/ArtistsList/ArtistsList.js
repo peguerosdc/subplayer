@@ -3,10 +3,41 @@ import PropTypes from 'prop-types'
 // Redux
 import { loadArtists } from "../../../redux/actions/artistsActions"
 import { connect } from "react-redux"
+import { getArtistsWithHeaders } from "../../../redux/selectors/artistSelectors"
 // UI
-import "./ArtistsList.less"
-import ArtistIndex from "./ArtistIndex.js"
+import ArtistElement from "./ArtistElement/ArtistElement"
+import ArtistLoader from "./ArtistLoader/ArtistLoader"
 import InfiniteScroll from 'react-infinite-scroller'
+import ArtistHeader from "./ArtistHeader/ArtistHeader"
+
+/* Define each page with (around) pageSize elements.
+ * This will be just an estimated value, as the final value (to keep UI consistency)
+ * must be calculated as a multiple of 2 (for small screens) and 3 (for bigger screens)
+ */
+export function getNextArtists(elementsRendered, artists, pageSize=50) {
+    // Render the next ~pageSize elements
+    let toAdd = []
+    let artistsAddedInLastSection = 0
+    let keepAdding = true
+    do {
+        const elementsAdded = toAdd.length
+        const indexToAdd = elementsRendered + elementsAdded
+        // Add the correct UI type to the list
+        const elementToAdd = artists[indexToAdd]
+        toAdd.push( elementToAdd.header ? <ArtistHeader name={elementToAdd.header} /> : <ArtistElement artist={elementToAdd} /> )
+        /* Update the amount of artists added under the last header. If the new element is a header, this counter
+         * should be restarted */
+        artistsAddedInLastSection = elementToAdd.header ? 0 : artistsAddedInLastSection + 1
+        /*  We should stop adding artists when:
+         *  (there are no more elements to add) OR (the amount of artists added is multiple of 2 and 3 above pageSize) */
+        if( indexToAdd === (artists.length-1) ||
+            (elementsAdded >= pageSize && artistsAddedInLastSection % 2 === 0 && artistsAddedInLastSection % 3 === 0) ) {
+            keepAdding = false
+        }
+    }
+    while(keepAdding)
+    return toAdd
+}
 
 export class ArtistsList extends React.Component {
 
@@ -14,6 +45,8 @@ export class ArtistsList extends React.Component {
         super(props)
         const hasArtistsToRender = this.props.artists !== null && this.props.artists.length > 0
         this.state = {artistsToDisplay : [], hasMoreToLoad : hasArtistsToRender }
+        // This will keep a count on how many elements are already rendered
+        this._elementsRendered = 0
     }
     
     componentDidMount() {
@@ -28,41 +61,26 @@ export class ArtistsList extends React.Component {
         }
     }
 
-    cacheArtistsIndex = (page) => {
-        // Define each page with 3 elements
-        const pageSize = 3
-        if( page*pageSize < this.props.artists.length) {
-            let hasMoreToLoad = true
-            // Cap maximum value
-            let maximumValue = page*pageSize + pageSize
-            if( maximumValue > this.props.artists.length) {
-                maximumValue = this.props.artists.length
-                hasMoreToLoad = false
-            }
-            // Add new artists
-            let toAdd = []
-            for (var i = page*pageSize; i < maximumValue; i++) {
-                toAdd.push( <ArtistIndex key={i} indexObject={ this.props.artists[i] } /> )
-            }
-            this.setState({
-                artistsToDisplay : this.state.artistsToDisplay.concat(toAdd),
-                hasMoreToLoad : hasMoreToLoad
-            })
-        }
-        else {
-            this.setState({hasMoreToLoad : false})
-        }
+    displayMoreArtists = page => {
+        const toAdd = getNextArtists(this._elementsRendered, this.props.artists)
+        // Update state
+        this._elementsRendered += toAdd.length
+        this.setState({
+            artistsToDisplay : this.state.artistsToDisplay.concat(toAdd),
+            // There will be more elements to load if the list of artists is not over yet
+            hasMoreToLoad : this._elementsRendered < this.props.artists.length
+        })
     }
 
     render() {
         return (
             <div style={{padding:"20px", display:"flex", flexDirection:"column", height:"100%", overflow:"auto"}}>
-                <h1 className="artists_list_title">All artists</h1>
+                <h1 style={{color:"white", fontWeight:"bold", marginBottom:"25px" }}>All artists</h1>
                 <InfiniteScroll
-                    pageStart={-1}
-                    loadMore={this.cacheArtistsIndex}
+                    pageStart={0}
+                    loadMore={this.displayMoreArtists}
                     hasMore={this.state.hasMoreToLoad}
-                    loader={<div key={0}>Loading ...</div>}
+                    loader={<ArtistLoader />}
                     useWindow={false}>
                     {this.state.artistsToDisplay}
                 </InfiniteScroll>
@@ -83,12 +101,11 @@ ArtistsList.defaultProps = {
 
 const mapStateToProps = (state) => {
     return {
-        artists: state.artists.byIndex,
+        artists: getArtistsWithHeaders(state),
     }
 }
 
 const mapDispatchToProps = { loadArtists }
-
 
 export default connect(
     mapStateToProps,
