@@ -9,6 +9,10 @@ export function putSongsInQueue(songs) {
     return { type: types.PUT_SONGS_IN_QUEUE, payload: {songs} }
 }
 
+export function seekToSongInQueue(song) {
+    return { type: types.SEEK_TO_SONG_IN_QUEUE, payload: {song} }
+}
+
 export function playNextSong() {
     return { type: types.PLAY_NEXT_SONG }
 }

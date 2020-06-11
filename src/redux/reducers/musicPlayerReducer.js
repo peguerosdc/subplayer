@@ -7,6 +7,14 @@ function hasNextSongToPlay(currentSongIndex, queue) {
 }
 
 export default createReducer(initialState.musicPlayer, {
+    [types.SEEK_TO_SONG_IN_QUEUE]: (state, payload) => {
+        // Look for the index of this song in the queue
+        const newIndex = state.queue.indexOf(payload.song.id)
+        return {
+            ...state,
+            currentSongIndex : newIndex !== -1 ? newIndex : state.currentSongIndex,
+        }
+    },
     [types.ADD_SONGS_TO_QUEUE]: (state, payload) => {
         const newQueue = [...state.queue, ...payload.songs.map(song => song.id)]
         return {

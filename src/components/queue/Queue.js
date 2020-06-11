@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from 'prop-types'
 // Redux
 import { connect } from "react-redux"
-import { clearQueue, removeSongsFromQueue  } from "../../redux/actions/songsActions"
+import { clearQueue, removeSongsFromQueue, seekToSongInQueue  } from "../../redux/actions/songsActions"
 import { getSongsInQueueSelector } from '../../redux/selectors/musicPlayerSelector'
 // Utils
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
@@ -32,6 +32,10 @@ export class Queue extends React.Component {
         this.props.clearQueue && this.props.clearQueue()
     }
 
+    onSongClicked = (song) => {
+        this.props.seekToSongInQueue(song)
+    }
+
     render() {
         const songs = this.props.songs
         const duration = songs.reduce( (accum, current) => accum + current.duration, 0 )
@@ -57,7 +61,8 @@ export class Queue extends React.Component {
                     fixedHeightToFill={true}
                     withPlaylistDropdown={false}
                     withSearchFilter={false}
-                    sortable={false} />
+                    sortable={false}
+                    onSongClicked={this.onSongClicked} />
             </div>
         )
     }
@@ -69,7 +74,7 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-const mapDispatchToProps = { clearQueue, removeSongsFromQueue }
+const mapDispatchToProps = { clearQueue, removeSongsFromQueue, seekToSongInQueue }
 
 Queue.propTypes = {
     songs : PropTypes.array,

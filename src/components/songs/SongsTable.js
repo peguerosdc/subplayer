@@ -66,11 +66,17 @@ export class SongsTable extends React.Component {
     /* Handle clicking on a row */
 
     songClicked = (song) => {
-        // Build queue randomly with this song at the top
-        var queue = this.props.songs.filter(s => s.id !== song.id)
-        queue.sort(() => Math.random() - 0.5)
-        queue = [song, ...queue]
-        this.props.putSongsInQueue(queue)
+        // Check if the default behaviour is overwritten
+        if( this.props.onSongClicked ) {
+            this.props.onSongClicked(song)
+        }
+        else{
+            // Build queue randomly with this song at the top
+            var queue = this.props.songs.filter(s => s.id !== song.id)
+            queue.sort(() => Math.random() - 0.5)
+            queue = [song, ...queue]
+            this.props.putSongsInQueue(queue)
+        }
     }
 
     preventClickPropagation = (event) => {
@@ -297,6 +303,7 @@ SongsTable.propTypes = {
   songsFilter : PropTypes.string,
   putSongsInQueue : PropTypes.func,
   onSongsSelected : PropTypes.func,
+  onSongClicked : PropTypes.func
 }
 SongsTable.columns = columns
 
@@ -309,6 +316,7 @@ SongsTable.defaultProps = {
     songsFilter : null,
     putSongsInQueue: () => null,
     onSongsSelected: () => null,
+    onSongClicked: null,
 }
 
 export default connect(
