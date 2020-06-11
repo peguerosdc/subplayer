@@ -16,3 +16,11 @@ export function playNextSong() {
 export function playPreviousSong() {
     return { type: types.PLAY_PREVIOUS_SONG }
 }
+
+export function clearQueue() {
+    return { type: types.CLEAR_QUEUE }
+}
+
+export function removeSongsFromQueue(songs) {
+    return { type: types.REMOVE_SONGS_FROM_QUEUE, payload: {songs} }
+}

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 // Redux
 import { connect } from "react-redux"
+import { navigate } from "@reach/router"
 import { playNextSong, playPreviousSong } from "../../redux/actions/songsActions"
 import { setStarOnSongs } from "../../redux/actions/favouritesActions"
 import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
@@ -98,6 +99,10 @@ export class MusicPlayer extends React.Component {
         }
     }
 
+    goToQueueView = () => {
+        navigate("/queue/")
+    }
+
     playNextSong = () => {
         this.props.playNextSong && this.props.playNextSong()
     }
@@ -144,6 +149,12 @@ export class MusicPlayer extends React.Component {
                         <span>{seconds_to_mss(seek)}</span>
                         <Slider tooltip={false} className="song_progress_bar" progress value={seek} max={song.duration || 0} />
                         <span>{seconds_to_mss(song.duration || 0)}</span>
+                    </div>
+                </div>
+                {/* Go to queue */}
+                <div className="rs-hidden-xs">
+                    <div className="go_to_queue_container">
+                        <IconButton id="queue_button" icon={<Icon icon="bars" />} onClick={this.goToQueueView} appearance="link" size="lg"/>
                     </div>
                 </div>
                 {/* Volume controls */}
