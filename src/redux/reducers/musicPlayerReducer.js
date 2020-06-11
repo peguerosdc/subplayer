@@ -4,6 +4,14 @@ import {createReducer, get_normalized_songs, set_starred_song_on_state} from '..
 
 export default createReducer(initialState.musicPlayer, {
     [types.ADD_SONGS_TO_QUEUE]: (state, payload) => {
+        const newQueue = [...state.queue, ...payload.songs.map(song => song.id)]
+        return {
+            ...state,
+            queue : newQueue,
+            songsById : {...state.songsById, ...get_normalized_songs(payload.songs) }
+        }
+    },
+    [types.PUT_SONGS_IN_QUEUE]: (state, payload) => {
         return {
             ...state,
             currentSongIndex : 0,

@@ -26,7 +26,7 @@ describe('music player reducer', () => {
         expect( musicPlayerReducer(initialState, logout()) ).toEqual({queue : [], songsById : {}, currentSongIndex : null})
     })
 
-    it('should replace and reset the queue when new songs are added', () => {
+    it('should replace and reset the queue when new songs are put', () => {
         // Define initial state
         const initialState = {
             queue : ["1", "2"],
@@ -36,9 +36,9 @@ describe('music player reducer', () => {
             },
             currentSongIndex : 1
         }
-        // Add new songs to queue
+        // Put new songs in the queue
         const songsToAdd = [ {id: 's1'}, {id: 's2'} ]
-        const newState = musicPlayerReducer(initialState, actions.addSongsToQueue(songsToAdd))
+        const newState = musicPlayerReducer(initialState, actions.putSongsInQueue(songsToAdd))
         // Expect it to:
         // Store normalized songs
         expect( newState.songsById ).toEqual({
@@ -47,6 +47,32 @@ describe('music player reducer', () => {
         expect( newState.queue ).toEqual(['s1', 's2'])
         // start playing song at position 0
         expect( newState.currentSongIndex ).toEqual(0)
+    })
+
+    it('should append songs to the existing queue when songs are added', () => {
+        // Define initial state
+        const initialState = {
+            queue : ["1", "2"],
+            songsById : {
+                "1" : { id:'1' },
+                "2" : { id:'2' }
+            },
+            currentSongIndex : 1
+        }
+        // Add new songs to queue
+        const songsToAdd = [ {id: 's1'}, {id: 's2'} ]
+        const newState = musicPlayerReducer(initialState, actions.addSongsToQueue(songsToAdd))
+        // Expect it to:
+        // Store normalized songs
+        expect( newState.songsById ).toEqual({
+            // old songs
+            '1' : { id:'1' }, '2' : { id : '2' },
+            // new songs
+            's1' : { id:'s1' }, 's2' : { id : 's2' }
+        })
+        expect( newState.queue ).toEqual(['1', '2', 's1', 's2'])
+        // the current song playing should remain playing
+        expect( newState.currentSongIndex ).toEqual(1)
     })
 
     it('should play the next song in the queue when available', () => {

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 // Redux
 import { connect } from "react-redux"
 import { addSongsToPlaylist } from "../../redux/actions/playlistsActions"
+import { addSongsToQueue } from "../../redux/actions/songsActions"
 import { setStarOnSongs } from "../../redux/actions/favouritesActions"
 // UI
 import AutoSizer from 'react-virtualized-auto-sizer'
@@ -36,6 +37,10 @@ export class SongsTableEnhanced extends React.Component {
         this.props.setStarOnSongs(this.state.selectedSongs, true)
     }
 
+    onQueueSelected = () => {
+        this.props.addSongsToQueue(this.state.selectedSongs)
+    }
+
     render() {
         const {style, ...rest} = this.props
         const hasSongsSelected = this.state.selectedSongs.length !== 0
@@ -46,7 +51,7 @@ export class SongsTableEnhanced extends React.Component {
             <div style={{backgroundColor:"white", padding:"5px", ...style, display:"flex", flexFlow:"column"}}>
                 <div style={{display:"flex", flexFlow:"row"}}>
                     {showSearchFilter && <SearchBar id="searchBar" size="md" style={{margin:"0px 10px"}} onSearch={this.onFilterSongs}/> }
-                    {showPlaylistDropdown && <PlaylistSelectorDropdown id="playlistSelector" onPlaylistSelected={this.onPlaylistSelected} onFavouritesSelected={this.onFavouritesSelected} disabled={!hasSongsSelected} />}
+                    {showPlaylistDropdown && <PlaylistSelectorDropdown id="playlistSelector" onQueueSelected={this.onQueueSelected} onPlaylistSelected={this.onPlaylistSelected} onFavouritesSelected={this.onFavouritesSelected} disabled={!hasSongsSelected} />}
                 </div>
                 {
                     rest.fixedHeightToFill ? (
@@ -70,6 +75,7 @@ SongsTableEnhanced.propTypes = {
     withSearchFilter : PropTypes.bool,
     fixedHeightToFill : PropTypes.bool,
     addSongsToPlaylist : PropTypes.func,
+    addSongsToQueue : PropTypes.func,
     setStarOnSongs : PropTypes.func
 }
 
@@ -78,10 +84,11 @@ SongsTableEnhanced.defaultProps = {
     withSearchFilter : true,
     fixedHeightToFill : false,
     addSongsToPlaylist: () => null,
+    addSongsToQueue: () => null,
     setStarOnSongs: () => null,
 }
 
-const mapDispatchToProps = { addSongsToPlaylist, setStarOnSongs }
+const mapDispatchToProps = { addSongsToQueue, addSongsToPlaylist, setStarOnSongs }
 
 export default connect(
     null,
