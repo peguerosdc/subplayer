@@ -7,6 +7,9 @@ export default createReducer(initialState.musicPlayer, {
         const newQueue = [...state.queue, ...payload.songs.map(song => song.id)]
         return {
             ...state,
+            /* Songs should start playing if the queue was empty, so the index should be set to 0.
+             * If a song was already playing, it should remain playing */
+            currentSongIndex : state.currentSongIndex || 0,
             queue : newQueue,
             songsById : {...state.songsById, ...get_normalized_songs(payload.songs) }
         }

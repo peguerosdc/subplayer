@@ -1,7 +1,8 @@
 import * as types from "./actionTypes"
+import * as alerts from "./alertsActions"
 
 export function addSongsToQueue(songs) {
-    return { type: types.ADD_SONGS_TO_QUEUE, payload: {songs} }
+    return { type: types.ADD_SONGS_TO_QUEUE, payload: {songs}, ...alerts.alertSuccessObject(`${songs.length} songs added to the queue!`) }
 }
 
 export function putSongsInQueue(songs) {

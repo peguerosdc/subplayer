@@ -1,6 +1,7 @@
 // Own imports to test
 import * as actions from '../songsActions'
 import * as types from '../actionTypes'
+import * as alerts from "../alertsActions"
 
 describe('search actions', () => {
 
@@ -17,9 +18,9 @@ describe('search actions', () => {
         expect(actions.playPreviousSong()).toMatchObject({ type: types.PLAY_PREVIOUS_SONG })
     })
 
-    it('creates an ADD_SONGS_TO_QUEUE when wanting to add new songs to the current queue', () => {
+    it('creates an ADD_SONGS_TO_QUEUE when wanting to add new songs to the current queue with a message to display', () => {
         const songs = [{id : '1'}]
-        expect(actions.addSongsToQueue(songs)).toMatchObject({ type: types.ADD_SONGS_TO_QUEUE, payload : { songs } })
+        expect(actions.addSongsToQueue(songs)).toMatchObject({ type: types.ADD_SONGS_TO_QUEUE, ...alerts.alertSuccessObject("1 songs added to the queue!"), payload : { songs } })
     })
 
 })
