@@ -203,11 +203,7 @@ export class SongsTable extends React.Component {
                     <Column flexGrow={4} sortable={sortable}>
                         <HeaderCell> Title </HeaderCell>
                         <Cell dataKey="title">
-                            { rowData => 
-                                <>
-                                    {rowData.title} <Icon icon='volume-up' className="icon-when-playing" />
-                                </>
-                            }
+                            { rowData => <p>{rowData.title} <Icon icon='volume-up' className="icon-when-playing" /></p> }
                         </Cell>
                     </Column> : null
                 }

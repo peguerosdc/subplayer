@@ -94,7 +94,7 @@ describe('music player reducer', () => {
         expect( newState.currentSongIndex ).toEqual(1)
     })
 
-    it('should not play anything when the next song is asked and there is nothing left in the queue', () => {
+    it('should clear the queue when the next song is asked and there is nothing left to play', () => {
         // Define initial state
         const initialState = {
             queue : ["1", "2"],
@@ -107,8 +107,8 @@ describe('music player reducer', () => {
         const newState = musicPlayerReducer(initialState, actions.playNextSong())
         // Expect it to:
         // dont alter the queue
-        expect( newState.queue ).toEqual( initialState.queue )
-        expect( newState.songsById ).toEqual( initialState.songsById )
+        expect( newState.queue ).toEqual([])
+        expect( newState.songsById ).toEqual( {} )
         // When no 'next' song is available, don't play anything
         expect( newState.currentSongIndex ).toBeNull()
     })

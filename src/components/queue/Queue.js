@@ -33,7 +33,7 @@ export class Queue extends React.Component {
     }
 
     onSongClicked = (song) => {
-        this.props.seekToSongInQueue(song)
+        this.props.seekToSongInQueue && this.props.seekToSongInQueue(song)
     }
 
     render() {
@@ -48,12 +48,12 @@ export class Queue extends React.Component {
                         <p id="details">{songs.length} songs, {seconds_to_hhmmss(duration)}</p>
                     </div>
                     <div style={{ display:"flex", flexFlow: "column"}}>
-                        <Button id="clearButton" onClick={this.clearQueue} style={{marginBottom:"5px"}}>Clear</Button>
-                        <Button id="removeButton" onClick={this.removeSongsFromQueue} disabled={disableButton}>Remove</Button>
+                        <Button id="clear_button" onClick={this.clearQueue} style={{marginBottom:"5px"}}>Clear</Button>
+                        <Button id="remove_button" onClick={this.removeSongsFromQueue} disabled={disableButton}>Remove</Button>
                     </div>
                 </div>
                 <SongsTableEnhanced
-                    id="songsComponent"
+                    id="songs_table"
                     style={{flexGrow:1}}
                     songs={songs}
                     onSongsSelected={this.onSongsSelected}
@@ -78,6 +78,13 @@ const mapDispatchToProps = { clearQueue, removeSongsFromQueue, seekToSongInQueue
 
 Queue.propTypes = {
     songs : PropTypes.array,
+    clearQueue : PropTypes.func,
+    removeSongsFromQueue : PropTypes.func,
+    seekToSongInQueue : PropTypes.func,
+}
+
+Queue.defaultProps = {
+    songs : [],
 }
 
 export default connect(

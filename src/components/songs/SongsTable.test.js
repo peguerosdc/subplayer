@@ -51,4 +51,11 @@ describe("<SongsTable />", () => {
         // TODO: check filtering. How to deal with the async call without explicitly  calling the method?
     })
 
+    it("should let me overwrite the default click action", () => {
+        const onSongClicked = jest.fn()
+        const wrapper = shallow( <SongsTable songs={songs} onSongClicked={onSongClicked}/> )
+        wrapper.find("#songsTable").simulate("rowClick", songs[0])
+        expect(onSongClicked).toHaveBeenCalledTimes(1)
+    })
+
 })
