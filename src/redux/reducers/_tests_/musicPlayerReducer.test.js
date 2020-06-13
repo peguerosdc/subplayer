@@ -26,6 +26,66 @@ describe('music player reducer', () => {
         expect( musicPlayerReducer(initialState, logout()) ).toEqual({queue : [], songsById : {}, currentSongIndex : null})
     })
 
+    it('should remove songs from the queue and keep playing the ones remaining', () => {
+        // Define initial state
+        const initialState = {
+            queue : ["1", "2", "3", "4"],
+            songsById : {
+                "1" : {},
+                "2" : {},
+                "3" : {},
+                "4" : {},
+            },
+            currentSongIndex : 1
+        }
+        /* Remove songs. Note: because of the UI, the case where a song with an index < currentSongIndex
+         * is removed should not be considered. */
+        const songsToRemove = [ {id:'3'}, {id: '4'} ]
+        const newState = musicPlayerReducer(initialState, actions.removeSongsFromQueue(songsToRemove))
+        // Expect it to remove those songs
+        expect( newState.queue ).toEqual(['1','2'])
+    })
+
+    it('should play the next song when the one currently playing is removed', () => {
+        // Define initial state
+        const initialState = {
+            queue : ["1", "2", "3"],
+            songsById : {
+                "1" : {},
+                "2" : {},
+                "3" : {},
+            },
+            currentSongIndex : 1
+        }
+        /* Remove songs. Note: because of the UI, the case where a song with an index < currentSongIndex
+         * is removed should not be considered. */
+        const songsToRemove = [ {id:'2'} ]
+        const newState = musicPlayerReducer(initialState, actions.removeSongsFromQueue(songsToRemove))
+        // Expect it to remove those songs and to play the next one (which has now the same index)
+        expect( newState.queue ).toEqual(['1','3'])
+        expect( newState.currentSongIndex ).toEqual(1)
+    })
+
+    it('should remove songs from the queue and clear it when no more songs are pending to be played', () => {
+        // Define initial state
+        const initialState = {
+            queue : ["1", "2", "3", "4"],
+            songsById : {
+                "1" : {},
+                "2" : {},
+                "3" : {},
+                "4" : {},
+            },
+            currentSongIndex : 3
+        }
+        /* Put new songs in the queue. Note: because of the UI, the case where a song with an index < currentSongIndex
+         * is removed should not be considered. */
+        const songsToRemove = [ {id: '4'} ]
+        const newState = musicPlayerReducer(initialState, actions.removeSongsFromQueue(songsToRemove))
+        // Expect it to remove those songs and clear the queue as the song currently playing was removed
+        expect( newState.queue ).toEqual([])
+    })
+
     it('should replace and reset the queue when new songs are put', () => {
         // Define initial state
         const initialState = {
