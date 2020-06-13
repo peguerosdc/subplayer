@@ -105,6 +105,13 @@ class Subsonic {
             })
     }
 
+    getAlbumList2(type, size=20, offset=0) {
+        return perform_api_call( buildUrl(this.config, "getAlbumList2", {type, size, offset}) )
+            .then(result => {
+                return result["albumList2"]["album"]
+            })
+    }
+
     getPlaylists() {
         return perform_api_call( buildUrl(this.config, "getPlaylists") )
             .then(result => {

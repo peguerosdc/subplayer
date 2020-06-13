@@ -19,9 +19,16 @@
 
 /* For XS (mobile) screens, we need to make this container smaller
  * (which will result in showing less of the song's name) to make
- * room for the currently_playing_controls which require at least 90px
+ * room for the currently_playing_controls which require at least 90px.
+ * To avoid the queue button to look cramped, we also need to reduce
+ * the margins
  */
 @media (max-width: 767px) {
+    .darkMusicPlayer {
+        margin-right: 5px;
+        margin-left: 10px;
+    }
+
     .darkMusicPlayer .song_metadata_container {
         width: 210px !important;
     }
