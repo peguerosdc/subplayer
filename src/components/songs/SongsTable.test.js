@@ -19,10 +19,10 @@ describe("<SongsTable />", () => {
     })
 
     it("should start playing the list of songs when an item is clicked", () => {
-        const addSongsToQueue = jest.fn()
-        const wrapper = shallow( <SongsTable songs={songs} addSongsToQueue={addSongsToQueue}/> )
+        const putSongsInQueue = jest.fn()
+        const wrapper = shallow( <SongsTable songs={songs} putSongsInQueue={putSongsInQueue}/> )
         wrapper.find("#songsTable").simulate("rowClick", songs[0])
-        expect(addSongsToQueue).toHaveBeenCalledTimes(1)
+        expect(putSongsInQueue).toHaveBeenCalledTimes(1)
     })
 
     it("should let me select a single song", () => {
@@ -49,6 +49,13 @@ describe("<SongsTable />", () => {
         const wrapper = shallow( <SongsTable songs={songs} /> )
         wrapper.setProps({songsFilter: "5"})
         // TODO: check filtering. How to deal with the async call without explicitly  calling the method?
+    })
+
+    it("should let me overwrite the default click action", () => {
+        const onSongClicked = jest.fn()
+        const wrapper = shallow( <SongsTable songs={songs} onSongClicked={onSongClicked}/> )
+        wrapper.find("#songsTable").simulate("rowClick", songs[0])
+        expect(onSongClicked).toHaveBeenCalledTimes(1)
     })
 
 })

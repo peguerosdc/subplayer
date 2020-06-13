@@ -20,6 +20,7 @@ import Playlist from './components/playlists/Playlist'
 import CreatePlaylistModal from './components/common/CreatePlaylistModal/CreatePlaylistModal'
 import SearchView from './components/search/SearchView'
 import FavouritesView from './components/favourites/FavouritesView'
+import Queue from './components/queue/Queue'
 import AlertsManager from './components/alerts/AlertsManager'
 
 export class App extends React.Component  {
@@ -66,6 +67,7 @@ export class App extends React.Component  {
                 <Playlist path="/playlist/:playlistId"/>
                 <SearchView path="/search"/>
                 <FavouritesView path="/favourites" />
+                <Queue path="/queue" />
             </Router>
           </Content>
         </Container>

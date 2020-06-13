@@ -1,7 +1,7 @@
 import React from "react"
 // Redux
 import { connect } from "react-redux"
-import { addSongsToQueue } from "../../redux/actions/songsActions"
+import { putSongsInQueue } from "../../redux/actions/songsActions"
 import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
 // Utils
 import { seconds_to_mss, display_starred } from "../../utils/formatting.js"
@@ -66,11 +66,17 @@ export class SongsTable extends React.Component {
     /* Handle clicking on a row */
 
     songClicked = (song) => {
-        // Build queue randomly with this song at the top
-        var queue = this.props.songs.filter(s => s.id !== song.id)
-        queue.sort(() => Math.random() - 0.5)
-        queue = [song, ...queue]
-        this.props.addSongsToQueue(queue)
+        // Check if the default behaviour is overwritten
+        if( this.props.onSongClicked ) {
+            this.props.onSongClicked(song)
+        }
+        else{
+            // Build queue randomly with this song at the top
+            var queue = this.props.songs.filter(s => s.id !== song.id)
+            queue.sort(() => Math.random() - 0.5)
+            queue = [song, ...queue]
+            this.props.putSongsInQueue(queue)
+        }
     }
 
     preventClickPropagation = (event) => {
@@ -197,11 +203,7 @@ export class SongsTable extends React.Component {
                     <Column flexGrow={4} sortable={sortable}>
                         <HeaderCell> Title </HeaderCell>
                         <Cell dataKey="title">
-                            { rowData => 
-                                <>
-                                    {rowData.title} <Icon icon='volume-up' className="icon-when-playing" />
-                                </>
-                            }
+                            { rowData => <p>{rowData.title} <Icon icon='volume-up' className="icon-when-playing" /></p> }
                         </Cell>
                     </Column> : null
                 }
@@ -275,7 +277,7 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = { addSongsToQueue }
+const mapDispatchToProps = { putSongsInQueue }
 
 /* Define possible columns to show */
 const columns = {
@@ -295,8 +297,9 @@ SongsTable.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string),
   sortable : PropTypes.bool,
   songsFilter : PropTypes.string,
-  addSongsToQueue : PropTypes.func,
+  putSongsInQueue : PropTypes.func,
   onSongsSelected : PropTypes.func,
+  onSongClicked : PropTypes.func
 }
 SongsTable.columns = columns
 
@@ -307,8 +310,9 @@ SongsTable.defaultProps = {
     sortable : false,
     columns : defaultColumns,
     songsFilter : null,
-    addSongsToQueue: () => null,
+    putSongsInQueue: () => null,
     onSongsSelected: () => null,
+    onSongClicked: null,
 }
 
 export default connect(

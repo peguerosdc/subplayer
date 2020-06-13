@@ -40,6 +40,7 @@ export class MyNavbar extends React.Component {
                         <Nav.Item id="search" eventKey="/search" icon={<Icon icon="search" />} active={this.isRouteActive("/search")} />
                         <Nav.Item id="artists" eventKey="/artists/" icon={<Icon icon="group" />} active={this.isRouteActive("/artists")} />
                         <Nav.Item id="favourites" eventKey="/favourites/" icon={<Icon icon="star" />} active={this.isRouteActive("/favourites")} />
+                        <Nav.Item id="queue" eventKey="/queue/" icon={<Icon icon="bars" />} active={this.isRouteActive("/queue")} />
                         <Dropdown id="playlists" title="Playlists">
                             <Dropdown.Item id="createPlaylist" eventKey="newPlaylist" icon={<Icon icon="plus" />} >New playlist</Dropdown.Item>
                             {Object.keys(playlists).map( id =>

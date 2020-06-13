@@ -69,6 +69,18 @@ describe("<SongsTableEnhanced />", () => {
         expect(addSongsToPlaylist).toHaveBeenCalledWith(playlist, selectedSongs)
     })
 
+    it("should let me add songs to the playing queue", () => {
+        const addSongsToQueue = jest.fn()
+        const wrapper = shallow( <SongsTableEnhanced songs={songs} addSongsToQueue={addSongsToQueue} /> )
+        // Select some songs
+        const selectedSongs = songs.slice(5)
+        wrapper.find("#songsTable").simulate("songsSelected", selectedSongs)
+        // Try to add them to the playing queue
+        wrapper.find("#playlistSelector").simulate("queueSelected")
+        // Check the operation is requested
+        expect(addSongsToQueue).toHaveBeenCalledWith(selectedSongs)
+    })
+
     it("should not let me modify songs if nothing is selected", () => {
         const wrapper = shallow( <SongsTableEnhanced songs={songs} /> )
         // Check the option to star songs is disabled

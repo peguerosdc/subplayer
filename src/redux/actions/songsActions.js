@@ -1,8 +1,16 @@
 import * as types from "./actionTypes"
+import * as alerts from "./alertsActions"
 
-// "position" and "clear" are meant to be used when implementing queue management
-export function addSongsToQueue(songs, position=0, clear=true) {
-    return { type: types.ADD_SONGS_TO_QUEUE, payload: {songs} }
+export function addSongsToQueue(songs) {
+    return { type: types.ADD_SONGS_TO_QUEUE, payload: {songs}, ...alerts.alertSuccessObject(`${songs.length} songs added to the queue!`) }
+}
+
+export function putSongsInQueue(songs) {
+    return { type: types.PUT_SONGS_IN_QUEUE, payload: {songs} }
+}
+
+export function seekToSongInQueue(song) {
+    return { type: types.SEEK_TO_SONG_IN_QUEUE, payload: {song} }
 }
 
 export function playNextSong() {
@@ -11,4 +19,12 @@ export function playNextSong() {
 
 export function playPreviousSong() {
     return { type: types.PLAY_PREVIOUS_SONG }
+}
+
+export function clearQueue() {
+    return { type: types.CLEAR_QUEUE }
+}
+
+export function removeSongsFromQueue(songs) {
+    return { type: types.REMOVE_SONGS_FROM_QUEUE, payload: {songs} }
 }

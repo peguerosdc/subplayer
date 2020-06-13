@@ -18,7 +18,18 @@ describe("<PlaylistSelectorDropdown />", () => {
         expect(wrapper.find("#favourites_item")).toHaveLength(0)
     })
 
+    it("should show the queue option on demand", () => {
+        const wrapper = shallow( <PlaylistSelectorDropdown showQueue={true} /> )
+        expect(wrapper.find("#queue_item")).toHaveLength(1)
+    })
+
+    it("should not show the queue option on demand", () => {
+        const wrapper = shallow( <PlaylistSelectorDropdown showQueue={false} /> )
+        expect(wrapper.find("#queue_item")).toHaveLength(0)
+    })
+
     it("should show your playlists in the dropdown", () => {
+        // The third playlist is not mine, so I can't add songs to it and it should not show n the list
         const playlists = {
             "1" : {
                 id : "1",
@@ -36,7 +47,7 @@ describe("<PlaylistSelectorDropdown />", () => {
                 isMine : false
             },
         }
-        const wrapper = shallow( <PlaylistSelectorDropdown showFavourites={false} playlists={playlists} /> )
+        const wrapper = shallow( <PlaylistSelectorDropdown showQueue={false} showFavourites={false} playlists={playlists} /> )
         expect(wrapper.find("DropdownMenuItem")).toHaveLength(2)
     })
 
@@ -80,6 +91,27 @@ describe("<PlaylistSelectorDropdown />", () => {
         const favsEventKey = wrapper.find("#favourites_item").prop("eventKey")
         wrapper.find("Dropdown").simulate("select", favsEventKey)
         expect(onFavouritesSelected).toHaveBeenCalledTimes(1)
+    })
+
+    it("should select playing queue when its option is selected", () => {
+        const playlists = {
+            "1" : {
+                id : "1",
+                name : "name 1",
+                isMine : true
+            },
+            "2" : {
+                id : "2",
+                name : "name 2",
+                isMine : true
+            }
+        }
+        const onQueueSelected = jest.fn()
+        const wrapper = shallow( <PlaylistSelectorDropdown showQueue={true} playlists={playlists} onQueueSelected={onQueueSelected} /> )
+        // Select "queue option"
+        const thisEventKey = wrapper.find("#queue_item").prop("eventKey")
+        wrapper.find("Dropdown").simulate("select", thisEventKey)
+        expect(onQueueSelected).toHaveBeenCalledTimes(1)
     })
 
 })
