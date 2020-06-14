@@ -50,7 +50,7 @@ export class FavouritesView extends React.Component {
             <div style={{display:"flex", flexFlow:"column", padding:"20px", height:"100%", width:"100%" }}>
                 <div style={{ display:"flex", flexFlow: "row", marginBottom:"15px"}}>
                     <div style={{flexGrow:1}}>
-                        <h1 style={{color:"white", fontWeight: "bold"}}>Favourites</h1>
+                        <h1 style={{fontWeight: "bold"}}>Favourites</h1>
                         <span id="description">{ songs.length } songs, {seconds_to_hhmmss(duration)}</span>
                     </div>
                     <div style={{ display:"flex", flexFlow: "column"}}>

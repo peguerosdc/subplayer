@@ -36,7 +36,7 @@ export class RecentlyAdded extends React.Component {
             <Grid fluid style={{padding: "20px"}}>
                 <Row>
                     <Col md={24} lg={24}>
-                        <h1 style={{color:"white", fontWeight:"bold", display: "inline-block"}}>Recently Added</h1>
+                        <h1 style={{fontWeight:"bold", display: "inline-block"}}>Recently Added</h1>
                     </Col>
                     { albums.map( a =>
                         <Col key={a.id} sm={6} xs={12} >

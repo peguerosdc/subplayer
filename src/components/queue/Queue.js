@@ -44,7 +44,7 @@ export class Queue extends React.Component {
             <div style={{display:"flex", flexFlow:"column", padding:"20px", height:"100%", width:"100%"}}>
                 <div style={{ display:"flex", flexFlow: "row", marginBottom:"15px"}}>
                     <div style={{flexGrow:1}}>
-                        <h1 style={{color:"white", fontWeight:"bold", display: "inline-block"}}>Playing Queue</h1>
+                        <h1 style={{fontWeight:"bold", display: "inline-block"}}>Playing Queue</h1>
                         <p id="details">{songs.length} songs, {seconds_to_hhmmss(duration)}</p>
                     </div>
                     <div style={{ display:"flex", flexFlow: "column"}}>

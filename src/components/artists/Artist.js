@@ -29,7 +29,7 @@ export class Artist extends React.Component {
         return (
             <div style={{display:"flex", flexFlow:"column", padding:"20px", height:"100%", width:"100%"}}>
                 <div style={{display:"flex", flexFlow:"row"}}>
-                    <h1 style={{color:"white", fontWeight: "bold", flexGrow:1}}>{artist != null ? artist.name : "..."}</h1>
+                    <h1 style={{fontWeight: "bold", flexGrow:1}}>{artist != null ? artist.name : "..."}</h1>
                     <Nav id="viewSelector" onSelect={this.onViewSelected} activeKey={activeView}>
                         <Nav.Item icon={<Icon icon="bars" />} eventKey={Artist.KEY_ALL_SONGS} />
                         <Nav.Item icon={<Icon icon="th-large" />} eventKey={Artist.KEY_BY_ALBUM} />

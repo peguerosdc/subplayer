@@ -86,7 +86,7 @@ export class Playlist extends React.Component {
             <div style={{display:"flex", flexFlow:"column", padding:"20px", height:"100%", width:"100%"}}>
                 <div style={{ display:"flex", flexFlow: "row", marginBottom:"15px"}}>
                     <div style={{flexGrow:1}}>
-                        <h1 id="title" style={{color:"white", fontWeight:"bold", display: "inline-block"}}>
+                        <h1 id="title" style={{fontWeight:"bold", display: "inline-block"}}>
                             {playlist.isMine ? playlist.name : this.formatExternalPlaylistName(playlist.name) }
                         </h1>
                         {playlist.isMine ?

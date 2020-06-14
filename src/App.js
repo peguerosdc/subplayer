@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from "react-redux"
 import './App.css'
-import 'rsuite/styles/index.less'
+import 'rsuite/lib/styles/themes/dark/index.less'
 import './index.less'
 import { Router } from "@reach/router"
 import { logout } from "./redux/actions/authActions"

@@ -45,10 +45,8 @@ export class LoginComponent extends React.Component {
         this.user = value
     }
 
-    login = (e) => {
+    login = () => {
         // Do not submit form until data is checked
-        e.stopPropagation()
-        e.preventDefault()
         let valid = true
         // Check host
         let hostErrorMessage = null
@@ -83,20 +81,20 @@ export class LoginComponent extends React.Component {
         // Render all
         return (
             <div style={{display:"flex", justifyContent:"center", alignItems:"center", height:"100vh"}}>
-                <Panel bordered style={{backgroundColor:"white"}}>
+                <Panel bordered>
                     <Form onChange={this.onUserDataChange} onSubmit={this.login}>
                         <FormGroup>
                             <ControlLabel>Host</ControlLabel>
-                            <FormControl name="host" type="url" errorMessage={this.state.hostErrorMessage} errorPlacement="bottomRight"/>
+                            <FormControl name="host" type="url" errorMessage={this.state.hostErrorMessage} errorPlacement="bottomStart"/>
                             <HelpBlock>http://HOST:PORT</HelpBlock>
                         </FormGroup>
                         <FormGroup>
                             <ControlLabel>Username</ControlLabel>
-                            <FormControl name="username" errorMessage={this.state.userErrorMessage} errorPlacement="bottomRight"/>
+                            <FormControl name="username" errorMessage={this.state.userErrorMessage} errorPlacement="bottomStart"/>
                         </FormGroup>
                         <FormGroup>
                             <ControlLabel>Password</ControlLabel>
-                            <FormControl name="password" type="password" errorMessage={this.state.passwordErrorMessage} errorPlacement="bottomRight"/>
+                            <FormControl name="password" type="password" errorMessage={this.state.passwordErrorMessage} errorPlacement="bottomStart"/>
                         </FormGroup>
                         <FormGroup>
                             <Button type="submit" appearance="primary" loading={this.state.isAuthenticating} block>Log In</Button>

@@ -75,7 +75,7 @@ export class ArtistsList extends React.Component {
     render() {
         return (
             <div style={{padding:"20px", display:"flex", flexDirection:"column", height:"100%", overflow:"auto"}}>
-                <h1 style={{color:"white", fontWeight:"bold", marginBottom:"25px" }}>All artists</h1>
+                <h1 style={{fontWeight:"bold", marginBottom:"25px" }}>All artists</h1>
                 <InfiniteScroll
                     pageStart={0}
                     loadMore={this.displayMoreArtists}
