@@ -33,6 +33,10 @@ export class Sidebar extends React.Component {
 
                 <h3 className="title">LIBRARY</h3>
 
+                <Link to="/latest" getProps={this.isRouteActive} >
+                    <Icon icon='clock-o'/>{' '}Recently Added
+                </Link>
+
                 <Link to="/artists" getProps={this.isRouteActive} >
                     <Icon icon='group'/>{' '}Artists
                 </Link>

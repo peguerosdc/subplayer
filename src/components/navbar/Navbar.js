@@ -10,7 +10,7 @@ export class MyNavbar extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { path : "/artists/" }
+        this.state = { path : "/latest/" }
     }
 
     onNavSelected = (key) => {
@@ -38,9 +38,9 @@ export class MyNavbar extends React.Component {
                 <Navbar.Body>
                     <Nav onSelect={this.onNavSelected}>
                         <Nav.Item id="search" eventKey="/search" icon={<Icon icon="search" />} active={this.isRouteActive("/search")} />
+                        <Nav.Item id="latest" eventKey="/latest/" icon={<Icon icon="clock-o" />} active={this.isRouteActive("/latest")} />
                         <Nav.Item id="artists" eventKey="/artists/" icon={<Icon icon="group" />} active={this.isRouteActive("/artists")} />
                         <Nav.Item id="favourites" eventKey="/favourites/" icon={<Icon icon="star" />} active={this.isRouteActive("/favourites")} />
-                        <Nav.Item id="queue" eventKey="/queue/" icon={<Icon icon="bars" />} active={this.isRouteActive("/queue")} />
                         <Dropdown id="playlists" title="Playlists">
                             <Dropdown.Item id="createPlaylist" eventKey="newPlaylist" icon={<Icon icon="plus" />} >New playlist</Dropdown.Item>
                             {Object.keys(playlists).map( id =>
@@ -49,7 +49,7 @@ export class MyNavbar extends React.Component {
                         </Dropdown>
                     </Nav>
                     <Nav onSelect={this.onNavSelected} pullRight>
-                        <Nav.Item id="logout" eventKey="logout">Log out</Nav.Item>
+                        <Nav.Item id="logout" eventKey="logout" icon={<Icon icon="sign-out" />} />
                     </Nav>
                 </Navbar.Body>
             </Navbar>

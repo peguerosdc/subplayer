@@ -152,10 +152,8 @@ export class MusicPlayer extends React.Component {
                     </div>
                 </div>
                 {/* Go to queue */}
-                <div className="rs-hidden-sm">
-                    <div className="go_to_queue_container">
-                        <IconButton id="queue_button" icon={<Icon icon="bars" />} onClick={this.goToQueueView} appearance="link" size="lg"/>
-                    </div>
+                <div className="go_to_queue_container">
+                    <IconButton id="queue_button" icon={<Icon icon="bars" />} onClick={this.goToQueueView} appearance="link" size="lg"/>
                 </div>
                 {/* Volume controls */}
                 <div className="rs-hidden-xs">

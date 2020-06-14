@@ -2,10 +2,6 @@ import * as types from "../actions/actionTypes"
 import initialState from "./initialState"
 import {createReducer, get_normalized_songs, set_starred_song_on_state} from '../../utils/redux.js'
 
-function hasNextSongToPlay(currentSongIndex, queue) {
-    return (currentSongIndex != null) && (currentSongIndex + 1 < queue.length)
-}
-
 export default createReducer(initialState.musicPlayer, {
     [types.SEEK_TO_SONG_IN_QUEUE]: (state, payload) => {
         // Look for the index of this song in the queue
@@ -30,17 +26,12 @@ export default createReducer(initialState.musicPlayer, {
         // Remove all the songs in the payload from the queue
         const idsForDeletion = payload.songs.map(song => song.id)
         const newQueue = state.queue.filter(songId => !idsForDeletion.includes(songId))
-        // If the song currently playing is removed, play the next one
-        let currentSongIndex = state.currentSongIndex
-        const currentlyPlayingId = state.queue[currentSongIndex]
+        // If the song currently playing is removed, check that the queue is not empty
+        const currentlyPlayingId = state.queue[state.currentSongIndex]
         if( idsForDeletion.includes(currentlyPlayingId) ) {
             // Only play the next one if there are songs remaining in the queue
-            const hasNext = hasNextSongToPlay(state.currentSongIndex, newQueue)
-            if( hasNext ) {
-                currentSongIndex = state.currentSongIndex + 1
-            }
-            // When there are no songs remaining to be played, just clear the queue
-            else {
+            const hasSongsLeft = (state.currentSongIndex != null) && (state.currentSongIndex < newQueue.length)
+            if( !hasSongsLeft ) {
                 return initialState.musicPlayer
             }
         }
@@ -50,7 +41,6 @@ export default createReducer(initialState.musicPlayer, {
         // Return the final state
         return {
             ...state,
-            currentSongIndex : currentSongIndex,
             queue : newQueue,
             songsById : newSongsById
         }
@@ -65,7 +55,7 @@ export default createReducer(initialState.musicPlayer, {
     },
     [types.CLEAR_QUEUE]: (state, payload) => initialState.musicPlayer,
     [types.PLAY_NEXT_SONG]: (state, payload) => {
-        const hasNext = hasNextSongToPlay(state.currentSongIndex, state.queue)
+        const hasNext = (state.currentSongIndex != null) && (state.currentSongIndex + 1 < state.queue.length)
         // When the existing queue has finished playing, clear it
         return hasNext ? {...state, currentSongIndex : state.currentSongIndex + 1} : initialState.musicPlayer
     },
