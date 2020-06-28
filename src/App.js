@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from "react-redux"
 import './App.css'
-import 'rsuite/lib/styles/themes/dark/index.less'
 import './index.less'
 import { Router } from "@reach/router"
 import { logout } from "./redux/actions/authActions"
@@ -25,6 +24,15 @@ import AlertsManager from './components/alerts/AlertsManager'
 import RecentlyAdded from './components/latest/RecentlyAdded'
 
 export class App extends React.Component  {
+
+  static LoadCssFile = (href, theme) => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    link.dataset.theme = theme;
+    document.head.appendChild(link);
+    return link;
+  };
 
   constructor(props) {
     super(props)

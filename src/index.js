@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom'
 import * as serviceWorker from './serviceWorker'
 // Main component
 import Main from "./Main.js"
+import App from './App';
+
+App.LoadCssFile('./css/dark.css');
 
 // Init app 
 ReactDOM.render(
