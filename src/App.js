@@ -65,7 +65,7 @@ export class App extends React.Component  {
         <InfiniteLineLoader id="loader" isLoading={this.props.asyncTasksInProgress > 0 } />
         { /* Main content */ }
         <Container style={{flex: 1, "overflow":"auto"}}>
-          <Sidebar className="rs-hidden-xs rs-hidden-sm sidebar">
+          <Sidebar className="rs-hidden-xs rs-hidden-sm">
             <MySidebar id="sidebar" onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
           </Sidebar>
           <Content className="main-content" style={{"overflow":"auto"}}>

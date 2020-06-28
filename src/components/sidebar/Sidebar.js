@@ -1,16 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link } from '@reach/router'
+import { navigate, Location } from "@reach/router"
 // Redux
 import { connect } from "react-redux"
 // UI
-import { Button, Icon, Divider } from 'rsuite'
+import { Button, Icon, Divider, Nav } from 'rsuite'
 import { ConnectedSearchBar } from "../search/SearchBar"
 import "./sidebar.less"
 
 export class Sidebar extends React.Component {
-
-    isSelected = (link) => this.state.path.startsWith(link)
 
     showCreatePlaylistModal = () => {
         this.props.onCreatePlaylistTrigger && this.props.onCreatePlaylistTrigger()
@@ -20,46 +18,63 @@ export class Sidebar extends React.Component {
         this.props.onLogOut && this.props.onLogOut()
     }
 
-    isRouteActive = (activeObject) => {
-        return activeObject.isPartiallyCurrent ? { className : "selectableRow selected" } : { className : "selectableRow" }
+    onRouteSelected = (route) => {
+        navigate(route)
     }
 
     render() {
         const playlists = this.props.playlists
         return (
-            <div style={{padding:"10px", display:"flex", flexDirection:"column", height:"100%"}}>
-
-                <ConnectedSearchBar />
-
-                <h3 className="title">LIBRARY</h3>
-
-                <Link to="/latest" getProps={this.isRouteActive} >
-                    <Icon icon='clock-o'/>{' '}Recently Added
-                </Link>
-
-                <Link to="/artists" getProps={this.isRouteActive} >
-                    <Icon icon='group'/>{' '}Artists
-                </Link>
-
-                <Link to="/favourites" getProps={this.isRouteActive} >
-                    <Icon icon='star'/>{' '}Favourites
-                </Link>
-
-                <h3 className="title">PLAYLISTS ({Object.keys(playlists).length})</h3>
-
-                <div id="playlists" style={{flexGrow:1, display:"flex", flexDirection:"column", overflow:"auto"}}>
-                {
-                    Object.keys(playlists).map( id =>
-                        <Link className="playlist-item" key={id} to={`/playlist/${id}`} getProps={this.isRouteActive} >
-                            {playlists[id].name} ({playlists[id].songCount}) 
-                        </Link>
-                    )
+            <Location>
+                {props => {
+                    // Get the location from reach's <Location/> to highlight the active item
+                    const currentPath = props.location.pathname
+                    return (
+                        <div className="subsidebar rs-sidenav-default" >
+                            { /* Search bar */ }
+                            <ConnectedSearchBar />
+                            { /* Fixed-to-the-top section */ }
+                            <Nav activeKey={currentPath} onSelect={this.onRouteSelected} vertical>
+                                <Nav.Item panel>
+                                    <h6 className="section-header">Library</h6>
+                                </Nav.Item>
+                                <Nav.Item eventKey="/latest" icon={<Icon icon="clock-o" />}>
+                                    Recently Added
+                                </Nav.Item>
+                                <Nav.Item eventKey="/artists" icon={<Icon icon="group" />}>
+                                    Artists
+                                </Nav.Item>
+                                <Nav.Item eventKey="/favourites" icon={<Icon icon="star" />}>
+                                    Favourites
+                                </Nav.Item>
+                                <Nav.Item panel>
+                                    <h6 className="section-header">Playlists ({Object.keys(playlists).length})</h6>
+                                </Nav.Item>
+                            </Nav>
+                            { /* Scrollable playlists */ }
+                            <Nav activeKey={currentPath} onSelect={this.onRouteSelected} className="playlists-container" vertical>
+                                {
+                                    Object.keys(playlists).map( id =>
+                                        <Nav.Item eventKey={`/playlist/${id}`} >
+                                            {playlists[id].name} ({playlists[id].songCount}) 
+                                        </Nav.Item>
+                                    )
+                                }
+                            </Nav>
+                            { /* Fixed-to-the-bottom options */ }
+                            <Nav activeKey={currentPath} onSelect={this.onRouteSelected} vertical>
+                                <Divider className="footer-divider" />
+                                <Nav.Item panel>
+                                    <Button id="createPlaylistButton" appearance="ghost" block={true} onClick={this.showCreatePlaylistModal} >Create new playlist</Button>
+                                </Nav.Item>
+                                <Nav.Item panel>
+                                    <Button id="logoutButton" appearance="link" block={true} onClick={this.onLogOut}>Log out</Button>
+                                </Nav.Item>
+                            </Nav>
+                        </div>
+                    )}
                 }
-                </div>
-                <Divider className="sidebar-divider" />
-                <Button id="createPlaylistButton" appearance="ghost" block={true} onClick={this.showCreatePlaylistModal} >Create new playlist</Button>
-                <Button id="logoutButton" appearance="link" block={true} onClick={this.onLogOut}>Log out</Button>
-            </div>
+            </Location>
         )
     }
 

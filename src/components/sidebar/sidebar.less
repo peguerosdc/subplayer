@@ -1,36 +1,20 @@
-
-.title {
-    font-weight: bold;
-    // color : @text_title
+.subsidebar {
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
-.selectableRow {
-    // color: @text;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    font-size: 14px;
-    line-height:1.42857143;
-    transition: color .3s linear, background-color .3s linear;
-    transition-property: color, background-color;
-    transition-duration: 0.3s, 0.3s;
-    transition-timing-function: linear, linear;
-    transition-delay: 0s, 0s;
+.subsidebar .playlists-container {
+    flex-grow: 1;
+    overflow: auto;
 }
 
-.selectableRow.selected {
-    // color: @base-color;
+.subsidebar .section-header {
+    margin-top: 12px;
+    margin-bottom: 12px;
 }
 
-.selectableRow:hover {
-    // background-color: @main_darker;
-    cursor: pointer;
-}
-
-.selectableNavItem.selected {
-    // color: @base-color;
-}
-
-.sidebar-divider {
+.subsidebar .footer-divider {
     margin: 15px 0 !important;
-    // background-color: @main !important;
 }
