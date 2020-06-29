@@ -81,7 +81,7 @@ export class LoginComponent extends React.Component {
         // Render all
         return (
             <div style={{display:"flex", justifyContent:"center", alignItems:"center", height:"100vh"}}>
-                <Panel bordered>
+                <Panel bordered shaded>
                     <Form onChange={this.onUserDataChange} onSubmit={this.login}>
                         <FormGroup>
                             <ControlLabel>Host</ControlLabel>
