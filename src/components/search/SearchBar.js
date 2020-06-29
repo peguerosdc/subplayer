@@ -24,7 +24,7 @@ export class SearchBar extends React.PureComponent {
     render() {
         return (
             <InputGroup inside size={this.props.size} style={{...this.props.style}}>
-                <Input id="query" placeholder="Search" onChange={(value => {this.query = value})} onKeyDown={this.handleKeyDown} />
+                <Input id="queryBar" placeholder="Search" onChange={(value => {this.query = value})} onKeyDown={this.handleKeyDown} />
                 <InputGroup.Button id="searchButton" onClick={this.performSearch}><Icon icon="search" /></InputGroup.Button>
             </InputGroup>
         )

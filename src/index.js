@@ -5,7 +5,7 @@ import * as serviceWorker from './serviceWorker'
 import Main from "./Main.js"
 import App from './App';
 
-App.LoadCssFile('./css/dark.css');
+App.LoadCssFile('/css/dark.css');
 
 // Init app 
 ReactDOM.render(

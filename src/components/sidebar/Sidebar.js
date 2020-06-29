@@ -55,7 +55,7 @@ export class Sidebar extends React.Component {
                             <Nav activeKey={currentPath} onSelect={this.onRouteSelected} className="playlists-container" vertical>
                                 {
                                     Object.keys(playlists).map( id =>
-                                        <Nav.Item eventKey={`/playlist/${id}`} >
+                                        <Nav.Item key={id} eventKey={`/playlist/${id}`} >
                                             {playlists[id].name} ({playlists[id].songCount}) 
                                         </Nav.Item>
                                     )

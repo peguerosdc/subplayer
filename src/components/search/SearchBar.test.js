@@ -12,7 +12,7 @@ describe("<SearchBar />", () => {
         const onSearch = jest.fn()
         const wrapper = shallow( <SearchBar onSearch={onSearch}/> )
         // Try to query something
-        wrapper.find("#query").simulate("change", "my query")
+        wrapper.find("#queryBar").simulate("change", "my query")
         wrapper.find("#searchButton").simulate("click")
         // Check that the search function is called
         expect(onSearch).toHaveBeenCalledWith("my query")

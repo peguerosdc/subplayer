@@ -48,7 +48,7 @@ export class CreatePlaylistModal extends React.Component {
                     <Form fluid onChange={this.onPlaylistFormChange}>
                         <FormGroup>
                             <ControlLabel>Name</ControlLabel>
-                            <FormControl name="name" errorMessage={this.state.playlistNameErrorMessage} errorPlacement="bottomLeft" onKeyDown={this.handleKeyDown} />
+                            <FormControl name="name" errorMessage={this.state.playlistNameErrorMessage} errorPlacement="bottomStart" onKeyDown={this.handleKeyDown} />
                         </FormGroup>
                     </Form>
                 </Modal.Body>

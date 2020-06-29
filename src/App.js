@@ -1,8 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from "react-redux"
-import './App.css'
-import './index.less'
 import { Router } from "@reach/router"
 import { logout } from "./redux/actions/authActions"
 import { loadPlaylists } from "./redux/actions/playlistsActions"
