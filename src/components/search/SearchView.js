@@ -1,14 +1,12 @@
 import React from "react"
 import PropTypes from 'prop-types'
-import { navigate } from "@reach/router"
 // Redux
 import { connect } from "react-redux"
 import { search } from "../../redux/actions/searchActions"
-import { getSongCurrentlyPlayingSelector } from '../../redux/selectors/musicPlayerSelector'
 import { searchSongsSelector } from '../../redux/selectors/searchSelectors'
 // Results
 import {AlbumResult} from "./results/AlbumResult"
-import {ArtistResult} from "./results/ArtistResult"
+import {ArtistElement} from "../artists/ArtistsList/ArtistElement/ArtistElement"
 import {SongsResult} from "./results/SongsResult"
 // UI
 import { ConnectedSearchBar } from "./SearchBar"
@@ -17,7 +15,6 @@ import { Col } from 'rsuite'
 export class SearchView extends React.Component {
 
     render() {
-        const currentArtistPlayingId = this.props.currentSongPlaying && this.props.currentSongPlaying.artistId
         const albums = this.props.albums || []
         const artists = this.props.artists || []
         const songs = this.props.songs || []
@@ -28,21 +25,19 @@ export class SearchView extends React.Component {
                 </Col>
 
                 {
+                    /* Case where there are no results */
                     (artists.length === 0 && albums.length === 0 && songs.length === 0)
                     ? <h1>No results</h1>
                     : null
                 }
 
                 {
+                    /* Artists section */
                     artists.length > 0 ? (
                         <>
-                            <h1 className="artists_list_title">Artists</h1>
+                            <h1 style={{display:"contents"}}>Artists</h1>
                             <div style={{display:"flex", flexDirection:"row", flexWrap:"wrap"}}>
-                                { artists.map( a =>
-                                    <Col key={a.id} sm={6} xs={12} className={currentArtistPlayingId === a.id ? "link_to_artist playing" : "link_to_artist"} onClick={ (e) => {navigate("/artists/"+a.id)} }>
-                                        <ArtistResult artist={a}/>
-                                    </Col>
-                                )}
+                                { artists.map( a => <ArtistElement artist={a}/> )}
                             </div>
                         </>
                     ) : null
@@ -51,7 +46,7 @@ export class SearchView extends React.Component {
                 {
                     albums.length > 0 ? (
                         <>
-                            <h1 className="artists_list_title">Albums</h1>
+                            <h1 style={{display:"contents"}}>Albums</h1>
                             <div style={{display:"flex", flexDirection:"row", flexWrap:"wrap"}}>
                                 { albums.map( a =>
                                     <Col key={a.id} sm={6} xs={12}>
@@ -66,7 +61,7 @@ export class SearchView extends React.Component {
                 {
                     songs.length > 0 ? (
                         <>
-                            <h1 className="artists_list_title">Songs</h1>
+                            <h1 style={{display:"contents"}}>Songs</h1>
                             <SongsResult songs={songs} />
                         </>
                     ) : null
@@ -81,8 +76,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         "artists" : state.search.artists,
         "albums" : state.search.albums,
-        "songs" : searchSongsSelector(state),
-        currentSongPlaying : getSongCurrentlyPlayingSelector(state),
+        "songs" : searchSongsSelector(state)
     }
 }
 
@@ -92,7 +86,6 @@ SearchView.propTypes = {
     "artists" : PropTypes.array,
     "albums" : PropTypes.array,
     "songs" : PropTypes.array,
-    currentSongPlaying : PropTypes.object
 }
 
 export default connect(

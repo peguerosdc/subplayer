@@ -9,7 +9,7 @@ import "./AlbumResult.less"
 export function AlbumResult(props) {
     const album = props.album
     return (
-        <div class="link_to_album" style={{display:"flex", flexDirection:"column", alignItems:"center", textAlign:"center"}} onClick={ (e) => {navigate("/album/"+album.id)} }>
+        <div className="link_to_album" style={{display:"flex", flexDirection:"column", alignItems:"center", textAlign:"center"}} onClick={ (e) => {navigate("/album/"+album.id)} }>
             <div
                 style={{
                     width: 100,

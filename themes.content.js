@@ -26,4 +26,11 @@ module.exports = (themeName) => `
     font-weight: bold;
 }
 
+.link_to_album:hover {
+    background-color: @nav-item-default-hover-bg;
+    cursor: pointer;
+    color: @base-color;
+    font-weight: bold;
+}
+
 `
