@@ -25,3 +25,6 @@ yarn-error.log*
 # Sublime stuff
 *.sublime-project
 *.sublime-workspace
+
+# Compiled themes
+/src/less/*
