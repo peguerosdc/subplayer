@@ -1,8 +1,7 @@
 /* config-overrides.js */
-const { override, addLessLoader } = require('customize-cra');
-
 const path = require('path');
 const themes = require('./themes.config');
+const themeContent = require('./themes.content');
 
 const merge = require('webpack-merge');
 const multipleThemesCompile = require('webpack-multiple-themes-compile/src');
@@ -16,7 +15,7 @@ module.exports = {
     // Add theming
     let multiTheme = multipleThemesCompile({
        themesConfig: themes,
-       lessContent: (themeName, config) => `@import '~rsuite/lib/styles/themes/${themeName}/index.less';`,
+       lessContent: (themeName, config) => themeContent(themeName),
        styleLoaders: [
           { loader: 'css-loader' },
           {
