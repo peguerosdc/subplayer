@@ -11,7 +11,6 @@ import subsonic from "../../api/subsonicApi"
 import { Grid, Row, Col, Panel } from 'rsuite'
 import SongsTable from '../songs/SongsTable'
 import SongsTableEnhanced from '../songs/SongsTableEnhanced'
-import "./Album.less"
 
 const COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.selectable, SongsTable.columns.download]
 
@@ -19,7 +18,7 @@ export function Album(props) {
     const { album, songs, style } = props
     // Render all
     return (
-        <Panel bordered className="album-card" style={{...style}}>
+        <Panel shaded bordered className="rs-table" style={{...style}}>
             <Grid fluid>
                 <Row>
                     <Col smHidden xsHidden md={6} lg={6}>
