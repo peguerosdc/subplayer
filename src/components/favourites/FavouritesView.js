@@ -26,7 +26,7 @@ export class FavouritesView extends React.Component {
 
     componentDidUpdate(prevProps) {
         if( prevProps.songs.length !== this.props.songs.length ) {
-            this.setState({duration : this.props.songs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration})
+            this.setState({selectedSongs: [], duration : this.props.songs.reduce( (a,b) => ({duration: a.duration+b.duration}), {duration:0} ).duration})
         }
     }
 
