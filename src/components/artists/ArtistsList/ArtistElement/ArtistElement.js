@@ -35,7 +35,7 @@ export class ArtistElement extends React.Component {
         const currentArtistPlayingId = this.props.currentSongPlaying && this.props.currentSongPlaying.artistId
         const artist = this.props.artist
         return (
-            <Col id="name" key={artist.id} sm={8} xs={12} className={currentArtistPlayingId === artist.id ? "link_to_artist currently-playing" : "link_to_artist"} onClick={ (e) => {navigate("/artists/"+artist.id)} }>
+            <Col id="name" sm={8} xs={12} className={currentArtistPlayingId === artist.id ? "link_to_artist currently-playing" : "link_to_artist"} onClick={ (e) => {navigate("/artists/"+artist.id)} }>
                 {artist.name} <Icon icon='volume-up' />
             </Col>
         )

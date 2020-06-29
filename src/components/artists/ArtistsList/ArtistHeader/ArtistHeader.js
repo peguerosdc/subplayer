@@ -6,7 +6,7 @@ import { Col } from 'rsuite'
 function ArtistHeader(props) {
     const { name } = props
     return (
-    	<Col key={name} sm={24} xs={24} >
+    	<Col sm={24} xs={24} >
 	        <h4 id="title" className="artist-header">{name}</h4>
         </Col>
     )

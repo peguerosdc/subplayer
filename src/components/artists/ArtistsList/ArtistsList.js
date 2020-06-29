@@ -24,7 +24,7 @@ export function getNextArtists(elementsRendered, artists, pageSize=50) {
         const indexToAdd = elementsRendered + elementsAdded
         // Add the correct UI type to the list
         const elementToAdd = artists[indexToAdd]
-        toAdd.push( elementToAdd.header ? <ArtistHeader name={elementToAdd.header} /> : <ArtistElement artist={elementToAdd} /> )
+        toAdd.push( elementToAdd.header ? <ArtistHeader key={elementToAdd.header} name={elementToAdd.header} /> : <ArtistElement key={elementToAdd.id} artist={elementToAdd} /> )
         /* Update the amount of artists added under the last header. If the new element is a header, this counter
          * should be restarted */
         artistsAddedInLastSection = elementToAdd.header ? 0 : artistsAddedInLastSection + 1
@@ -80,7 +80,7 @@ export class ArtistsList extends React.Component {
                     pageStart={0}
                     loadMore={this.displayMoreArtists}
                     hasMore={this.state.hasMoreToLoad}
-                    loader={<ArtistLoader />}
+                    loader={<ArtistLoader key="loader" />}
                     useWindow={false}>
                     {this.state.artistsToDisplay}
                 </InfiniteScroll>
