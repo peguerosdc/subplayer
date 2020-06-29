@@ -179,7 +179,7 @@ export class SongsTable extends React.Component {
                 sortColumn={this.state.sortColumn}
                 sortType={this.state.sortType}
                 loading={this.state.loading}
-                rowClassName={(rowData) => rowData && rowData.id === currentSongPlaying.id ? "currently_playing" : null }>
+                rowClassName={(rowData) => rowData && rowData.id === currentSongPlaying.id ? "currently-playing" : null }>
                 { columnsToShow.includes(columns.selectable) ? 
                     <Column width={50} align="center">
                         <HeaderCell style={{ padding: 0 }}>
