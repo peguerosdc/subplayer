@@ -82,7 +82,7 @@ export class App extends React.Component  {
           </Content>
         </Container>
         { /* music player */ }
-        <Footer className="music-player">
+        <Footer>
           <MusicPlayer />
         </Footer>
         { /* playlist creation modal */ }

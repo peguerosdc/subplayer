@@ -127,7 +127,7 @@ export class MusicPlayer extends React.Component {
         const seek = this.state.tick
         const starIcon = song.starred ? "star" : "star-o"
         return (
-            <div className="darkMusicPlayer">
+            <div className="music-player">
                 {/* Currently playing information */}
                 <div className="song_metadata_container">
                     <img src={song.coverArt ? subsonic.getCoverArtUrl(song.coverArt) : "/currently_placeholder.png"} alt="cover" width="45" height="45"/>
