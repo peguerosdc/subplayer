@@ -39,7 +39,7 @@ describe("<Playlist />", () => {
     it("should render my playlist correctly", () => {
         const wrapper = shallow( <Playlist playlist={{...playlist, isMine : true}} songs={songs} /> )
         // Check details of playlist
-        expect(wrapper.find("#title").text()).toEqual("my playlist")
+        expect(wrapper.find("#title").exists()).toBeTruthy()
         expect(wrapper.find("#details").text()).toEqual("24 songs, 12 mins 9 s by the owner")
         expect(wrapper.find("#comment").text()).toEqual('"this is a comment"')
         // Check songs
@@ -75,7 +75,7 @@ describe("<Playlist />", () => {
     it("should render others' playlist correctly", () => {
         const wrapper = shallow( <Playlist playlist={{...playlist, isMine : false}} songs={songs} /> )
         // Check details of playlist
-        expect(wrapper.find("#title").text()).toEqual("my playlist")
+        expect(wrapper.find("#title").exists()).toBeTruthy()
         expect(wrapper.find("#details").text()).toEqual("24 songs, 12 mins 9 s by the owner")
         expect(wrapper.find("#comment").text()).toEqual('"this is a comment"')
         // Check songs

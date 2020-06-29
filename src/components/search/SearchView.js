@@ -37,7 +37,7 @@ export class SearchView extends React.Component {
                         <>
                             <h1 style={{display:"contents"}}>Artists</h1>
                             <div style={{display:"flex", flexDirection:"row", flexWrap:"wrap"}}>
-                                { artists.map( a => <ArtistElement artist={a}/> )}
+                                { artists.map( a => <ArtistElement key={a.id} artist={a}/> )}
                             </div>
                         </>
                     ) : null

@@ -29,7 +29,7 @@ export class ArtistByAlbums extends React.Component {
             <div style={{display:"flex", flexFlow:"column", height:"100%", paddingTop:"15px"}}>
                 {/* Provide with a Select on small screens to navigate through the albums */}
                 <div style={{marginBottom:"10px"}} className="rs-hidden-lg rs-hidden-md">
-                    <SelectPicker data={selectableAlbums} style={{ width: 224 }} searchable={false} cleanable={false} onChange={this.onAlbumSelected}/>
+                    <SelectPicker id="selectAlbums" data={selectableAlbums} style={{ width: 224 }} searchable={false} cleanable={false} onChange={this.onAlbumSelected}/>
                 </div>
                 <div style={{display:"flex", flexFlow:"row", height:"100%"}}>
                     {/* Provide with a nice albums collection on normal screens to navigate through the albums */}
@@ -44,7 +44,7 @@ export class ArtistByAlbums extends React.Component {
                     <Divider className="rs-hidden-xs rs-hidden-sm" vertical style={{height:"100%", minWidth:"1px"}} />
                     {/* This is the main album card */}
                     <div style={{flexGrow:1}} >
-                        {selectedAlbumId && <Album albumId={selectedAlbumId} style={{height:"100%", overflow:"auto"}} />}
+                        {selectedAlbumId && <Album id="album" albumId={selectedAlbumId} style={{height:"100%", overflow:"auto"}} />}
                     </div>
                 </div>
             </div>

@@ -40,7 +40,7 @@ export class CreatePlaylistModal extends React.Component {
 
     render() {
         return (
-            <Modal backdrop="static" show={this.props.showModal} onHide={this.closeModal} size="xs">
+            <Modal id="modal" backdrop="static" show={this.props.showModal} onHide={this.closeModal} size="xs">
                 <Modal.Header>
                     <Modal.Title>New Playlist</Modal.Title>
                 </Modal.Header>

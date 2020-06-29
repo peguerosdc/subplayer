@@ -69,9 +69,4 @@ describe("<ArtistAllSongs />", () => {
         expect( enzymeWrapper.find("Connect(SongsTableEnhanced)").prop("songs") ).toEqual(props.songs)
     })
 
-    it("should show a table with the desired style", () => {
-        const enzymeWrapper = shallow( <ArtistAllSongs style={props.style} /> )
-        expect( enzymeWrapper.find("Connect(SongsTableEnhanced)").prop("style") ).toEqual(props.style)
-    })
-
 })

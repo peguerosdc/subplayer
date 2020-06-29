@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import {MyNavbar} from "./Navbar"
+import {MyNavbar, HOCNavbar} from "./Navbar"
 
 describe("<MyNavbar />", () => {
 
@@ -21,5 +21,13 @@ describe("<MyNavbar />", () => {
     // TODO: couldn't find a way to test the contents of each playlist item to check if they are rendered correctly
 
     // TODO: couldn't find a way to test the nav items as component.simulate('click') doesn't trigger anything
+
+})
+
+describe("<HOCNavbar />", () => {
+
+    it("renders without crashing", () => {
+        shallow( <HOCNavbar playlists={[]} /> )
+    })
 
 })

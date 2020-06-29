@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import {Sidebar} from "./Sidebar"
+import {Sidebar, HOCSidebar} from "./Sidebar"
 
 describe("<Sidebar />", () => {
     const playlists = {
@@ -21,7 +21,8 @@ describe("<Sidebar />", () => {
     it("should render a list of playlists", () => {
         const wrapper = shallow( <Sidebar playlists={playlists} /> )
         // Get playlists visible
-        expect(wrapper.find(".playlist-item")).toHaveLength(2)
+        expect(wrapper.find("[data-pid='p1']")).toHaveLength(1)
+        expect(wrapper.find("[data-pid='p2']")).toHaveLength(1)
     })
 
     it("should let me create new playlists", () => {
@@ -38,6 +39,14 @@ describe("<Sidebar />", () => {
         // Try to log out
         wrapper.find("#logoutButton").simulate('click')
         expect(onLogOut).toHaveBeenCalledTimes(1)
+    })
+
+})
+
+describe("<HOCSidebar />", () => {
+
+    it("renders without crashing", () => {
+        shallow( <HOCSidebar /> )
     })
 
 })

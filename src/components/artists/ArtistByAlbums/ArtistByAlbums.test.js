@@ -36,34 +36,34 @@ describe("<ArtistByAlbums />", () => {
     })
 
     it("should show a Select for small displays to pick an album", () => {
-        const enzymeWrapper = shallow( <ArtistByAlbums {...props} /> )
+        const wrapper = shallow( <ArtistByAlbums {...props} /> )
         const albumsSelectData = props.albums.map(album => ({ value : album.id, label : album.name }))
-        expect( enzymeWrapper.find("withLocale(DefaultPropsComponent)").prop("data") ).toEqual(albumsSelectData)
+        expect( wrapper.find("#selectAlbums").prop("data") ).toEqual(albumsSelectData)
     })
 
     it("should show NavItems for large displays to pick an album", () => {
-        const enzymeWrapper = shallow( <ArtistByAlbums {...props} /> )
+        const wrapper = shallow( <ArtistByAlbums {...props} /> )
         // There should be a NavItem per album
-        expect( enzymeWrapper.find("NavItem").filter(`[eventKey='${props.albums[0].id}']`) ).toHaveLength(1)
-        expect( enzymeWrapper.find("NavItem").filter(`[eventKey='${props.albums[1].id}']`) ).toHaveLength(1)
+        expect( wrapper.find(`[eventKey='${props.albums[0].id}']`) ).toHaveLength(1)
+        expect( wrapper.find(`[eventKey='${props.albums[1].id}']`) ).toHaveLength(1)
     })
 
     it("should show the correct album when selected an album on small displays", () => {
-        const enzymeWrapper = shallow( <ArtistByAlbums {...props} /> )
+        const wrapper = shallow( <ArtistByAlbums {...props} /> )
         // Simulate an album was selected
         const albumId = props.albums[0].id
-        enzymeWrapper.find("withLocale(DefaultPropsComponent)").simulate("change", albumId)
+        wrapper.find("withLocale(defaultProps(SelectPicker))").simulate("change", albumId)
         // Look for the Album displayed
-        expect( enzymeWrapper.find("Connect(Album)").prop("albumId") ).toEqual(albumId)
+        expect( wrapper.find("#album").prop("albumId") ).toEqual(albumId)
     })
 
     it("should show the correct album when selected an album on large displays", () => {
-        const enzymeWrapper = shallow( <ArtistByAlbums {...props} /> )
+        const wrapper = shallow( <ArtistByAlbums {...props} /> )
         // Simulate an album was selected
         const albumId = props.albums[0].id
-        enzymeWrapper.find(".nav-artist-by-albums").simulate("select", albumId)
+        wrapper.find(".nav-artist-by-albums").simulate("select", albumId)
         // Look for the Album displayed
-        expect( enzymeWrapper.find("Connect(Album)").prop("albumId") ).toEqual(albumId)
+        expect( wrapper.find("#album").prop("albumId") ).toEqual(albumId)
     })
 
 })

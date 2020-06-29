@@ -25,10 +25,10 @@ describe("<ArtistElement />", () => {
 
     it("should contain an indicator of the artist currently playing", () => {
         const wrapper = shallow( <ArtistElement artist={artist} currentSongPlaying={currentSongPlaying} /> )
-        expect(wrapper.find("#name.playing").html()).toContain( "my name" )
+        expect(wrapper.find("#name.currently-playing").html()).toContain( "my name" )
         // Change the currently playing artist and expect the class "playing" to not be present
         wrapper.setProps({currentSongPlaying : {artistId : "2"} })
-        expect(wrapper.find("#name.playing").exists()).toBeFalsy()
+        expect(wrapper.find("#name.currently-playing").exists()).toBeFalsy()
     })
 
 })

@@ -48,7 +48,8 @@ describe("<PlaylistSelectorDropdown />", () => {
             },
         }
         const wrapper = shallow( <PlaylistSelectorDropdown showQueue={false} showFavourites={false} playlists={playlists} /> )
-        expect(wrapper.find("DropdownMenuItem")).toHaveLength(2)
+        expect(wrapper.find("[data-key='1']")).toHaveLength(1)
+        expect(wrapper.find("[data-key='2']")).toHaveLength(1)
     })
 
     it("should select a playlist when its option is selected", () => {
@@ -67,7 +68,7 @@ describe("<PlaylistSelectorDropdown />", () => {
         const onPlaylistSelected = jest.fn()
         const wrapper = shallow( <PlaylistSelectorDropdown showFavourites={false} playlists={playlists} onPlaylistSelected={onPlaylistSelected} /> )
         // Select playlist 1
-        wrapper.find("Dropdown").simulate("select", "1")
+        wrapper.find("#selectDropdown").simulate("select", "1")
         expect(onPlaylistSelected).toHaveBeenCalledTimes(1)
         expect(onPlaylistSelected).toHaveBeenCalledWith(playlists["1"])
     })
@@ -89,7 +90,7 @@ describe("<PlaylistSelectorDropdown />", () => {
         const wrapper = shallow( <PlaylistSelectorDropdown showFavourites={true} playlists={playlists} onFavouritesSelected={onFavouritesSelected} /> )
         // Select "favourites option"
         const favsEventKey = wrapper.find("#favourites_item").prop("eventKey")
-        wrapper.find("Dropdown").simulate("select", favsEventKey)
+        wrapper.find("#selectDropdown").simulate("select", favsEventKey)
         expect(onFavouritesSelected).toHaveBeenCalledTimes(1)
     })
 
@@ -110,7 +111,7 @@ describe("<PlaylistSelectorDropdown />", () => {
         const wrapper = shallow( <PlaylistSelectorDropdown showQueue={true} playlists={playlists} onQueueSelected={onQueueSelected} /> )
         // Select "queue option"
         const thisEventKey = wrapper.find("#queue_item").prop("eventKey")
-        wrapper.find("Dropdown").simulate("select", thisEventKey)
+        wrapper.find("#selectDropdown").simulate("select", thisEventKey)
         expect(onQueueSelected).toHaveBeenCalledTimes(1)
     })
 
