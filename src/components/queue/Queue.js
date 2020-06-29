@@ -7,9 +7,11 @@ import { getSongsInQueueSelector } from '../../redux/selectors/musicPlayerSelect
 // Utils
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
 // UI
+import "./Queue.less"
 import SongsTable from '../songs/SongsTable'
 import SongsTableEnhanced from '../songs/SongsTableEnhanced'
-import { Button } from 'rsuite'
+import { Button, IconButton, Icon } from 'rsuite'
+import ResponsiveTitle from '../common/ResponsiveTitle/ResponsiveTitle' 
 
 const COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.selectable, SongsTable.columns.download]
 
@@ -41,19 +43,20 @@ export class Queue extends React.Component {
         const duration = songs.reduce( (accum, current) => accum + current.duration, 0 )
         const disableButton = this.state.selectedSongs && this.state.selectedSongs.length === 0
         return (
-            <div style={{display:"flex", flexFlow:"column", padding:"20px", height:"100%", width:"100%"}}>
-                <div style={{ display:"flex", flexFlow: "row", marginBottom:"15px"}}>
+            <div style={{display:"flex", flexFlow:"column", height:"100%", width:"100%"}}>
+                <div style={{ display:"flex", flexFlow: "row", padding:"20px 20px 15px 20px"}}>
                     <div style={{flexGrow:1}}>
-                        <h1 style={{fontWeight:"bold", display: "inline-block"}}>Playing Queue</h1>
+                        <ResponsiveTitle>Playing Queue</ResponsiveTitle>
                         <p id="details">{songs.length} songs, {seconds_to_hhmmss(duration)}</p>
                     </div>
                     <div style={{ display:"flex", flexFlow: "column"}}>
-                        <Button id="clear_button" onClick={this.clearQueue} style={{marginBottom:"5px"}}>Clear</Button>
+                        <IconButton id="clear_button" onClick={this.clearQueue} style={{marginBottom:"5px"}} placement="right" icon={<Icon icon="trash"/>}>Clear</IconButton>
                         <Button id="remove_button" onClick={this.removeSongsFromQueue} disabled={disableButton}>Remove</Button>
                     </div>
                 </div>
                 <SongsTableEnhanced
                     id="songs_table"
+                    className="queue-songs-container"
                     style={{flexGrow:1}}
                     songs={songs}
                     onSongsSelected={this.onSongsSelected}

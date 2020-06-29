@@ -1,0 +1,17 @@
+.queue-songs-container {
+	padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 15px;
+}
+
+/* For XS (mobile) screens, we need to make this container smaller
+ * (which will result in showing less of the song's name) to make
+ * room for the currently_playing_controls which require at least 90px.
+ * To avoid the queue button to look cramped, we also need to reduce
+ * the paddings
+ */
+@media (max-width: 767px) {
+    .queue-songs-container {
+        padding: 0px;
+    }
+}

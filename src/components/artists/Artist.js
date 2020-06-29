@@ -7,6 +7,7 @@ import { loadOneArtist } from "../../redux/actions/artistsActions"
 import { Nav, Icon } from 'rsuite'
 import ArtistAllSongs from './ArtistAllSongs/ArtistAllSongs.js'
 import ArtistByAlbums from './ArtistByAlbums/ArtistByAlbums'
+import ResponsiveTitle from '../common/ResponsiveTitle/ResponsiveTitle' 
 
 export class Artist extends React.Component {
 
@@ -29,7 +30,7 @@ export class Artist extends React.Component {
         return (
             <div style={{display:"flex", flexFlow:"column", padding:"20px", height:"100%", width:"100%"}}>
                 <div style={{display:"flex", flexFlow:"row"}}>
-                    <h1 style={{fontWeight: "bold", flexGrow:1}}>{artist != null ? artist.name : "..."}</h1>
+                    <ResponsiveTitle style={{fontWeight: "bold", flexGrow:1}}>{artist != null ? artist.name : "..."}</ResponsiveTitle>
                     <Nav id="viewSelector" onSelect={this.onViewSelected} activeKey={activeView}>
                         <Nav.Item icon={<Icon icon="bars" />} eventKey={Artist.KEY_ALL_SONGS} />
                         <Nav.Item icon={<Icon icon="th-large" />} eventKey={Artist.KEY_BY_ALBUM} />

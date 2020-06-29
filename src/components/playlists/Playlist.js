@@ -12,6 +12,7 @@ import SongsTable from '../songs/SongsTable'
 import SongsTableEnhanced from '../songs/SongsTableEnhanced'
 import DeletePlaylistModal from './DeletePlaylistModal/DeletePlaylistModal'
 import EditPlaylistModal from './EditPlaylistModal/EditPlaylistModal'
+import ResponsiveTitle from '../common/ResponsiveTitle/ResponsiveTitle' 
 import { Button, Icon, IconButton } from 'rsuite'
 
 const NOT_MINE_COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.download]
@@ -83,17 +84,17 @@ export class Playlist extends React.Component {
         const songs = this.props.songs
         const disableButton = this.state.selectedSongs && this.state.selectedSongs.length === 0
         const columnsToShow = playlist.isMine ? MINE_COLUMNS_TO_SHOW : NOT_MINE_COLUMNS_TO_SHOW
+        // Get correct title and icon depending on the playlist's owner
+        const title = playlist.isMine ? playlist.name : this.formatExternalPlaylistName(playlist.name)
+        const icon = playlist.isMine ? <IconButton
+            id="editButton"
+            onClick={this.triggerEditModal}
+            icon={<Icon icon="pencil" />} appearance="link" /> : null
         return (
             <div style={{display:"flex", flexFlow:"column", height:"100%", width:"100%"}}>
                 <div style={{ display:"flex", flexFlow: "row", padding:"20px 20px 15px 20px"}}>
                     <div style={{flexGrow:1}}>
-                        <h1 id="title" style={{fontWeight:"bold", display: "inline-block"}}>
-                            {playlist.isMine ? playlist.name : this.formatExternalPlaylistName(playlist.name) }
-                        </h1>
-                        {playlist.isMine ?
-                            <IconButton id="editButton" style={{verticalAlign : "baseline"}} onClick={this.triggerEditModal} icon={<Icon icon="pencil" />} appearance="link" />
-                            : null
-                        }
+                        <ResponsiveTitle id="title">{title} {icon}</ResponsiveTitle>
                         <p id="details">{playlist.songCount} songs, {seconds_to_hhmmss(playlist.duration)} by <b>{playlist.owner}</b></p>
                         { playlist.comment ? <p id="comment">{`"${playlist.comment}"`}</p> : null }
                     </div>
