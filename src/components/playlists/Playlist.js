@@ -7,6 +7,7 @@ import { songsOfPlaylistSelector } from '../../redux/selectors/songSelectors'
 // Utils
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
 // UI
+import "./Playlist.less"
 import SongsTable from '../songs/SongsTable'
 import SongsTableEnhanced from '../songs/SongsTableEnhanced'
 import DeletePlaylistModal from './DeletePlaylistModal/DeletePlaylistModal'
@@ -83,14 +84,14 @@ export class Playlist extends React.Component {
         const disableButton = this.state.selectedSongs && this.state.selectedSongs.length === 0
         const columnsToShow = playlist.isMine ? MINE_COLUMNS_TO_SHOW : NOT_MINE_COLUMNS_TO_SHOW
         return (
-            <div style={{display:"flex", flexFlow:"column", padding:"20px", height:"100%", width:"100%"}}>
-                <div style={{ display:"flex", flexFlow: "row", marginBottom:"15px"}}>
+            <div style={{display:"flex", flexFlow:"column", height:"100%", width:"100%"}}>
+                <div style={{ display:"flex", flexFlow: "row", padding:"20px 20px 15px 20px"}}>
                     <div style={{flexGrow:1}}>
                         <h1 id="title" style={{fontWeight:"bold", display: "inline-block"}}>
                             {playlist.isMine ? playlist.name : this.formatExternalPlaylistName(playlist.name) }
                         </h1>
                         {playlist.isMine ?
-                            <IconButton id="editButton" style={{verticalAlign : "top"}} onClick={this.triggerEditModal} icon={<Icon icon="pencil" />} appearance="link" />
+                            <IconButton id="editButton" style={{verticalAlign : "baseline"}} onClick={this.triggerEditModal} icon={<Icon icon="pencil" />} appearance="link" />
                             : null
                         }
                         <p id="details">{playlist.songCount} songs, {seconds_to_hhmmss(playlist.duration)} by <b>{playlist.owner}</b></p>
@@ -104,7 +105,7 @@ export class Playlist extends React.Component {
                         : null
                     }
                 </div>
-                <SongsTableEnhanced id="songsComponent" style={{flexGrow:1}} songs={songs} onSongsSelected={this.onSongsSelected} columns={columnsToShow} fixedHeightToFill={true} withPlaylistDropdown={false} sortable={true} />
+                <SongsTableEnhanced id="songsComponent" className="playlist-songs-container" style={{flexGrow:1}} songs={songs} onSongsSelected={this.onSongsSelected} columns={columnsToShow} fixedHeightToFill={true} withPlaylistDropdown={false} sortable={true} />
                 {/* Playlist deletion confirmation */}
                 <DeletePlaylistModal id="deleteComponent" playlistId={playlist.id} show={this.state.showDeleteModal} onHide={this.closeDeleteModal} />
                 {/* Playlist edition form */}

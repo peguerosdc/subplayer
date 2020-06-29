@@ -42,13 +42,13 @@ export class SongsTableEnhanced extends React.Component {
     }
 
     render() {
-        const {style, ...rest} = this.props
+        const {style, className, ...rest} = this.props
         const hasSongsSelected = this.state.selectedSongs.length !== 0
         const showPlaylistDropdown = rest.withPlaylistDropdown
         const showSearchFilter = rest.withSearchFilter
         const filterValue = this.state.filter
         return (
-            <div style={{padding:"5px", ...style, display:"flex", flexFlow:"column"}}>
+            <div className={className} style={{...style, display:"flex", flexFlow:"column"}}>
                 <div style={{display:"flex", flexFlow:"row"}}>
                     {showSearchFilter && <SearchBar id="searchBar" size="md" style={{margin:"0px 10px"}} onSearch={this.onFilterSongs}/> }
                     {showPlaylistDropdown && <PlaylistSelectorDropdown id="playlistSelector" onQueueSelected={this.onQueueSelected} onPlaylistSelected={this.onPlaylistSelected} onFavouritesSelected={this.onFavouritesSelected} disabled={!hasSongsSelected} />}
