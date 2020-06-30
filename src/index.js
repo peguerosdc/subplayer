@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom'
 import * as serviceWorker from './serviceWorker'
 // Main component
 import Main from "./Main.js"
-import App from './App';
-
-App.LoadCssFile('/css/dark.css');
+// Theming
+import * as theming from "./utils/theming"
 
 // Init app 
+theming.initTheme()
 ReactDOM.render(
     <Main />,
     document.getElementById('root')

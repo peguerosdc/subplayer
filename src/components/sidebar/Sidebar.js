@@ -14,17 +14,17 @@ export class Sidebar extends React.Component {
         this.props.onCreatePlaylistTrigger && this.props.onCreatePlaylistTrigger()
     }
 
-    onLogOut = () => {
-        this.props.onLogOut && this.props.onLogOut()
-    }
-
     onRouteSelected = (route) => {
         navigate(route)
     }
 
+    onShowSettings = () => {
+        navigate("/settings")
+    }
+
     render() {
         const playlists = this.props.playlists
-        const currentPath = this.props.currentPath
+        const currentPath = this.props.currentLocation
         return (
             <div className="subsidebar rs-sidenav-default" >
                 { /* Search bar */ }
@@ -64,7 +64,7 @@ export class Sidebar extends React.Component {
                         <Button id="createPlaylistButton" appearance="ghost" block={true} onClick={this.showCreatePlaylistModal} >Create new playlist</Button>
                     </Nav.Item>
                     <Nav.Item panel>
-                        <Button id="logoutButton" appearance="link" block={true} onClick={this.onLogOut}>Log out</Button>
+                        <Button id="settingsButton" appearance="link" block={true} onClick={this.onShowSettings}>Settings</Button>
                     </Nav.Item>
                 </Nav>
             </div>
@@ -75,7 +75,6 @@ export class Sidebar extends React.Component {
 
 Sidebar.propTypes = {
     onCreatePlaylistTrigger : PropTypes.func,
-    onLogOut : PropTypes.func,
     playlists : PropTypes.object
 }
 
@@ -94,15 +93,17 @@ const mapStateToProps = (state) => {
 export class HOCSidebar extends React.Component {
 
     render() { 
-        <Location>
-            {
-                props => {
-                    // Get the location from reach's <Location/> to highlight the active item
-                    const currentPath = props.location.pathname
-                    return <Sidebar {...this.props} currentLocation={currentPath} />
+        return (
+            <Location>
+                {
+                    props => {
+                        // Get the location from reach's <Location/> to highlight the active item
+                        const currentPath = props.location.pathname
+                        return <Sidebar {...this.props} currentLocation={currentPath} />
+                    }
                 }
-            }
-        </Location>
+            </Location>
+        )
     }
 
 }

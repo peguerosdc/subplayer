@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { navigate, Location } from "@reach/router"
 // Redux
 import { connect } from "react-redux"
-import { navigate, Location } from "@reach/router"
+import { logout } from "../../redux/actions/authActions"
 // UI
 import {Navbar, Icon, Nav, Dropdown } from 'rsuite'
 
@@ -14,7 +15,7 @@ export class MyNavbar extends React.Component {
                 this.props.onCreatePlaylistTrigger && this.props.onCreatePlaylistTrigger()
                 break
             case "logout":
-                this.props.onLogOut && this.props.onLogOut()
+                this.props.logout && this.props.logout()
                 break
             default:
                 navigate(key)
@@ -23,7 +24,7 @@ export class MyNavbar extends React.Component {
 
     render() {
         const playlists = this.props.playlists
-        const currentPath = this.props.currentPath
+        const currentPath = this.props.currentLocation
         return (
             <Navbar>
                 <Navbar.Body>
@@ -39,8 +40,8 @@ export class MyNavbar extends React.Component {
                             )}
                         </Dropdown>
                     </Nav>
-                    <Nav onSelect={this.onNavSelected} pullRight>
-                        <Nav.Item id="logout" eventKey="logout" icon={<Icon icon="sign-out" />} />
+                    <Nav activeKey={currentPath} onSelect={this.onNavSelected} pullRight>
+                        <Nav.Item id="settings" eventKey="/settings" icon={<Icon icon="cog" />} />
                     </Nav>
                 </Navbar.Body>
             </Navbar>
@@ -50,7 +51,7 @@ export class MyNavbar extends React.Component {
 
 MyNavbar.propTypes = {
     onCreatePlaylistTrigger : PropTypes.func,
-    onLogOut : PropTypes.func,
+    logout : PropTypes.func,
     playlists : PropTypes.object.isRequired
 }
 
@@ -64,25 +65,29 @@ const mapStateToProps = (state) => {
     }
 }
 
+const mapDispatchToProps = { logout }
+
 /* Create a Navbar connected to Reach's location provider */
 
 export class HOCNavbar extends React.Component {
 
     render() { 
-        <Location>
-            {
-                props => {
-                    // Get the location from reach's <Location/> to highlight the active item
-                    const currentPath = props.location.pathname
-                    return <MyNavbar {...this.props} currentLocation={currentPath} />
+        return (
+            <Location>
+                {
+                    props => {
+                        // Get the location from reach's <Location/> to highlight the active item
+                        const currentPath = props.location.pathname
+                        return <MyNavbar {...this.props} currentLocation={currentPath} />
+                    }
                 }
-            }
-        </Location>
+            </Location>
+        )
     }
 
 }
 
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(HOCNavbar)

@@ -26,7 +26,7 @@ export class ArtistByAlbums extends React.Component {
         const selectedAlbumId = this.state.selectedAlbumId
         const selectableAlbums = albums.map(album => ({ value : album.id, label : album.name }))
         return (
-            <div style={{display:"flex", flexFlow:"column", height:"100%", paddingTop:"15px"}}>
+            <div style={{display:"flex", flexFlow:"column", height:"100%", padding:"15px 5px 0px 5px"}}>
                 {/* Provide with a Select on small screens to navigate through the albums */}
                 <div style={{marginBottom:"10px"}} className="rs-hidden-lg rs-hidden-md">
                     <SelectPicker id="selectAlbums" data={selectableAlbums} style={{ width: 224 }} searchable={false} cleanable={false} onChange={this.onAlbumSelected}/>

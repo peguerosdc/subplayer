@@ -28,3 +28,4 @@ yarn-error.log*
 
 # Compiled themes
 /src/less/*
+/src/themes.config.js

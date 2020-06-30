@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from "react-redux"
 import { Router } from "@reach/router"
-import { logout } from "./redux/actions/authActions"
 import { loadPlaylists } from "./redux/actions/playlistsActions"
 // UI
 import { Container, Content, Footer, Sidebar, Header } from 'rsuite'
@@ -20,17 +19,9 @@ import FavouritesView from './components/favourites/FavouritesView'
 import Queue from './components/queue/Queue'
 import AlertsManager from './components/alerts/AlertsManager'
 import RecentlyAdded from './components/latest/RecentlyAdded'
+import Settings from './components/settings/Settings'
 
 export class App extends React.Component  {
-
-  static LoadCssFile = (href, theme) => {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = href;
-    link.dataset.theme = theme;
-    document.head.appendChild(link);
-    return link;
-  };
 
   constructor(props) {
     super(props)
@@ -39,10 +30,6 @@ export class App extends React.Component  {
 
   componentDidMount() {
     this.props.loadPlaylists()
-  }
-
-  onLogOut = () => {
-    this.props.logout()
   }
 
   onCreatePlaylist = () => {
@@ -58,13 +45,13 @@ export class App extends React.Component  {
       <Container style={{ display : "flex", height: "100vh", flexDirection:"column" }}>
         { /* Navbar for mobile navigation */ }
         <Header className="rs-hidden-lg rs-hidden-md">
-          <Navbar id="mobileNavbar" onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
+          <Navbar id="mobileNavbar" onCreatePlaylistTrigger={this.onCreatePlaylist} />
         </Header>
         <InfiniteLineLoader id="loader" isLoading={this.props.asyncTasksInProgress > 0 } />
         { /* Main content */ }
         <Container style={{flex: 1, "overflow":"auto"}}>
           <Sidebar className="rs-hidden-xs rs-hidden-sm">
-            <MySidebar id="sidebar" onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
+            <MySidebar id="sidebar" onCreatePlaylistTrigger={this.onCreatePlaylist} />
           </Sidebar>
           <Content className="main-content" style={{"overflow":"auto"}}>
             <Router style={{height:"100%"}}>
@@ -76,6 +63,7 @@ export class App extends React.Component  {
                 <SearchView path="/search"/>
                 <FavouritesView path="/favourites" />
                 <Queue path="/queue" />
+                <Settings path="/settings" />
             </Router>
           </Content>
         </Container>
@@ -99,12 +87,11 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = { logout, loadPlaylists }
+const mapDispatchToProps = { loadPlaylists }
 
 App.propTypes = {
     asyncTasksInProgress : PropTypes.number,
     loadPlaylists : PropTypes.func.isRequired,
-    logout : PropTypes.func.isRequired
 }
 
 App.defaultProps = {

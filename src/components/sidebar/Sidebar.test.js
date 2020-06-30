@@ -33,14 +33,6 @@ describe("<Sidebar />", () => {
         expect(onCreatePlaylistTrigger).toHaveBeenCalledTimes(1)
     })
 
-    it("should let me log out", () => {
-        const onLogOut = jest.fn()
-        const wrapper = shallow( <Sidebar onLogOut={onLogOut}/> )
-        // Try to log out
-        wrapper.find("#logoutButton").simulate('click')
-        expect(onLogOut).toHaveBeenCalledTimes(1)
-    })
-
 })
 
 describe("<HOCSidebar />", () => {

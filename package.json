@@ -31,7 +31,7 @@
     "webpack-multiple-themes-compile": "^2.0.0"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "(rm -r src/less || true ) && (cp themes.config.js src/themes.config.js) &&  react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-app-rewired eject"

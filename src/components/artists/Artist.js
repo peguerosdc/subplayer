@@ -28,8 +28,8 @@ export class Artist extends React.Component {
         const artist = this.props.artist || {}
         const activeView = this.state.selectedView
         return (
-            <div style={{display:"flex", flexFlow:"column", padding:"20px", height:"100%", width:"100%"}}>
-                <div style={{display:"flex", flexFlow:"row"}}>
+            <div style={{display:"flex", flexFlow:"column", height:"100%", width:"100%"}}>
+                <div style={{display:"flex", flexFlow:"row", padding:"20px 20px 0px 20px",}}>
                     <ResponsiveTitle style={{fontWeight: "bold", flexGrow:1}}>{artist != null ? artist.name : "..."}</ResponsiveTitle>
                     <Nav id="viewSelector" onSelect={this.onViewSelected} activeKey={activeView}>
                         <Nav.Item icon={<Icon icon="bars" />} eventKey={Artist.KEY_ALL_SONGS} />
