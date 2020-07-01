@@ -19,20 +19,6 @@ describe("<App />", () => {
         expect(wrapper.find("#loader").prop("isLoading")).toBeTruthy()
     })
 
-    it("should log out the user when selected from the navbar", () => {
-        const logout = jest.fn()
-        const wrapper = shallow( <App loadPlaylists={() => null} logout={logout} /> )
-        wrapper.find("#mobileNavbar").simulate("logOut")
-        expect(logout).toHaveBeenCalledTimes(1)
-    })
-
-    it("should log out the user when selected from the sidebar", () => {
-        const logout = jest.fn()
-        const wrapper = shallow( <App loadPlaylists={() => null} logout={logout} /> )
-        wrapper.find("#sidebar").simulate("logOut")
-        expect(logout).toHaveBeenCalledTimes(1)
-    })
-
     it("should show the playlist creation modal when selected from the navbar", () => {
         const wrapper = shallow( <App loadPlaylists={() => null} logout={() => null} /> )
         wrapper.find("#mobileNavbar").simulate("createPlaylistTrigger")

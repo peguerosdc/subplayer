@@ -8,20 +8,15 @@ import * as utils from "../../utils/theming"
 
 export default class ThemePicker extends React.Component {
 
-    constructor(props) {
-        super(props)
-        this.themes = utils.getAvailableThemes()
-    }
-
     render() {
-        const themes = this.themes
+        const themes = this.props.themes || {}
         return (
             <>
                 {
                     Object.keys(themes).map( name => (
-                        <Col className="theme-element" key={name} sm={8} xs={12} onClick={ (e) => {utils.changeTheme(name)} }>
+                        <Col key={name} className="theme-element" sm={8} xs={12} onClick={ (e) => {utils.changeTheme(name)} }>
                             <Avatar className={`theme-element-color-${utils.getThemeType(name)}`} style={{ background: themes[name]["base-color"], verticalAlign:"middle" }} circle/>
-                            <span style={{verticalAlign:"middle", marginLeft:"10px"}}>{utils.formatName(name)}</span>
+                            <span data-theme-name={name} style={{verticalAlign:"middle", marginLeft:"10px"}}>{utils.formatName(name)}</span>
                         </Col>
                     ))
                 }
@@ -29,4 +24,8 @@ export default class ThemePicker extends React.Component {
         )
     }
 
+}
+
+ThemePicker.propTypes = {
+    themes : PropTypes.object
 }

@@ -7,6 +7,22 @@ const merge = require('webpack-merge');
 const multipleThemesCompile = require('webpack-multiple-themes-compile/src');
 const multipleEntry = require('react-app-rewire-multiple-entry')
 
+
+// Validate themes before compiling
+function validateThemes(themes) {
+    // Check that themes start with "light" or "dark"
+    const themeNames = Object.keys(themes)
+    for (var i = 0; i < themeNames.length; i++) {
+        const name = themeNames[i]
+        if( !(name.startsWith("light") || name.startsWith("dark")) ) {
+            throw new Error("Invalid themes. Please check README for details.")
+        }
+    }
+    console.log("Valid themes found.")
+}
+validateThemes(themes)
+
+
 module.exports = {
   webpack: function(config, env) {
     // This is to re-format CRA's entries to make them compatible with multipleThemesCompile()

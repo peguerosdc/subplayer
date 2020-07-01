@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { navigate, Location } from "@reach/router"
 // Redux
 import { connect } from "react-redux"
-import { logout } from "../../redux/actions/authActions"
 // UI
 import {Navbar, Icon, Nav, Dropdown } from 'rsuite'
 
@@ -13,9 +12,6 @@ export class MyNavbar extends React.Component {
         switch(key) {
             case "newPlaylist":
                 this.props.onCreatePlaylistTrigger && this.props.onCreatePlaylistTrigger()
-                break
-            case "logout":
-                this.props.logout && this.props.logout()
                 break
             default:
                 navigate(key)
@@ -51,7 +47,6 @@ export class MyNavbar extends React.Component {
 
 MyNavbar.propTypes = {
     onCreatePlaylistTrigger : PropTypes.func,
-    logout : PropTypes.func,
     playlists : PropTypes.object.isRequired
 }
 
@@ -64,8 +59,6 @@ const mapStateToProps = (state) => {
         "playlists" : state.playlists.byId,
     }
 }
-
-const mapDispatchToProps = { logout }
 
 /* Create a Navbar connected to Reach's location provider */
 
@@ -89,5 +82,5 @@ export class HOCNavbar extends React.Component {
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    null
 )(HOCNavbar)
