@@ -1,28 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from "react-redux"
-import './App.css'
-import 'rsuite/styles/index.less'
-import './index.less'
 import { Router } from "@reach/router"
-import { logout } from "./redux/actions/authActions"
 import { loadPlaylists } from "./redux/actions/playlistsActions"
 // UI
 import { Container, Content, Footer, Sidebar, Header } from 'rsuite'
-import MySidebar from './components/sidebar/Sidebar'
-import Navbar from './components/navbar/Navbar'
-import MusicPlayer from './components/player/MusicPlayer'
-import InfiniteLineLoader from './components/common/InfiniteLineLoader/InfiniteLineLoader'
-import ArtistsList from './components/artists/ArtistsList/ArtistsList'
-import Artist from './components/artists/Artist'
-import AlbumView from './components/albums/AlbumView/AlbumView'
-import Playlist from './components/playlists/Playlist'
-import CreatePlaylistModal from './components/common/CreatePlaylistModal/CreatePlaylistModal'
-import SearchView from './components/search/SearchView'
-import FavouritesView from './components/favourites/FavouritesView'
-import Queue from './components/queue/Queue'
-import AlertsManager from './components/alerts/AlertsManager'
-import RecentlyAdded from './components/latest/RecentlyAdded'
+import MySidebar from './components/Sidebar'
+import Navbar from './components/Navbar'
+import MusicPlayer from './components/MusicPlayer'
+import InfiniteLineLoader from './components/InfiniteLineLoader'
+import ArtistsList from './components/ArtistsList'
+import Artist from './components/Artist'
+import AlbumView from './components/AlbumView'
+import Playlist from './components/Playlist'
+import CreatePlaylistModal from './components//CreatePlaylistModal'
+import SearchView from './components/SearchView'
+import FavouritesView from './components/FavouritesView'
+import Queue from './components/QueueView'
+import AlertsManager from './components/AlertsManager'
+import RecentlyAdded from './components/RecentlyAddedView'
+import Settings from './components/SettingsView'
 
 export class App extends React.Component  {
 
@@ -33,10 +30,6 @@ export class App extends React.Component  {
 
   componentDidMount() {
     this.props.loadPlaylists()
-  }
-
-  onLogOut = () => {
-    this.props.logout()
   }
 
   onCreatePlaylist = () => {
@@ -52,13 +45,13 @@ export class App extends React.Component  {
       <Container style={{ display : "flex", height: "100vh", flexDirection:"column" }}>
         { /* Navbar for mobile navigation */ }
         <Header className="rs-hidden-lg rs-hidden-md">
-          <Navbar id="mobileNavbar" onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
+          <Navbar id="mobileNavbar" onCreatePlaylistTrigger={this.onCreatePlaylist} />
         </Header>
         <InfiniteLineLoader id="loader" isLoading={this.props.asyncTasksInProgress > 0 } />
         { /* Main content */ }
         <Container style={{flex: 1, "overflow":"auto"}}>
-          <Sidebar className="rs-hidden-xs rs-hidden-sm sidebar">
-            <MySidebar id="sidebar" onLogOut={this.onLogOut} onCreatePlaylistTrigger={this.onCreatePlaylist} />
+          <Sidebar className="rs-hidden-xs rs-hidden-sm">
+            <MySidebar id="sidebar" onCreatePlaylistTrigger={this.onCreatePlaylist} />
           </Sidebar>
           <Content className="main-content" style={{"overflow":"auto"}}>
             <Router style={{height:"100%"}}>
@@ -70,11 +63,12 @@ export class App extends React.Component  {
                 <SearchView path="/search"/>
                 <FavouritesView path="/favourites" />
                 <Queue path="/queue" />
+                <Settings path="/settings" />
             </Router>
           </Content>
         </Container>
         { /* music player */ }
-        <Footer className="music-player">
+        <Footer>
           <MusicPlayer />
         </Footer>
         { /* playlist creation modal */ }
@@ -93,12 +87,11 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = { logout, loadPlaylists }
+const mapDispatchToProps = { loadPlaylists }
 
 App.propTypes = {
     asyncTasksInProgress : PropTypes.number,
     loadPlaylists : PropTypes.func.isRequired,
-    logout : PropTypes.func.isRequired
 }
 
 App.defaultProps = {

@@ -9,10 +9,12 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "fetch-mock": "^7.3.9",
+    "gensync": "^1.0.0-beta.1",
     "howler": "^2.1.2",
     "less": "^3.9.0",
-    "less-loader": "^5.0.0",
+    "less-loader": "6.1.2",
     "react": "^16.8.6",
+    "react-app-rewire-multiple-entry": "^2.2.0",
     "react-app-rewired": "^2.1.3",
     "react-dom": "^16.8.6",
     "react-infinite-scroller": "^1.2.4",
@@ -24,12 +26,14 @@
     "redux-mock-store": "^1.5.3",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
-    "rsuite": "^3.8.7"
+    "rsuite": "4.7.2",
+    "webpack-merge": "^4.2.2",
+    "webpack-multiple-themes-compile": "^2.0.0"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test --env=jsdom",
+    "start": "(rm -r src/less || true ) && (cp themes.config.js src/themes.config.js) && react-app-rewired start",
+    "build": "(rm -r src/less || true ) && (cp themes.config.js src/themes.config.js) && react-app-rewired build",
+    "test": "(rm -r src/less || true ) && (cp themes.config.js src/themes.config.js) && react-app-rewired test --env=jsdom",
     "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
@@ -45,6 +49,16 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/components/**/index.js",
+      "!src/**/*.dev.js",
+      "!/node_modules/",
+      "!src/index.js",
+      "!src/serviceWorker.js"
     ]
   },
   "devDependencies": {}

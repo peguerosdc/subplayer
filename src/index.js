@@ -3,8 +3,11 @@ import ReactDOM from 'react-dom'
 import * as serviceWorker from './serviceWorker'
 // Main component
 import Main from "./Main.js"
+// Theming
+import * as theming from "./utils/theming"
 
 // Init app 
+theming.initTheme()
 ReactDOM.render(
     <Main />,
     document.getElementById('root')

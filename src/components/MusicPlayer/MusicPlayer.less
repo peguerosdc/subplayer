@@ -1,0 +1,110 @@
+.music-player {
+    display: flex;
+    flex-flow: row nowrap;
+    min-height: 65px;
+    justify-content: space-around;
+    align-items: center;
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+/*
+ * Styles of the song metadata container which includes:
+  *  - album cover
+ *   - song name
+ *   - song artist
+ *   - fav star
+ */
+
+/* For XS (mobile) screens, we need to make this container smaller
+ * (which will result in showing less of the song's name) to make
+ * room for the currently_playing_controls which require at least 90px.
+ * To avoid the queue button to look cramped, we also need to reduce
+ * the paddings
+ */
+@media (max-width: 767px) {
+    .music-player {
+        padding-right: 5px;
+        padding-left: 10px;
+    }
+
+    .music-player .song_metadata_container {
+        width: 210px !important;
+    }
+}
+
+.music-player .song_metadata_container {
+    width: 255px;
+    align-items: center;
+    display: flex;
+    flex-flow: row;
+}
+
+.music-player .song_metadata_container img {
+    margin-right: 10px;
+}
+
+
+.music-player .song_metadata_container p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/*
+ * Styles of the currently playing controls which include:
+ *   - play previous song
+ *   - play/pause current song
+ *   - play next song
+ */
+
+.music-player .currently_playing_controls i {
+    width: 90px;
+    flex: 0 0 90px;
+}
+
+/*
+ * Styles of the song progress bar which include:
+ *   - current position (minutes:seconds)
+ *   - Progress bar
+ *   - total song's duration (minutes:seconds)
+ */
+
+.music-player .song_progress_bar_container {
+    display: flex;
+    align-items: center;
+}
+
+.music-player .song_progress_bar_container span {
+    margin: 0 10px;
+}
+
+.music-player .song_progress_bar_container .song_progress_bar {
+    flex-grow: 1;
+}
+
+.song_progress_bar {
+    flex-grow: 1;
+}
+
+
+/*
+ * Styles of the volume controls which include:
+ *   - muting button
+ *   - volume bar
+ */
+
+.music-player .volume_controls_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.music-player .volume_control_bar {
+    width: 100px;
+}
+
+.music-player i.volume_control_mute {
+    margin-right: 15px;
+    margin-left: 5px;
+}
