@@ -31,9 +31,9 @@
     "webpack-multiple-themes-compile": "^2.0.0"
   },
   "scripts": {
-    "start": "(rm -r src/less || true ) && (cp themes.config.js src/themes.config.js) &&  react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test --env=jsdom",
+    "start": "(rm -r src/less || true ) && (cp themes.config.js src/themes.config.js) && react-app-rewired start",
+    "build": "(rm -r src/less || true ) && (cp themes.config.js src/themes.config.js) && react-app-rewired build",
+    "test": "(rm -r src/less || true ) && (cp themes.config.js src/themes.config.js) && react-app-rewired test --env=jsdom",
     "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
@@ -49,6 +49,16 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/components/**/index.js",
+      "!src/**/*.dev.js",
+      "!/node_modules/",
+      "!src/index.js",
+      "!src/serviceWorker.js"
     ]
   },
   "devDependencies": {}
