@@ -2,16 +2,14 @@
 
 [![codecov](https://codecov.io/gh/peguerosdc/subplayer/branch/develop/graph/badge.svg)](https://codecov.io/gh/peguerosdc/subplayer)
 
-This is a front-end application designed to be a simple, functional and nice looking web player to be used with a Subsonic back-end (originally developed to work with [spl0k/supysonic](https://github.com/spl0k/supysonic)).
-
-![Overview](/docs/collage.png)
+This is a frontend application designed to be a simple, functional and nice looking web player to be used with a Subsonic backend (originally developed to work with [spl0k/supysonic](https://github.com/spl0k/supysonic)).
 
 ## Context
 
-As many existing solutions for self-streaming audio are either unmaintained, difficult to install, based on old technologies which make them look... well... old, or are don't consider the power constraints a SBC may have, when I was building my home media server I found that I was not happy with any of them.
+As many existing solutions for self-streaming audio are either unmaintained, difficult to install, based on old technologies which make them look... well... old, or don't consider the power constraints a Single-Board-Computer may have, when I was building my home media server I found that I was not happy with any of them.
 
-After some research, I found Supysonic which works really well on my ARM device as it provides no fancy unnecessary features (and has a Subsonic back-end which is a **must** in my requirements), but still I wanted a Spotify-like experience where I can stream and manage my media directly on any web browser.
-As Supysonic doesn't have its own UI and almost all of the existing solutions compatible with the Subsonic API are shipped `backend + frontend`, I decided to create my own following a one simple mantra: *"keep it simple and make it look good".*
+After some research, I found Supysonic which works really well on my ARM device as it provides no fancy unnecessary features (and has a Subsonic backend which was a **must** in my requirements), but still I wanted a Spotify-like experience where I can stream and manage my media directly on any web browser.
+As Supysonic doesn't have its own UI and almost all of the existing solutions compatible with the Subsonic API ship both `backend + frontend`, I decided to create my own following a one simple mantra: *"keep it simple and make it look good".*
 
 ## Features
 
