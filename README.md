@@ -21,6 +21,17 @@ As Supysonic doesn't have its own UI and almost all of the existing solutions co
 - Search artists/albums/songs
 - Browse your music by Artist
 - Add/Remove from queue
+- Theming
+
+### Building custom themes
+
+By default, the only themes available are Blue, Orange, Green and Grey (all in light and dark mode). If you want to create your custom themes, you can edit `/themes.config.js` with your own object to change how Rsuite will look like. Each theme must be named starting with either "light" or "dark" to let the compiler know which settings to load.
+
+To see the list of variables that you can define for customization, visit [RSuite's documentation](https://rsuitejs.com/en/guide/themes/).
+
+**NOTE:** the tool that Rsuite provides to create custom themes is not designed to work with `create-react-app` (which is how this project was built), so the implementation here is considered a hack and, as a result, it has (as far as I found) two downsides:
+1) you can't create a lot of themes as the compiler will run out of memory (that's why I only defined 4 colours by default) and
+2) on the first run, you will see a blank page. After reloading, the application will work as expected.
 
 ## Installation
 
@@ -66,11 +77,9 @@ $ docker stop mysubplayer
 - Implement CI to push Docker image automatically when merged to `master`
 - There are some `TODO`s in the unit tests, but most features are tested.
 - `feature`: Rearrange items in queue. I tried this with the current rsuite's Table but didn't like the final implementation. I am thinking in (someday) writing a new `<SongsTable/>` from scratch to add all the features I want.
-- `feature`: "Recently added" view
 - `feature`: Toggle "shuffle" on/off
 - `feature`: Song seeking
 - `feature`: Muting
-- `feature`: Theming
 
 ## Contributions
 Any TODO item, any bug you find and want to fix, any architecture/performance/Docker improvements, any new feature you think would be cool to have is welcomed :) Just keep in mind that this project is meant to be a lightweight application.
