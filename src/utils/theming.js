@@ -43,7 +43,7 @@ export function changeTheme(theme) {
 }
 
 export function loadTheme(theme) {
-	const file = `/css/${theme}.css`
+	const file = `${process.env.PUBLIC_URL}/css/${theme}.css`
 	// Put stylesheet in the document
     const link = document.createElement('link')
     link.rel = 'stylesheet';
