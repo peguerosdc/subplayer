@@ -51,6 +51,9 @@ module.exports = {
     var lessRule = multiTheme["module"]["rules"][0]
     delete multiTheme["module"]["rules"]
 
+    // Change the location of css files to import them by name without knowing the id
+    multiTheme["plugins"][0]["options"]["chunkFilename"] = "css/[name].css"
+
     // Merge default CRA config with themes' config. Now, we just need to fix the lessRule.
     var newConfig = merge(config, multiTheme)
 

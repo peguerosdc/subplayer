@@ -5,7 +5,7 @@
   "background_color": "#fa2755",
   "display": "standalone",
   "orientation": "portrait",
-  "start_url": "/artists",
+  "start_url": "/",
   "icons": [
     {
       "src": "images/icons/icon-72x72.png",

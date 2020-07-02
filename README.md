@@ -1,8 +1,12 @@
 # Subplayer
 
 [![codecov](https://codecov.io/gh/peguerosdc/subplayer/branch/develop/graph/badge.svg)](https://codecov.io/gh/peguerosdc/subplayer)
+[![Build Status](https://travis-ci.com/peguerosdc/subplayer.svg?branch=master)](https://travis-ci.com/peguerosdc/subplayer)
+![Docker Pulls](https://img.shields.io/docker/pulls/peguerosdc/subplayer)
 
 This is a frontend application designed to be a simple, functional and nice looking web player to be used with a Subsonic backend (originally developed to work with [spl0k/supysonic](https://github.com/spl0k/supysonic)).
+
+Demo: [Subplayer at Netlify](https://subplayer.netlify.app/)
 
 ## Context
 
