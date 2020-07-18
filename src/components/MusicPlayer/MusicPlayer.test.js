@@ -83,4 +83,14 @@ describe("<MusicPlayer />", () => {
     	wrapper.find("#play_pause_button").simulate("click")
     	expect(wrapper.find("#play_pause_button").prop('icon').props.icon).toEqual('pause')
     })
+
+    it("should support muting", () => {
+        const wrapper = shallow( <MusicPlayer /> )
+        // Mute
+        wrapper.find("#mute").simulate("click")
+        expect(wrapper.find("#mute").prop('icon').props.icon).toEqual('volume-off')
+        // Unmute
+        wrapper.find("#mute").simulate("click")
+        expect(wrapper.find("#mute").prop('icon').props.icon).toEqual('volume-up')
+    })
 })

@@ -13,8 +13,8 @@ export default class MusicPlayer extends React.Component {
     
     constructor(props) {
         super(props)
-        this.state = { playing:false, tick: 0 }
-        this.volume = 1.0
+        this.state = { playing:false, tick: 0, isMuted: false, volume: 1.0 }
+        this.volumeBeforeMutting = 1.0
     }
 
     componentDidUpdate(prevProps) {
@@ -77,7 +77,20 @@ export default class MusicPlayer extends React.Component {
 
     changeVolume = (newVolume) => {
         this.streamer && this.streamer.volume(newVolume)
-        this.volume = newVolume
+        this.setState({volume: newVolume})
+        this.volumeBeforeMutting = newVolume
+    }
+
+    toggleMute = () => {
+        const isMuted = this.state.isMuted
+        if( isMuted ) {
+            this.streamer && this.streamer.volume(this.volumeBeforeMutting)
+            this.setState({ volume : this.volumeBeforeMutting, isMuted: false })
+        }
+        else {
+            this.streamer && this.streamer.volume(0.0)
+            this.setState({ volume : 0.0, isMuted: true })
+        }
     }
 
     togglePlayerState = () => {
@@ -125,6 +138,7 @@ export default class MusicPlayer extends React.Component {
         const playing = this.state.playing
         const seek = this.state.tick
         const starIcon = song.starred ? "star" : "star-o"
+        const volume = this.state.volume
         return (
             <div className="music-player">
                 {/* Currently playing information */}
@@ -157,8 +171,8 @@ export default class MusicPlayer extends React.Component {
                 {/* Volume controls */}
                 <div className="rs-hidden-xs">
                     <div className="volume_controls_container">
-                        <Icon className="volume_control_mute" icon='volume-up' />
-                        <Slider tooltip={false} progress className="volume_control_bar" onChange={this.changeVolume} defaultValue={1} max={1} step={0.05} />
+                        <IconButton id="mute" onClick={this.toggleMute} icon={<Icon className="volume_control_mute" icon={volume === 0 ? 'volume-off' : 'volume-up'} />} appearance="link" />
+                        <Slider tooltip={false} progress className="volume_control_bar" value={volume} onChange={this.changeVolume} defaultValue={1} max={1} step={0.05} />
                     </div>
                 </div>
             </div>
