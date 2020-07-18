@@ -1,8 +1,8 @@
 {
   "name": "SubPlayer",
   "short_name": "SubPlayer",
-  "theme_color": "rgb(29,45,60)",
-  "background_color": "#fa2755",
+  "theme_color": "#ff3d00",
+  "background_color": "#0f131a",
   "display": "standalone",
   "orientation": "portrait",
   "start_url": "/",
