@@ -5,7 +5,7 @@ import { seconds_to_hhmmss } from "../../utils/formatting.js"
 // UI
 import "./QueueView.less"
 import SongsTable from '../SongsTable/SongsTable'
-import SongsTableEnhanced from '../SongsTableEnhanced'
+import SongsList from '../SongsList'
 import { Button, IconButton, Icon } from 'rsuite'
 import ResponsiveTitle from '../ResponsiveTitle' 
 
@@ -50,7 +50,7 @@ export default class QueueView extends React.Component {
                         <Button id="remove_button" onClick={this.removeSongsFromQueue} disabled={disableButton}>Remove</Button>
                     </div>
                 </div>
-                <SongsTableEnhanced
+                <SongsList
                     id="songs_table"
                     className="queue-songs-container"
                     style={{flexGrow:1}}
