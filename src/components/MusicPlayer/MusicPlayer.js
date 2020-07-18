@@ -42,11 +42,15 @@ export default class MusicPlayer extends React.Component {
                 this.streamer.play()
                 this.startSongTicker()
                 this.setState({playing : true, tick: 0})
+                // Update title
+                document.title = `${this.props.song.title} - ${this.props.song.artist}`
             }
         }
         // If there is no song to play, stop whatever was playing
         else {
             this.clearMusicPlayer()
+            // Update title
+            document.title = "SubPlayer"
         }
     }
 
@@ -154,7 +158,7 @@ export default class MusicPlayer extends React.Component {
                 <div className="rs-hidden-xs">
                     <div className="volume_controls_container">
                         <Icon className="volume_control_mute" icon='volume-up' />
-                        <Slider tooltip={false} progress className="volume_control_bar" onChange={this.changeVolume} defaultValue={1} max={1} step={0.1} />
+                        <Slider tooltip={false} progress className="volume_control_bar" onChange={this.changeVolume} defaultValue={1} max={1} step={0.05} />
                     </div>
                 </div>
             </div>
