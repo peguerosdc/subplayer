@@ -17,8 +17,11 @@ export default {
     },
     musicPlayer : {
         queue : [],
+        original : [],
         songsById : {},
         currentSongIndex : null,
+        currentSongId : null,
+        isShuffleOn: true,
     },
     auth : {
         isAuthenticated: false,

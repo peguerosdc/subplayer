@@ -68,10 +68,7 @@ export default class SongsTable extends React.Component {
         }
         else{
             // Build queue randomly with this song at the top
-            var queue = this.props.songs.filter(s => s.id !== song.id)
-            queue.sort(() => Math.random() - 0.5)
-            queue = [song, ...queue]
-            this.props.putSongsInQueue(queue)
+            this.props.putSongsInQueue(this.props.songs, song)
         }
     }
 
@@ -111,6 +108,7 @@ export default class SongsTable extends React.Component {
             // are needed to be sorted, so only sort songs in this.state.songs
             const sorted = await sortSongsByKey(this.state.songs, sortColumn, sortType)
             this.setState({sortColumn, sortType, songs: sorted })
+            this.props.onSongsSorted(sorted)
         }
         catch(err) {
             console.log(err)
@@ -287,6 +285,7 @@ SongsTable.propTypes = {
   songsFilter : PropTypes.string,
   putSongsInQueue : PropTypes.func,
   onSongsSelected : PropTypes.func,
+  onSongsSorted : PropTypes.func,
   onSongClicked : PropTypes.func
 }
 SongsTable.columns = columns
@@ -300,5 +299,6 @@ SongsTable.defaultProps = {
     songsFilter : null,
     putSongsInQueue: () => null,
     onSongsSelected: () => null,
+    onSongsSorted: () => null,
     onSongClicked: null,
 }

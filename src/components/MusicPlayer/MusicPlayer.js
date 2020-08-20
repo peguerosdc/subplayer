@@ -13,8 +13,8 @@ export default class MusicPlayer extends React.Component {
     
     constructor(props) {
         super(props)
-        this.state = { playing:false, tick: 0 }
-        this.volume = 1.0
+        this.state = { playing:false, tick: 0, isMuted: false, volume: 1.0 }
+        this.volumeBeforeMutting = 1.0
     }
 
     componentDidUpdate(prevProps) {
@@ -42,11 +42,15 @@ export default class MusicPlayer extends React.Component {
                 this.streamer.play()
                 this.startSongTicker()
                 this.setState({playing : true, tick: 0})
+                // Update title
+                document.title = `${this.props.song.title} - ${this.props.song.artist}`
             }
         }
         // If there is no song to play, stop whatever was playing
         else {
             this.clearMusicPlayer()
+            // Update title
+            document.title = "SubPlayer"
         }
     }
 
@@ -73,7 +77,20 @@ export default class MusicPlayer extends React.Component {
 
     changeVolume = (newVolume) => {
         this.streamer && this.streamer.volume(newVolume)
-        this.volume = newVolume
+        this.setState({volume: newVolume})
+        this.volumeBeforeMutting = newVolume
+    }
+
+    toggleMute = () => {
+        const isMuted = this.state.isMuted
+        if( isMuted ) {
+            this.streamer && this.streamer.volume(this.volumeBeforeMutting)
+            this.setState({ volume : this.volumeBeforeMutting, isMuted: false })
+        }
+        else {
+            this.streamer && this.streamer.volume(0.0)
+            this.setState({ volume : 0.0, isMuted: true })
+        }
     }
 
     togglePlayerState = () => {
@@ -94,6 +111,10 @@ export default class MusicPlayer extends React.Component {
         }
     }
 
+    toggleShuffle = () => {
+        this.props.toggleShuffle(!this.props.isShuffleOn)
+    }
+
     goToQueueView = () => {
         navigate("/queue/")
     }
@@ -103,7 +124,18 @@ export default class MusicPlayer extends React.Component {
     }
 
     playPreviousSong = () => {
-        this.props.playPreviousSong && this.props.playPreviousSong()
+        // if the song has just started (according to a defined threshold), play
+        // the previous song. If not, go back to the beginning of this song
+        if( this.state.playing ) {
+            const currentSeconds = this.streamer ? this.streamer.seek() : 0
+            if( currentSeconds <= 3 ) {
+                this.props.playPreviousSong && this.props.playPreviousSong()
+            }
+            else {
+                this.streamer.seek(0)
+                this.tick()
+            }
+        }
     }
 
     clearMusicPlayer = () => {
@@ -121,6 +153,8 @@ export default class MusicPlayer extends React.Component {
         const playing = this.state.playing
         const seek = this.state.tick
         const starIcon = song.starred ? "star" : "star-o"
+        const volume = this.state.volume
+        const isShuffleOn = this.props.isShuffleOn
         return (
             <div className="music-player">
                 {/* Currently playing information */}
@@ -146,6 +180,10 @@ export default class MusicPlayer extends React.Component {
                         <span>{seconds_to_mss(song.duration || 0)}</span>
                     </div>
                 </div>
+                {/* Toggle shuffle */}
+                <div className="shuffle_container rs-hidden-xs">
+                    <IconButton id="shuffle_button" icon={<Icon icon="random" inverse={!isShuffleOn} />} onClick={this.toggleShuffle} appearance="link" size="lg"/>
+                </div>
                 {/* Go to queue */}
                 <div className="go_to_queue_container">
                     <IconButton id="queue_button" icon={<Icon icon="bars" />} onClick={this.goToQueueView} appearance="link" size="lg"/>
@@ -153,8 +191,8 @@ export default class MusicPlayer extends React.Component {
                 {/* Volume controls */}
                 <div className="rs-hidden-xs">
                     <div className="volume_controls_container">
-                        <Icon className="volume_control_mute" icon='volume-up' />
-                        <Slider tooltip={false} progress className="volume_control_bar" onChange={this.changeVolume} defaultValue={1} max={1} step={0.1} />
+                        <IconButton id="mute" onClick={this.toggleMute} icon={<Icon className="volume_control_mute" icon={volume === 0 ? 'volume-off' : 'volume-up'} />} appearance="link" />
+                        <Slider tooltip={false} progress className="volume_control_bar" value={volume} onChange={this.changeVolume} defaultValue={1} max={1} step={0.05} />
                     </div>
                 </div>
             </div>
@@ -166,5 +204,7 @@ MusicPlayer.propTypes = {
     playNextSong : PropTypes.func,
     playPreviousSong : PropTypes.func,
     setStarOnSongs : PropTypes.func,
-    song : PropTypes.object
+    toggleShuffle : PropTypes.func,
+    song : PropTypes.object,
+    isShuffleOn: PropTypes.bool,
 }

@@ -13,6 +13,10 @@ module.exports = (themeName) => {
         	border-top : ${isDark ? "none" : "1px solid #f0f0f0"};
         }
 
+        .music-player .rs-icon-inverse {
+            color: ${isDark ? "#3b3f43" : "#f2f2f5"}
+        }
+
         .artist-header {
         	color: ${isDark ? "@base-color" : "inherit"};
         }

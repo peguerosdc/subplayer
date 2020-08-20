@@ -5,8 +5,8 @@ export function addSongsToQueue(songs) {
     return { type: types.ADD_SONGS_TO_QUEUE, payload: {songs}, ...alerts.alertSuccessObject(`${songs.length} songs added to the queue!`) }
 }
 
-export function putSongsInQueue(songs) {
-    return { type: types.PUT_SONGS_IN_QUEUE, payload: {songs} }
+export function putSongsInQueue(songs, songToPlay=null) {
+    return { type: types.PUT_SONGS_IN_QUEUE, payload: {songs, songToPlay} }
 }
 
 export function seekToSongInQueue(song) {
@@ -27,4 +27,8 @@ export function clearQueue() {
 
 export function removeSongsFromQueue(songs) {
     return { type: types.REMOVE_SONGS_FROM_QUEUE, payload: {songs} }
+}
+
+export function toggleShuffle(turnOn) {
+    return { type: turnOn ? types.TOGGLE_SHUFFLE_ON : types.TOGGLE_SHUFFLE_OFF  }
 }

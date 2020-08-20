@@ -40,7 +40,8 @@ describe("<SongsTable />", () => {
     })
 
     it("should let me change the sorting of the songs", () => {
-        const wrapper = shallow( <SongsTable songs={songs} /> )
+        const onSongsSorted = jest.fn()
+        const wrapper = shallow( <SongsTable songs={songs} onSongsSorted={onSongsSorted} /> )
         wrapper.find("#songsTable").simulate("sortColumn", "artist", "asc")
         // TODO: check sorting. How to deal with the async call without explicitly  calling the method?
     })

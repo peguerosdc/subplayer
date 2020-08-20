@@ -61,6 +61,7 @@ export default class QueueView extends React.Component {
                     withPlaylistDropdown={false}
                     withSearchFilter={false}
                     sortable={false}
+                    showPlayButton={false}
                     onSongClicked={this.onSongClicked} />
             </div>
         )
