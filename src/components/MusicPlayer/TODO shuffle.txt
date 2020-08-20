@@ -1,0 +1,44 @@
+ACTUAL:
+{
+	songsById: {},
+	queue : [id1, id2, id3, id4, id5],
+	currentSongIndex : 3
+}
+
+COMPORTAMIENTO A IMPLEMENTAR
+
+Si ya está reproduciendo:
+	- toggleo shuffle: la que se está reproduciendo se va al inicio y todo el resto de la queue (se haya reproducid o no) se shufflea
+	- quito shuffle: la que se está reproduciendo pasa al inicio y la cola sólo es de las siguientes que faltaban en el orden original
+
+Si no estoy reproduciendo nada:
+	- shuffle on: la siguiente que escoja reproducir se va al principio de la cola y el resto se shufflea
+	- shuffle off: se reproduce la primera segú SongsTable y sigue lo demás
+
+COMO IMPLEMENTARLO:
+
+El nuevo Store será:
+{
+	songsById: {},
+	original : [id1, id2, id3, id4, id5],
+	queue : [id3, id4, id1, id2, id5],
+	currentSongIndex : 3,
+	isShuffleOn : true,
+	currentSongId: id1 /* este es el que va a importar para actualizar el state */
+}
+
+Si se activa el shuffle:
+	- isShuffleOn = true,
+	- currentSongId no cambia (no altera el player)
+	- currentSongIndex pasa a 0
+	- queue pasa a ser [currentSongId, todo el original (menos currentSongId) shuffleado ]
+
+Si se desactiva el shuffle:
+	- isShuffleOn = false,
+	- currentSongId no cambia (no altera el player)
+	- currentSongIndex pasa a 0
+	- queue pasa a ser [currentSongId, todo el original a partir de currentSongId ]
+
+
+TODO: fix que si le doy previous y ya no hay previous, no haga nada en vez de "irse para atras" y limpiar la queue
+TODO: guardar el volumen y el shuffle en settings

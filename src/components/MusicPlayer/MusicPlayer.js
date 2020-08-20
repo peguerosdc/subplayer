@@ -111,6 +111,10 @@ export default class MusicPlayer extends React.Component {
         }
     }
 
+    toggleShuffle = () => {
+        this.props.toggleShuffle(!this.props.isShuffleOn)
+    }
+
     goToQueueView = () => {
         navigate("/queue/")
     }
@@ -139,6 +143,7 @@ export default class MusicPlayer extends React.Component {
         const seek = this.state.tick
         const starIcon = song.starred ? "star" : "star-o"
         const volume = this.state.volume
+        const isShuffleOn = this.props.isShuffleOn
         return (
             <div className="music-player">
                 {/* Currently playing information */}
@@ -164,6 +169,10 @@ export default class MusicPlayer extends React.Component {
                         <span>{seconds_to_mss(song.duration || 0)}</span>
                     </div>
                 </div>
+                {/* Toggle shuffle */}
+                <div className="shuffle_container rs-hidden-xs">
+                    <IconButton id="shuffle_button" icon={<Icon icon="random" inverse={!isShuffleOn} />} onClick={this.toggleShuffle} appearance="link" size="lg"/>
+                </div>
                 {/* Go to queue */}
                 <div className="go_to_queue_container">
                     <IconButton id="queue_button" icon={<Icon icon="bars" />} onClick={this.goToQueueView} appearance="link" size="lg"/>
@@ -184,5 +193,7 @@ MusicPlayer.propTypes = {
     playNextSong : PropTypes.func,
     playPreviousSong : PropTypes.func,
     setStarOnSongs : PropTypes.func,
-    song : PropTypes.object
+    toggleShuffle : PropTypes.func,
+    song : PropTypes.object,
+    isShuffleOn: PropTypes.bool,
 }
