@@ -12,11 +12,17 @@ export default class SongsTableEnhanced extends React.Component {
     constructor(props) {
         super(props)
         this.state = { selectedSongs : [], filter : null }
+        this.songs = props.songs
+    }
+
+    // Store new order of songs
+    onSongsSorted = (songs) => {
+        this.songs = songs
     }
 
     // Play all songs
     playAll = () => {
-        this.props.songs !== null && this.props.playAllSongs(this.props.songs)
+        this.songs && this.props.playAllSongs(this.songs)
     }
 
     // Add option to filter songs
@@ -52,7 +58,7 @@ export default class SongsTableEnhanced extends React.Component {
         return (
             <div className={className} style={{...style, display:"flex", flexFlow:"column"}}>
                 <div style={{display:"flex", flexFlow:"row"}}>
-                    {showPlayButton && <Button onClick={this.playAll} appearance="ghost">PLAY</Button>}
+                    {showPlayButton && <Button id="playAll" onClick={this.playAll} appearance="ghost">PLAY</Button>}
                     {showSearchFilter && <SearchBar id="searchBar" size="md" onSearch={this.onFilterSongs}/> }
                     {showPlaylistDropdown && <PlaylistSelectorDropdown id="playlistSelector" onQueueSelected={this.onQueueSelected} onPlaylistSelected={this.onPlaylistSelected} onFavouritesSelected={this.onFavouritesSelected} disabled={!hasSongsSelected} />}
                 </div>
@@ -61,7 +67,7 @@ export default class SongsTableEnhanced extends React.Component {
                         <div style={{flexGrow:1}}>
                             <AutoSizer id="autosizerContainer" disableWidth>
                             {({height}) => (
-                                <SongsTable id="songsTable" songsFilter={filterValue} height={height} onSongsSelected={this.onSongsSelected} {...rest} />
+                                <SongsTable id="songsTable" songsFilter={filterValue} height={height} onSongsSelected={this.onSongsSelected} onSongsSorted={this.onSongsSorted} {...rest} />
                             )}
                             </AutoSizer>
                         </div>

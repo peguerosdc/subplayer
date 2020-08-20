@@ -93,4 +93,12 @@ describe("<MusicPlayer />", () => {
         wrapper.find("#mute").simulate("click")
         expect(wrapper.find("#mute").prop('icon').props.icon).toEqual('volume-up')
     })
+
+    it("should support shuffling", () => {
+        const toggleShuffle = jest.fn()
+        const wrapper = shallow( <MusicPlayer isShuffleOn={true} toggleShuffle={toggleShuffle} /> )
+        // Toggle shuffle
+        wrapper.find("#shuffle_button").simulate("click")
+        expect(toggleShuffle).toHaveBeenCalledTimes(1)
+    })
 })

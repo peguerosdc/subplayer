@@ -14,7 +14,8 @@ describe('music player selectors', () => {
                         name : 'name 2'
                     }
                 },
-                currentSongIndex : 1
+                currentSongIndex : 1,
+                currentSongId : '2',
             }
         }
         // Should return song '2'
@@ -32,7 +33,8 @@ describe('music player selectors', () => {
                     "2" : { id : '2' },
                     "3" : { id : '3' },
                 },
-                currentSongIndex : 1
+                currentSongIndex : 1,
+                currentSongId : '2',
             }
         }
         // Should return songs '2' (the one currently playing) and '3'

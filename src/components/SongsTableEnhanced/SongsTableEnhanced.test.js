@@ -87,4 +87,12 @@ describe("<SongsTableEnhanced />", () => {
         expect(wrapper.find("#playlistSelector").prop("disabled")).toBeTruthy()
     })
 
+    it("should play all songs when PLAY button is clicked", () => {
+        const playAllSongs = jest.fn()
+        const wrapper = shallow( <SongsTableEnhanced songs={songs} playAllSongs={playAllSongs} /> )
+        // Play all songs function should be called with the songs of the table
+        wrapper.find("#playAll").simulate("click")
+        expect(playAllSongs).toHaveBeenCalledWith(songs)
+    })
+
 })

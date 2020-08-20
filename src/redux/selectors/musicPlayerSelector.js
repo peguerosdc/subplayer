@@ -9,8 +9,8 @@ const getCurrentlyPlayingIndex = (state) => state.musicPlayer.currentSongIndex
 const getCurrentlyPlayingId = (state) => state.musicPlayer.currentSongId
 
 export const getSongCurrentlyPlayingSelector = createSelector(
-    [getQueue, getCurrentlyPlayingId, getQueueSongs],
-    (queue, currentId, songs) => songs[currentId]
+    [getCurrentlyPlayingId, getQueueSongs],
+    (currentId, songs) => songs[currentId]
 )
 
 // Only return the songs pending to be played
