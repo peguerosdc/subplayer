@@ -1,11 +1,11 @@
 import * as types from "../actions/actionTypes"
 import initialState from "./initialState"
-import {createReducer, get_normalized_songs, set_starred_song_on_state, get_shuffled_songs, get_ordered_songs} from '../../utils/redux.js'
+import {createReducer, get_normalized_songs, set_starred_song_on_state, get_shuffled_songs, get_ordered_songs, normalize_songs_processor, original_songs_processor} from '../../utils/redux.js'
 
 export default createReducer(initialState.musicPlayer, {
     [types.TOGGLE_SHUFFLE_ON]: (state, payload) => {
         // shuffle the original list of songs and keep the current song playing
-        const newList = get_shuffled_songs(state.original.map(id => state.songsById[id]), state.songsById[state.currentSongId])
+        const newList = get_shuffled_songs(state.original, state.currentSongId)
         return {
             ...state,
             currentSongIndex : 0,
@@ -15,7 +15,7 @@ export default createReducer(initialState.musicPlayer, {
     },
     [types.TOGGLE_SHUFFLE_OFF]: (state, payload) => {
         // recover the original order, but start from the song currently playing
-        const newList = get_ordered_songs(state.original.map(id => state.songsById[id]), state.songsById[state.currentSongId])
+        const newList = get_ordered_songs(state.original, state.currentSongId)
         return {
             ...state,
             currentSongIndex : 0,
@@ -75,19 +75,30 @@ export default createReducer(initialState.musicPlayer, {
     [types.PUT_SONGS_IN_QUEUE]: (state, payload) => {
         // Replace the songs in the queue with the proper setting
         let newList = []
+        let newOriginal = []
+        let newNormalized = {}
+        // create a processor to get all the newValues with one iteration
+        const processor = (current) => {
+            // Create a new dictionary with the normalized songs
+            newNormalized = normalize_songs_processor(current, newNormalized)
+            // Create a new list with the original list
+            newOriginal = original_songs_processor(current, newOriginal)
+        }
+        // get the newList in the correct order 
+        const songToPlayId = payload.songToPlay ? payload.songToPlay.id : null
         if( state.isShuffleOn ) {
-            newList = get_shuffled_songs(payload.songs, payload.songToPlay)
+            newList = get_shuffled_songs(payload.songs, songToPlayId, processor)
         }
         else {
-            newList = get_ordered_songs(payload.songs, payload.songToPlay)
+            newList = get_ordered_songs(payload.songs, songToPlayId, processor)
         }
         return {
             ...state,
             currentSongId: newList[0],
             currentSongIndex : 0,
             queue : newList,
-            original : payload.songs.map(song => song.id),
-            songsById : get_normalized_songs(payload.songs)
+            original : newOriginal,
+            songsById : newNormalized
         }
     },
     [types.CLEAR_QUEUE]: (state, payload) => initialState.musicPlayer,
