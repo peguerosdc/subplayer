@@ -4,16 +4,11 @@
 [![Build Status](https://travis-ci.com/peguerosdc/subplayer.svg?branch=master)](https://travis-ci.com/peguerosdc/subplayer)
 ![Docker Pulls](https://img.shields.io/docker/pulls/peguerosdc/subplayer)
 
-This is a frontend application designed to be a simple, functional and nice looking web player to be used with a Subsonic backend (originally developed to work with [spl0k/supysonic](https://github.com/spl0k/supysonic)).
+This is a frontend application designed to be a simple, functional and nice looking web player to be used with a Subsonic backend (tested with [spl0k/supysonic](https://github.com/spl0k/supysonic) and [deluan/navidrome](https://github.com/deluan/navidrome)).
 
-Demo: [Subplayer at Netlify](https://subplayer.netlify.app/)
+![Overview](/docs/overview.png)
 
-## Context
-
-As many existing solutions for self-streaming audio are either unmaintained, difficult to install, based on old technologies which make them look... well... old, or don't consider the power constraints a Single-Board-Computer may have, when I was building my home media server I found that I was not happy with any of them.
-
-After some research, I found Supysonic which works really well on my ARM device as it provides no fancy unnecessary features (and has a Subsonic backend which was a **must** in my requirements), but still I wanted a Spotify-like experience where I can stream and manage my media directly on any web browser.
-As Supysonic doesn't have its own UI and almost all of the existing solutions compatible with the Subsonic API ship both `backend + frontend`, I decided to create my own following a one simple mantra: *"keep it simple and make it look good".*
+Live Demo: [Subplayer at Netlify](https://subplayer.netlify.app/)
 
 ## Features
 
@@ -79,9 +74,7 @@ $ docker stop mysubplayer
 - Implement CI to push Docker image automatically when merged to `master`
 - There are some `TODO`s in the unit tests, but most features are tested.
 - `feature`: Rearrange items in queue. I tried this with the current rsuite's Table but didn't like the final implementation. I am thinking in (someday) writing a new `<SongsTable/>` from scratch to add all the features I want.
-- `feature`: Toggle "shuffle" on/off
 - `feature`: Song seeking
-- `feature`: Muting
 
 ## Contributions
 Any TODO item, any bug you find and want to fix, any architecture/performance/Docker improvements, any new feature you think would be cool to have is welcomed :) Just keep in mind that this project is meant to be a lightweight application.
