@@ -15,6 +15,10 @@ export default class SongsTableEnhanced extends React.Component {
         this.songs = props.songs
     }
 
+    componentDidUpdate(prevProps) {
+        this.songs = this.props.songs
+    }
+
     // Store new order of songs
     onSongsSorted = (songs) => {
         this.songs = songs

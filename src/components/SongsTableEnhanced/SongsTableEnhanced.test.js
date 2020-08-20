@@ -95,4 +95,13 @@ describe("<SongsTableEnhanced />", () => {
         expect(playAllSongs).toHaveBeenCalledWith(songs)
     })
 
+
+    it("should play all songs when PLAY button is clicked and songs are updated", () => {
+        const playAllSongs = jest.fn()
+        const wrapper = shallow( <SongsTableEnhanced playAllSongs={playAllSongs} /> )
+        wrapper.setProps({songs: songs})
+        // Play all songs function should be called with the songs of the table
+        wrapper.find("#playAll").simulate("click")
+        expect(playAllSongs).toHaveBeenCalledWith(songs)
+    })
 })
