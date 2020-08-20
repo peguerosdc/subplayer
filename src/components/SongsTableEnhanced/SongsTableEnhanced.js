@@ -71,7 +71,7 @@ export default class SongsTableEnhanced extends React.Component {
                             )}
                             </AutoSizer>
                         </div>
-                    ) : ( <SongsTable id="songsTable" songsFilter={filterValue} onSongsSelected={this.onSongsSelected} {...rest} /> )
+                    ) : ( <SongsTable id="songsTable" songsFilter={filterValue} onSongsSelected={this.onSongsSelected} onSongsSorted={this.onSongsSorted} {...rest} /> )
                 }
             </div>
         )
