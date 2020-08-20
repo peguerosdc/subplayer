@@ -126,13 +126,15 @@ export default class MusicPlayer extends React.Component {
     playPreviousSong = () => {
         // if the song has just started (according to a defined threshold), play
         // the previous song. If not, go back to the beginning of this song
-        const currentSeconds = this.streamer ? this.streamer.seek() : 0
-        if( currentSeconds <= 3 ) {
-            this.props.playPreviousSong && this.props.playPreviousSong()
-        }
-        else {
-            this.streamer.seek(0)
-            this.tick()
+        if( this.state.playing ) {
+            const currentSeconds = this.streamer ? this.streamer.seek() : 0
+            if( currentSeconds <= 3 ) {
+                this.props.playPreviousSong && this.props.playPreviousSong()
+            }
+            else {
+                this.streamer.seek(0)
+                this.tick()
+            }
         }
     }
 

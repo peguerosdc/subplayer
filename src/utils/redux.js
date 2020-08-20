@@ -40,7 +40,7 @@ export function set_starred_song_on_state(currentState, songskey, songId, starre
 }
 
 export function get_shuffled_songs(songs, songToPlayId, processor=null) {
-    let getCurrentId = songs[0].id ? ((current) => current.id) : ((current) => current)
+    let getCurrentId = songs[0] && songs[0].id ? ((current) => current.id) : ((current) => current)
     // build a list with the ids of the songs to play
     let newList = songs.reduce(function(accum, current) {
         // do some other processing to the songs if needed
@@ -61,7 +61,7 @@ export function get_shuffled_songs(songs, songToPlayId, processor=null) {
 export function get_ordered_songs(songs, songToPlayId, processor=null) {
     let found = false
     // check if the array is of objects or of IDs
-    let getCurrentId = songs[0].id ? ((current) => current.id) : ((current) => current)
+    let getCurrentId = songs[0] && songs[0].id ? ((current) => current.id) : ((current) => current)
     return songs.reduce(function(accum, current) {
         // do some other processing to the songs if needed
         processor && processor(current)
