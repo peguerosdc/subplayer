@@ -93,4 +93,30 @@ describe("<Album />", () => {
         expect( enzymeWrapper.find("#albumHeader").text()).toContain(album.name)
     })
 
+    it("should let me star an album", () => {
+        const {props, component} = setup()
+        const album = props.album
+        const setStar = jest.fn()
+        const wrapper = shallow( <Album album={album} starAlbums={setStar} /> )
+        // Click the star buttons for LG screen and expect it to be unstarred
+        wrapper.find("#starAlbumLG").simulate("click")
+        expect(setStar).toHaveBeenCalledWith([album], true)
+        // Click the star buttons for LG screen and expect it to be unstarred
+        wrapper.find("#starAlbumSM").simulate("click")
+        expect(setStar).toHaveBeenCalledWith([album], true)
+    })
+
+    it("should let me unstar an album", () => {
+        const {props, component} = setup()
+        const album = {...props.album, starred:true}
+        const setStar = jest.fn()
+        const wrapper = shallow( <Album album={album} starAlbums={setStar} /> )
+        // Click the star buttons for LG screen and expect it to be unstarred
+        wrapper.find("#starAlbumLG").simulate("click")
+        expect(setStar).toHaveBeenCalledWith([album], false)
+        // Click the star buttons for LG screen and expect it to be unstarred
+        wrapper.find("#starAlbumSM").simulate("click")
+        expect(setStar).toHaveBeenCalledWith([album], false)
+    })
+
 })

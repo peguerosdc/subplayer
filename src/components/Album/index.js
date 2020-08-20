@@ -1,7 +1,7 @@
 // Redux
 import { connect } from "react-redux"
 import { addSongsToPlaylist } from "../../redux/actions/playlistsActions"
-import { setStarOnSongs } from "../../redux/actions/favouritesActions"
+import { setStarOnAlbums } from "../../redux/actions/albumActions"
 import { makeGetSongsOfAlbum } from '../../redux/selectors/songSelectors'
 // UI
 import Album from './Album'
@@ -14,6 +14,6 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-const mapDispatchToProps = { addSongsToPlaylist, setStarOnSongs }
+const mapDispatchToProps = { addSongsToPlaylist, starAlbums: setStarOnAlbums }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Album)

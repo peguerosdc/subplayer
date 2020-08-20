@@ -201,6 +201,19 @@ class Subsonic {
             })
     }
 
+    starAlbums(ids) {
+        return perform_api_call( buildUrl(this.config, "star", {albumId:ids}) )
+            .then(result => {
+                return result["status"] === "ok"
+            })
+    }
+
+    unstarAlbums(ids) {
+        return perform_api_call( buildUrl(this.config, "unstar", {albumId:ids}) )
+            .then(result => {
+                return result["status"] === "ok"
+            })
+    }
 }
 
 // Export instance

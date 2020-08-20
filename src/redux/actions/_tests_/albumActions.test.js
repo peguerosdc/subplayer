@@ -54,4 +54,56 @@ describe('album actions', () => {
         })
     })
 
+    it('creates an error message when failing to star new albums', () => {
+        const albums = [ {id : "1"} ]
+        fetchMock.getOnce('*', 500)
+
+        const expectedActions = [
+            { type: types.BEGIN_ASYNC_OPERATION },
+            { type: types.END_ASYNC_OPERATION, alert : {type : alerts.ALERT_TYPE_ERROR} }
+        ]
+        
+        const store = mockStore({})
+        return store.dispatch(actions.setStarOnAlbums(albums, true)).then(() => {
+            // return of async actions
+            expect(store.getActions()).toMatchObject(expectedActions)
+        })
+    })
+
+    it('creates a STAR_ALBUM_RESULT when successfully unstarring an album', () => {
+        const albums = [ {id : "1", starred : true} ]
+        fetchMock.getOnce('*', {
+            body: {"subsonic-response": { "status" : "ok" }, "status": "ok", "version": "1.9.0"},
+            headers: { 'content-type': 'application/json' }
+        })
+
+        const expectedActions = [
+            { type: types.BEGIN_ASYNC_OPERATION },
+            { type: types.STAR_ALBUM_RESULT },
+            { type: types.END_ASYNC_OPERATION }
+        ]
+        
+        const store = mockStore({})
+        return store.dispatch(actions.setStarOnAlbums(albums, false)).then(() => {
+            // return of async actions
+            expect(store.getActions()).toMatchObject(expectedActions)
+        })
+    })
+
+    it('creates an error message when failing to unstar new albums', () => {
+        const albums = [ {id : "1", starred : true} ]
+        fetchMock.getOnce('*', 500)
+
+        const expectedActions = [
+            { type: types.BEGIN_ASYNC_OPERATION },
+            { type: types.END_ASYNC_OPERATION, alert : {type : alerts.ALERT_TYPE_ERROR} }
+        ]
+        
+        const store = mockStore({})
+        return store.dispatch(actions.setStarOnAlbums(albums, false)).then(() => {
+            // return of async actions
+            expect(store.getActions()).toMatchObject(expectedActions)
+        })
+    })
+
 })

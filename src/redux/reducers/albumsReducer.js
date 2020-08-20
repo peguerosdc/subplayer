@@ -46,5 +46,21 @@ export default createReducer(initialState.albums, {
             byId : newByIdState
         }
     },
+    [types.STAR_ALBUM_RESULT]: (state, payload) => {
+        let newAlbumsById = {}
+        payload.albumIds.forEach(albumId => {
+            newAlbumsById[albumId] = {
+                ...state.byId[albumId],
+                starred: payload.starred
+            }
+        })
+        return {
+            ...state,
+            byId: {
+                ...state.byId,
+                ...newAlbumsById,
+            }
+        }
+    },
     [types.LOGOUT_USER]: (state, payload) => initialState.albums
 })
