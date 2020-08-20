@@ -5,7 +5,7 @@ import {createReducer, get_normalized_songs, set_starred_song_on_state, get_shuf
 export default createReducer(initialState.musicPlayer, {
     [types.TOGGLE_SHUFFLE_ON]: (state, payload) => {
         // shuffle the original list of songs and keep the current song playing
-        const newList = get_shuffled_songs(state.songsById[state.currentSongId], state.original.map(id => state.songsById[id]))
+        const newList = get_shuffled_songs(state.original.map(id => state.songsById[id]), state.songsById[state.currentSongId])
         return {
             ...state,
             currentSongIndex : 0,
@@ -15,7 +15,7 @@ export default createReducer(initialState.musicPlayer, {
     },
     [types.TOGGLE_SHUFFLE_OFF]: (state, payload) => {
         // recover the original order, but start from the song currently playing
-        const newList = get_ordered_songs(state.songsById[state.currentSongId], state.original.map(id => state.songsById[id]))
+        const newList = get_ordered_songs(state.original.map(id => state.songsById[id]), state.songsById[state.currentSongId])
         return {
             ...state,
             currentSongIndex : 0,
@@ -76,10 +76,10 @@ export default createReducer(initialState.musicPlayer, {
         // Replace the songs in the queue with the proper setting
         let newList = []
         if( state.isShuffleOn ) {
-            newList = get_shuffled_songs(payload.songToPlay, payload.songs)
+            newList = get_shuffled_songs(payload.songs, payload.songToPlay)
         }
         else {
-            newList = get_ordered_songs(payload.songToPlay, payload.songs)
+            newList = get_ordered_songs(payload.songs, payload.songToPlay)
         }
         return {
             ...state,

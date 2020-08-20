@@ -5,7 +5,7 @@ export function addSongsToQueue(songs) {
     return { type: types.ADD_SONGS_TO_QUEUE, payload: {songs}, ...alerts.alertSuccessObject(`${songs.length} songs added to the queue!`) }
 }
 
-export function putSongsInQueue(songs, songToPlay) {
+export function putSongsInQueue(songs, songToPlay=null) {
     return { type: types.PUT_SONGS_IN_QUEUE, payload: {songs, songToPlay} }
 }
 

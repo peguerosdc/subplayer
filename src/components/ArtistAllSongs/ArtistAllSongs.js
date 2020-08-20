@@ -9,7 +9,7 @@ const COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.album, Son
 export default function ArtistAllSongs(props) {
     const songs = props.songs
     return (
-        <SongsTableEnhanced style={{...props.style, paddingTop: "15px"}} songs={songs} columns={COLUMNS_TO_SHOW} fixedHeightToFill={true} sortable={true} />
+        <SongsTableEnhanced style={{...props.style, padding:"0px 15px 15px"}} songs={songs} columns={COLUMNS_TO_SHOW} fixedHeightToFill={true} sortable={true} />
     )
 }
 

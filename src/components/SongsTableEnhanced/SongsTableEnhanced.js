@@ -5,12 +5,18 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import SongsTable from '../SongsTable'
 import PlaylistSelectorDropdown from '../PlaylistSelectorDropdown'
 import SearchBar from "../SearchBar/SearchBar"
+import { Button } from 'rsuite'
 
 export default class SongsTableEnhanced extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = { selectedSongs : [], filter : null }
+    }
+
+    // Play all songs
+    playAll = () => {
+        this.props.songs !== null && this.props.playAllSongs(this.props.songs)
     }
 
     // Add option to filter songs
@@ -42,9 +48,11 @@ export default class SongsTableEnhanced extends React.Component {
         const showPlaylistDropdown = rest.withPlaylistDropdown
         const showSearchFilter = rest.withSearchFilter
         const filterValue = this.state.filter
+        const showPlayButton = rest.showPlayButton
         return (
             <div className={className} style={{...style, display:"flex", flexFlow:"column"}}>
                 <div style={{display:"flex", flexFlow:"row"}}>
+                    {showPlayButton && <Button onClick={this.playAll} appearance="ghost">PLAY</Button>}
                     {showSearchFilter && <SearchBar id="searchBar" size="md" onSearch={this.onFilterSongs}/> }
                     {showPlaylistDropdown && <PlaylistSelectorDropdown id="playlistSelector" onQueueSelected={this.onQueueSelected} onPlaylistSelected={this.onPlaylistSelected} onFavouritesSelected={this.onFavouritesSelected} disabled={!hasSongsSelected} />}
                 </div>
@@ -69,16 +77,20 @@ SongsTableEnhanced.propTypes = {
     withPlaylistDropdown : PropTypes.bool,
     withSearchFilter : PropTypes.bool,
     fixedHeightToFill : PropTypes.bool,
+    showPlayButton : PropTypes.bool,
     addSongsToPlaylist : PropTypes.func,
     addSongsToQueue : PropTypes.func,
-    setStarOnSongs : PropTypes.func
+    setStarOnSongs : PropTypes.func,
+    playAllSongs : PropTypes.func,
 }
 
 SongsTableEnhanced.defaultProps = {
     withPlaylistDropdown : true,
     withSearchFilter : true,
     fixedHeightToFill : false,
+    showPlayButton : true,
     addSongsToPlaylist: () => null,
     addSongsToQueue: () => null,
     setStarOnSongs: () => null,
+    playAllSongs: () => null,
 }
