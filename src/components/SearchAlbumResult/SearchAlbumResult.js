@@ -7,7 +7,7 @@ import subsonic from "../../api/subsonicApi"
 import "./SearchAlbumResult.less"
 
 export default function SearchAlbumResult(props) {
-    const album = props.album
+    const {album, showYear} = props
     return (
         <div className="link_to_album" style={{display:"flex", flexDirection:"column", alignItems:"center", textAlign:"center"}} onClick={ (e) => {navigate("/album/"+album.id)} }>
             <div
@@ -19,14 +19,20 @@ export default function SearchAlbumResult(props) {
                 }}>
                 <img alt="" src={album.coverArt ? subsonic.getCoverArtUrl(album.coverArt) : "album_placeholder.jpg"} width="150" />
             </div>
-            <p>
+            <p data-key="description">
                 <strong>{album.name}</strong><br/>
                 {album.artist}
+                { showYear && ` (${album.year})` }
             </p>
         </div>
     )
 }
 
 SearchAlbumResult.propTypes = {
-    album : PropTypes.object.isRequired
+    album : PropTypes.object.isRequired,
+    showYear: PropTypes.bool
+}
+
+SearchAlbumResult.defaultProps = {
+    showYear: false
 }

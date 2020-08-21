@@ -70,12 +70,12 @@ export function albumListLoaded(albums) {
     return { type: types.LOAD_ALBUMS_LIST_SUCCESS, payload : { albums: albums } }
 }
 
-export function loadAlbums(filter, values) {
+export function loadAlbums(filter, values, page, pageSize=24) {
     return async (dispatch) => {
         dispatch(beginAsyncTask())
         // Search with the subsonic API for the matching albums
         try {
-            const albums = await subsonic.getAlbumList2(filter, values)
+            const albums = await subsonic.getAlbumList2(filter, values, page*pageSize, pageSize)
             dispatch(albumListLoaded(albums.reverse()))
             dispatch(asyncTaskSuccess())
         }

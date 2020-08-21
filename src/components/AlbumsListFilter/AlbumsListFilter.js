@@ -11,7 +11,6 @@ export default function AlbumsListFilter(props) {
     const [genres, setGenres] = useState([])
     const [yearFrom, setYearFrom] = useState(null)
     const [yearTo, setYearTo] = useState(null)
-    const [genre, setGenre] = useState(null)
 
     // Filters selection
     const [filter, setFilter] = useState("random")
@@ -43,6 +42,13 @@ export default function AlbumsListFilter(props) {
         }
     }
 
+    // On genre changed
+    function onGenreChanged(genre) {
+        if( genre !== null) {
+            props.onFilterChanged({ filter: filter, genre:genre })
+        }
+    }
+
     // WHen the search button is pressed
     function onSearch() {
         if( filter === "byYear") {
@@ -53,14 +59,6 @@ export default function AlbumsListFilter(props) {
                 props.onFilterChanged({ filter: filter, from: yearFrom, to: yearTo })
             }
         }
-        else if( filter === "byGenre") {
-            if( genre === null) {
-                Alert.warning("A genre must be picked")
-            }
-            else {
-                props.onFilterChanged({ filter: filter, genre:genre })
-            }
-        }
     }
 
     // render
@@ -68,7 +66,7 @@ export default function AlbumsListFilter(props) {
     const showGenres = filter === "byGenre"
     return (
         <div style={{display:"inline-flex", flexWrap:"wrap"}}>
-            <RadioGroup  defaultValue={filter} onChange={onRadioChanged} inline appearance="picker">
+            <RadioGroup id="filterSelection"  defaultValue={filter} onChange={onRadioChanged} inline appearance="picker">
                 <Radio value="random">Random</Radio>
                 <Radio value="newest">Newest</Radio>
                 <Radio value="frequent">Frequent</Radio>
@@ -79,10 +77,10 @@ export default function AlbumsListFilter(props) {
                 <Radio value="byYear">By Year</Radio>
                 <Radio value="byGenre">By Genre</Radio>
             </RadioGroup>
-            {showYears && <InputNumber onChange={val => setYearFrom(val)} placeholder="from" style={{ width: 100, marginLeft:"10px"}}/> }
-            {showYears && <InputNumber onChange={val => setYearTo(val)} placeholder="to" style={{ width: 100, marginLeft:"10px"}}/> }
-            {showGenres && <SelectPicker onChange={val => setGenre(val)} data={genres} style={{ width: 150, marginLeft:"10px"}} /> }
-            { (showYears || showGenres) && <Button style={{marginLeft:"10px"}} onClick={onSearch}>Search</Button>}
+            {showGenres && <SelectPicker id="genrePicker" onChange={onGenreChanged} data={genres} style={{ width: 150, marginLeft:"10px"}} /> }
+            {showYears && <InputNumber id="yearFrom" onChange={val => setYearFrom(val)} placeholder="from" style={{ width: 80, marginLeft:"10px"}}/> }
+            {showYears && <InputNumber id="yearTo" onChange={val => setYearTo(val)} placeholder="to" style={{ width: 80, marginLeft:"10px"}}/> }
+            {showYears && <Button id="yearSearch" style={{marginLeft:"10px"}} onClick={onSearch}>Search</Button>}
         </div>
     )
 }
@@ -95,5 +93,8 @@ AlbumsListFilter.propTypes = {
 }
 
 AlbumsListFilter.defaultProps = {
-    onFilterChanged:()=> null
+    beginAsyncTask: ()=> null,
+    asyncTaskSuccess: ()=> null,
+    asyncTaskError: ()=> null,
+    onFilterChanged: ()=> null,
 }
