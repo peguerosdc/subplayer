@@ -14,6 +14,15 @@ export default createReducer(initialState.albums, {
             }
         }
     },
+    [types.LOAD_ALBUMS_LIST_SUCCESS]: (state, payload) => {
+        const albums = payload.albums.reduce( (accum, curr) => ({
+            [curr.id] : curr, ...accum
+        }), {})
+        return {
+            ...state,
+            byId : albums
+        }
+    },
     [types.LOAD_ONE_ARTIST_SUCCESS]: (state, payload) => {
         // Normalize the albums of the artist to just contain the IDs
         const artists_albums_by_id = {}

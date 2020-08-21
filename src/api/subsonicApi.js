@@ -105,10 +105,10 @@ class Subsonic {
             })
     }
 
-    getAlbumList2(type, size=24, offset=0) {
-        return perform_api_call( buildUrl(this.config, "getAlbumList2", {type, size, offset}) )
+    getAlbumList2(type, extras, size=24, offset=0) {
+        return perform_api_call( buildUrl(this.config, "getAlbumList2", {type, size, offset, ...extras}) )
             .then(result => {
-                return result["albumList2"]["album"]
+                return result["albumList2"]["album"] || []
             })
     }
 
@@ -214,6 +214,14 @@ class Subsonic {
                 return result["status"] === "ok"
             })
     }
+
+    getGenres() {
+        return perform_api_call( buildUrl(this.config, "getGenres") )
+            .then(result => {
+                return result["genres"]["genre"]
+            }) 
+    }
+
 }
 
 // Export instance

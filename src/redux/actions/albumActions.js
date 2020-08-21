@@ -63,6 +63,25 @@ export function setStarOnAlbums(albums, setStarred) {
                 dispatch(asyncTaskError(`Could not change ${albumIds.length} albums`))
             }
         }
-        
+    }
+}
+
+export function albumListLoaded(albums) {
+    return { type: types.LOAD_ALBUMS_LIST_SUCCESS, payload : { albums: albums } }
+}
+
+export function loadAlbums(filter, values) {
+    return async (dispatch) => {
+        dispatch(beginAsyncTask())
+        // Search with the subsonic API for the matching albums
+        try {
+            const albums = await subsonic.getAlbumList2(filter, values)
+            dispatch(albumListLoaded(albums.reverse()))
+            dispatch(asyncTaskSuccess())
+        }
+        catch(error) {
+            console.error(error)
+            dispatch(asyncTaskError(`Could not load '${filter}' albums`))
+        }
     }
 }

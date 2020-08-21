@@ -10,6 +10,7 @@ import Navbar from './components/Navbar'
 import MusicPlayer from './components/MusicPlayer'
 import InfiniteLineLoader from './components/InfiniteLineLoader'
 import ArtistsList from './components/ArtistsList'
+import AlbumsList from './components/AlbumsList'
 import Artist from './components/Artist'
 import AlbumView from './components/AlbumView'
 import Playlist from './components/Playlist'
@@ -58,6 +59,7 @@ export class App extends React.Component  {
                 <RecentlyAdded path="/latest" default/>
                 <ArtistsList path="/artists"/>
                 <Artist path="/artists/:artistId"/>
+                <AlbumsList path="/album"/>
                 <AlbumView path="/album/:albumId"/>
                 <Playlist path="/playlist/:playlistId"/>
                 <SearchView path="/search"/>
