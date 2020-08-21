@@ -1,6 +1,6 @@
 # Subplayer
 
-[![codecov](https://codecov.io/gh/peguerosdc/subplayer/branch/develop/graph/badge.svg)](https://codecov.io/gh/peguerosdc/subplayer)
+[![codecov](https://codecov.io/gh/peguerosdc/subplayer/branch/master/graph/badge.svg)](https://codecov.io/gh/peguerosdc/subplayer)
 [![Build Status](https://travis-ci.com/peguerosdc/subplayer.svg?branch=master)](https://travis-ci.com/peguerosdc/subplayer)
 ![Docker Pulls](https://img.shields.io/docker/pulls/peguerosdc/subplayer)
 
