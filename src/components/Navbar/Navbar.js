@@ -24,9 +24,12 @@ export default class MyNavbar extends React.Component {
                 <Navbar.Body>
                     <Nav activeKey={currentPath} onSelect={this.onNavSelected}>
                         <Nav.Item id="search" eventKey="/search" icon={<Icon icon="search" />} />
-                        <Nav.Item id="latest" eventKey="/latest/" icon={<Icon icon="clock-o" />} />
-                        <Nav.Item id="artists" eventKey="/artists/" icon={<Icon icon="group" />} />
-                        <Nav.Item id="favourites" eventKey="/favourites/" icon={<Icon icon="star" />} />
+                        <Dropdown id="library" title="Library">
+                            <Dropdown.Item id="latest" eventKey="/latest/" icon={<Icon icon="clock-o" />} >Recently Added</Dropdown.Item>
+                            <Dropdown.Item id="artists" eventKey="/artists/" icon={<Icon icon="group" />} >Artists</Dropdown.Item>
+                            <Dropdown.Item id="album" eventKey="/album/" icon={<Icon icon="th2" />} >Albums</Dropdown.Item>
+                            <Dropdown.Item id="favourites" eventKey="/favourites/" icon={<Icon icon="star" />} >Favourites</Dropdown.Item>
+                        </Dropdown>
                         <Dropdown id="playlists" title="Playlists">
                             <Dropdown.Item id="createPlaylist" eventKey="newPlaylist" icon={<Icon icon="plus" />} >New playlist</Dropdown.Item>
                             {Object.keys(playlists).map( id =>

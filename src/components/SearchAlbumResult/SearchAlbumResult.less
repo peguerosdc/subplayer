@@ -1,9 +1,15 @@
 .link_to_album {
-    padding : 15px 20px;
+    padding : 10px 5px;
     transition: color .3s linear, background-color .3s linear;
     transition-property: color, background-color;
     transition-duration: 0.3s, 0.3s;
     transition-timing-function: linear, linear;
     transition-delay: 0s, 0s;
-    height: 170px;
+}
+
+/* Remove padding for small screens */
+@media (max-width: 767px) {
+    .link_to_album {
+        padding: 0px;
+    }
 }

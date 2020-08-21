@@ -29,37 +29,37 @@ export default class SearchView extends React.Component {
 
                 {
                     /* Artists section */
-                    artists.length > 0 ? (
-                        <>
+                    artists.length > 0 ? 
+                        <React.Fragment>
                             <h1 style={{display:"contents"}}>Artists</h1>
                             <div style={{display:"flex", flexDirection:"row", flexWrap:"wrap"}}>
                                 { artists.map( a => <ArtistElement key={a.id} artist={a}/> )}
                             </div>
-                        </>
-                    ) : null
+                        </React.Fragment>
+                     : null
                 }
                 
                 {
                     albums.length > 0 ? (
-                        <>
+                        <React.Fragment>
                             <h1 style={{display:"contents"}}>Albums</h1>
-                            <div style={{display:"flex", flexDirection:"row", flexWrap:"wrap"}}>
-                                { albums.map( a =>
-                                    <Col key={a.id} sm={6} xs={12}>
+                            <div className="result-grid-container" >
+                                { albums.map(a => 
+                                    <div key={a.id} className="result-item">
                                         <AlbumResult album={a} />
-                                    </Col>
+                                    </div>
                                 )}
                             </div>
-                        </>
+                        </React.Fragment>
                     ) : null
                 }
 
                 {
                     songs.length > 0 ? (
-                        <>
+                        <React.Fragment>
                             <h1 style={{display:"contents"}}>Songs</h1>
                             <SongsResult songs={songs} />
-                        </>
+                        </React.Fragment>
                     ) : null
                 }
 

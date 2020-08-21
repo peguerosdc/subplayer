@@ -94,4 +94,38 @@ describe('albums reducer', () => {
         expect( newState.byId['2'] ).toEqual( initialState.byId['2'] )
     })
 
+    it("should star albums", () => {
+        // Define initial state
+        const initialState = {
+            byId : {
+                '1' : { id : '1', song : [] },
+                '2' : { id : '2', song : [] }
+            }
+        }
+        // Trigger the action on the reducer
+        const newState = albumsReducer(
+            initialState,
+            actions.starredAlbumModified(['1'], true)
+        )
+        // We expect to have album 1 starred
+        expect( newState.byId['1'].starred ).toBeTruthy()
+    })
+
+        it("should unstar albums", () => {
+        // Define initial state
+        const initialState = {
+            byId : {
+                '1' : { id : '1', starred:true, song : [] },
+                '2' : { id : '2', song : [] }
+            }
+        }
+        // Trigger the action on the reducer
+        const newState = albumsReducer(
+            initialState,
+            actions.starredAlbumModified(['1'], false)
+        )
+        // We expect to have album 1 starred
+        expect( newState.byId['1'].starred ).toBeFalsy()
+    })
+
 })

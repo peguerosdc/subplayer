@@ -105,10 +105,10 @@ class Subsonic {
             })
     }
 
-    getAlbumList2(type, size=20, offset=0) {
-        return perform_api_call( buildUrl(this.config, "getAlbumList2", {type, size, offset}) )
+    getAlbumList2(type, extras, offset=0, size=24) {
+        return perform_api_call( buildUrl(this.config, "getAlbumList2", {type, size, offset, ...extras}) )
             .then(result => {
-                return result["albumList2"]["album"]
+                return result["albumList2"]["album"] || []
             })
     }
 
@@ -174,7 +174,7 @@ class Subsonic {
     }
 
     search(query) {
-        return perform_api_call( buildUrl(this.config, "search3", {query:query }) )
+        return perform_api_call( buildUrl(this.config, "search3", {query:query, albumCount:24 }) )
             .then(result => {
                 return result["searchResult3"]
             })
@@ -199,6 +199,27 @@ class Subsonic {
             .then(result => {
                 return result["status"] === "ok"
             })
+    }
+
+    starAlbums(ids) {
+        return perform_api_call( buildUrl(this.config, "star", {albumId:ids}) )
+            .then(result => {
+                return result["status"] === "ok"
+            })
+    }
+
+    unstarAlbums(ids) {
+        return perform_api_call( buildUrl(this.config, "unstar", {albumId:ids}) )
+            .then(result => {
+                return result["status"] === "ok"
+            })
+    }
+
+    getGenres() {
+        return perform_api_call( buildUrl(this.config, "getGenres") )
+            .then(result => {
+                return result["genres"]["genre"]
+            }) 
     }
 
 }

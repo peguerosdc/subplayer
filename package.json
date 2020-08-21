@@ -61,5 +61,7 @@
       "!src/serviceWorker.js"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "jest-react-hooks-shallow": "^1.4.1"
+  }
 }
