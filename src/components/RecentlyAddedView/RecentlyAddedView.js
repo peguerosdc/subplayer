@@ -5,6 +5,7 @@ import subsonic from "../../api/subsonicApi"
 // UI
 import { Grid, Row, Col } from 'rsuite'
 import AlbumResult from "../SearchAlbumResult"
+import "./RecentlyAddedView.less"
 
 export default class RecentlyAddedView extends React.Component {
 
@@ -35,11 +36,13 @@ export default class RecentlyAddedView extends React.Component {
                     <Col md={24} lg={24}>
                         <h1 style={{fontWeight:"bold", display: "inline-block"}}>Recently Added</h1>
                     </Col>
-                    { albums.map( a =>
-                        <Col key={a.id} sm={6} xs={12} >
-                            <AlbumResult album={a} />
-                        </Col>
-                    )}
+                    <Col md={24} className="result-grid-container" >
+                        { albums.map(a => 
+                            <div key={a.id} className="result-item">
+                                <AlbumResult album={a} />
+                            </div>
+                        )}
+                    </Col>
                 </Row>
             </Grid>
         )

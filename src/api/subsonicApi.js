@@ -105,7 +105,7 @@ class Subsonic {
             })
     }
 
-    getAlbumList2(type, size=20, offset=0) {
+    getAlbumList2(type, size=24, offset=0) {
         return perform_api_call( buildUrl(this.config, "getAlbumList2", {type, size, offset}) )
             .then(result => {
                 return result["albumList2"]["album"]
@@ -174,7 +174,7 @@ class Subsonic {
     }
 
     search(query) {
-        return perform_api_call( buildUrl(this.config, "search3", {query:query }) )
+        return perform_api_call( buildUrl(this.config, "search3", {query:query, albumCount:24 }) )
             .then(result => {
                 return result["searchResult3"]
             })
