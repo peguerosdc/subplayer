@@ -197,7 +197,7 @@ export default class SongsTable extends React.Component {
                     <Column flexGrow={4} sortable={sortable}>
                         <HeaderCell> Title </HeaderCell>
                         <Cell dataKey="title">
-                            { rowData => <p>{rowData.title} <Icon icon='volume-up' className="icon-when-playing" /></p> }
+                            { rowData => <p>{rowData.title} {rowData.starred && <Icon icon='star' />} <Icon icon='volume-up' className="icon-when-playing" /></p> }
                         </Cell>
                     </Column> : null
                 }
