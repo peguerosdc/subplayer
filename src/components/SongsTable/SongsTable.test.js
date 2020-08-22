@@ -7,7 +7,8 @@ describe("<SongsTable />", () => {
         id : i.toString(),
         title: `song ${i}`,
         artist : `artist ${Math.random().toString(36).substring(7)}`,
-        album : `album ${i}`
+        album : `album ${i}`,
+        starred: i%2 == 0
     }})
 
     it("renders without crashing", () => {

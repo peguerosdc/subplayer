@@ -80,7 +80,7 @@ $ docker stop mysubplayer
 - `feature`: Song seeking
 
 ## Contributions
-Any TODO item, any bug you find and want to fix, any architecture/performance/Docker improvements, any new feature you think would be cool to have is welcomed :) Just keep in mind that this project is meant to be a lightweight application.
+Any TODO item, any bug you find and want to fix, any architecture/performance/Docker improvements, any new feature you think would be cool to have is welcome :) Just keep in mind that this project is meant to be a lightweight application.
 
 **NOTE**: if you want to add new features, please implement at least the basic unit tests you can think of. Pull-requests will not be merged without testing.
 
