@@ -33,7 +33,7 @@ export default class MusicPlayer extends React.Component {
                     pool: 2,
                     autoplay: true,
                     html5: true,
-                    volume: this.volume,
+                    volume: this.state.volume,
                     // Play next song
                     onend: function() {
                         playNextSong()
