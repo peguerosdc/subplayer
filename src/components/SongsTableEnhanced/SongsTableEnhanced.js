@@ -61,9 +61,9 @@ export default class SongsTableEnhanced extends React.Component {
         const showPlayButton = rest.showPlayButton
         return (
             <div className={className} style={{...style, display:"flex", flexFlow:"column"}}>
-                <div style={{display:"flex", flexFlow:"row"}}>
+                <div style={{display:"flex", flexFlow:"row", width:"100%"}}>
                     {showPlayButton && <Button id="playAll" onClick={this.playAll} appearance="ghost">PLAY</Button>}
-                    {showSearchFilter && <SearchBar id="searchBar" size="md" onSearch={this.onFilterSongs}/> }
+                    {showSearchFilter && <SearchBar style={{display:'flex', flex:1}} id="searchBar" size="md" onSearch={this.onFilterSongs}/> }
                     {showPlaylistDropdown && <PlaylistSelectorDropdown id="playlistSelector" onQueueSelected={this.onQueueSelected} onPlaylistSelected={this.onPlaylistSelected} onFavouritesSelected={this.onFavouritesSelected} disabled={!hasSongsSelected} />}
                 </div>
                 {
