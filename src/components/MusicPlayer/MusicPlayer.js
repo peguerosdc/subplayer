@@ -15,6 +15,9 @@ export default class MusicPlayer extends React.Component {
         super(props)
         this.state = { playing:false, tick: 0, isMuted: false, volume: 1.0 }
         this.volumeBeforeMutting = 1.0
+        this.isSeeking = false
+        this.seekValue = 0.0
+        document.addEventListener('mouseup', this.onMouseUp);
     }
 
     componentDidUpdate(prevProps) {
@@ -64,15 +67,35 @@ export default class MusicPlayer extends React.Component {
     }
 
     tick() {
-        this.setState({
-            tick: Math.ceil(this.streamer.seek())
-        })
+        if( !this.isSeeking ) {
+            this.setState({
+                tick: Math.ceil(this.streamer.seek())
+            })
+        }
+    }
+
+    onSeeking = (value) => {
+        this.isSeeking = true
+        this.seekValue = value
+        this.setState({tick: value})
+        console.log("on seek")
+    }
+
+    onMouseUp = (event) => {
+        console.log("mouse up")
+        if( this.isSeeking ) {
+            this.isSeeking = false
+            this.streamer.seek(this.seekValue)
+            this.setState({tick: this.seekValue})
+        }
     }
 
     componentWillUnmount() {
         clearInterval(this.timerID)
         // Stop the current song if playing
         this.clearMusicPlayer()
+        // Remove listener from the document
+        document.removeEventListener('mouseup', this.onMouseUp)
     }
 
     changeVolume = (newVolume) => {
@@ -176,7 +199,7 @@ export default class MusicPlayer extends React.Component {
                 <div style={{flexGrow:1}} className="rs-hidden-xs">
                     <div className="song_progress_bar_container">
                         <span>{seconds_to_mss(seek)}</span>
-                        <Slider tooltip={false} className="song_progress_bar" progress value={seek} max={song.duration || 0} />
+                        <Slider tooltip={false} className="song_progress_bar" progress value={seek} onChange={this.onSeeking} max={song.duration || 0} />
                         <span>{seconds_to_mss(song.duration || 0)}</span>
                     </div>
                 </div>
