@@ -6,7 +6,9 @@ import { Howl } from 'howler'
 import subsonic from "../../api/subsonicApi"
 import { seconds_to_mss } from "../../utils/formatting.js"
 // UI
-import { IconButton, Icon, Slider } from 'rsuite'
+import { IconButton, Icon } from 'rsuite'
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 import "./MusicPlayer.less"
 
 export default class MusicPlayer extends React.Component {
@@ -15,6 +17,7 @@ export default class MusicPlayer extends React.Component {
         super(props)
         this.state = { playing:false, tick: 0, isMuted: false, volume: 1.0 }
         this.volumeBeforeMutting = 1.0
+        this.isSeeking = false
     }
 
     componentDidUpdate(prevProps) {
@@ -41,6 +44,7 @@ export default class MusicPlayer extends React.Component {
                 })
                 this.streamer.play()
                 this.startSongTicker()
+                this.isSeeking = false
                 this.setState({playing : true, tick: 0})
                 // Update title
                 document.title = `${this.props.song.title} - ${this.props.song.artist}`
@@ -64,9 +68,22 @@ export default class MusicPlayer extends React.Component {
     }
 
     tick() {
-        this.setState({
-            tick: Math.ceil(this.streamer.seek())
-        })
+        if( !this.isSeeking ) {
+            this.setState({
+                tick: Math.ceil(this.streamer.seek())
+            })
+        }
+    }
+
+    onSeeking = (value) => {
+        this.isSeeking = true
+        this.setState({tick: value})
+    }
+
+    onSeekingStopped = (value) => {
+        this.isSeeking = false
+        this.streamer.seek(value)
+        this.setState({tick: value})
     }
 
     componentWillUnmount() {
@@ -176,7 +193,7 @@ export default class MusicPlayer extends React.Component {
                 <div style={{flexGrow:1}} className="rs-hidden-xs">
                     <div className="song_progress_bar_container">
                         <span>{seconds_to_mss(seek)}</span>
-                        <Slider tooltip={false} className="song_progress_bar" progress value={seek} max={song.duration || 0} />
+                        <Slider className="rs-slider song_progress_bar" value={seek} onChange={this.onSeeking} onAfterChange={this.onSeekingStopped} max={song.duration || 0} />
                         <span>{seconds_to_mss(song.duration || 0)}</span>
                     </div>
                 </div>
@@ -192,7 +209,7 @@ export default class MusicPlayer extends React.Component {
                 <div className="rs-hidden-xs">
                     <div className="volume_controls_container">
                         <IconButton id="mute" onClick={this.toggleMute} icon={<Icon className="volume_control_mute" icon={volume === 0 ? 'volume-off' : 'volume-up'} />} appearance="link" />
-                        <Slider tooltip={false} progress className="volume_control_bar" value={volume} onChange={this.changeVolume} defaultValue={1} max={1} step={0.05} />
+                        <Slider className="volume_control_bar" value={volume} onChange={this.changeVolume} defaultValue={1} max={1} step={0.05} />
                     </div>
                 </div>
             </div>

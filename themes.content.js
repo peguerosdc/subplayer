@@ -4,6 +4,41 @@ module.exports = (themeName) => {
         `
         @import '~rsuite/lib/styles/themes/${isDark ? "dark" : "default"}/index.less';
 
+        .rc-slider-rail {
+            .rs-slider-bar
+        }
+
+        .rc-slider-track {
+            .rs-slider-progress-bar
+        }
+
+        .rc-slider-handle {
+            width: @slider-handle-diameter;
+            height: @slider-handle-diameter;
+            border: @slider-handle-border-width solid @slider-handle-default-border-color;
+            background-color: @slider-handle-default-bg;
+            top: 50%;
+
+            &:hover {
+                box-shadow: @slider-handle-hover-box-shadow;
+                transition: box-shadow @slider-handle-transition, background-color @slider-handle-transition,
+                transform @slider-handle-transition;
+                border: @slider-handle-border-width solid @slider-handle-default-border-color;
+                cursor: pointer;
+            }
+
+            &:active {
+                box-shadow: none;
+                transform: scale(1.2);
+                border: @slider-handle-border-width solid @slider-handle-default-border-color;
+                cursor: pointer;
+            }
+
+            &-click-focused:focus {
+                border: @slider-handle-border-width solid @slider-handle-default-border-color;
+            }
+        }
+
         .loader:before {
         	background-color: @base-color;
         }
