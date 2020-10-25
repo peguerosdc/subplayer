@@ -18,8 +18,6 @@ export default class MusicPlayer extends React.Component {
         this.state = { playing:false, tick: 0, isMuted: false, volume: 1.0 }
         this.volumeBeforeMutting = 1.0
         this.isSeeking = false
-        this.seekValue = 0.0
-        document.addEventListener('mouseup', this.onMouseUp);
     }
 
     componentDidUpdate(prevProps) {
@@ -46,6 +44,7 @@ export default class MusicPlayer extends React.Component {
                 })
                 this.streamer.play()
                 this.startSongTicker()
+                this.isSeeking = false
                 this.setState({playing : true, tick: 0})
                 // Update title
                 document.title = `${this.props.song.title} - ${this.props.song.artist}`
@@ -78,26 +77,19 @@ export default class MusicPlayer extends React.Component {
 
     onSeeking = (value) => {
         this.isSeeking = true
-        this.seekValue = value
         this.setState({tick: value})
-        console.log("on seek")
     }
 
-    onMouseUp = (event) => {
-        console.log("mouse up")
-        if( this.isSeeking ) {
-            this.isSeeking = false
-            this.streamer.seek(this.seekValue)
-            this.setState({tick: this.seekValue})
-        }
+    onSeekingStopped = (value) => {
+        this.isSeeking = false
+        this.streamer.seek(value)
+        this.setState({tick: value})
     }
 
     componentWillUnmount() {
         clearInterval(this.timerID)
         // Stop the current song if playing
         this.clearMusicPlayer()
-        // Remove listener from the document
-        document.removeEventListener('mouseup', this.onMouseUp)
     }
 
     changeVolume = (newVolume) => {
@@ -201,7 +193,7 @@ export default class MusicPlayer extends React.Component {
                 <div style={{flexGrow:1}} className="rs-hidden-xs">
                     <div className="song_progress_bar_container">
                         <span>{seconds_to_mss(seek)}</span>
-                        <Slider className="rs-slider song_progress_bar" value={seek} onChange={this.onSeeking} max={song.duration || 0} />
+                        <Slider className="rs-slider song_progress_bar" value={seek} onChange={this.onSeeking} onAfterChange={this.onSeekingStopped} max={song.duration || 0} />
                         <span>{seconds_to_mss(song.duration || 0)}</span>
                     </div>
                 </div>

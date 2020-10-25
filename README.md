@@ -14,10 +14,10 @@ Live Demo: [Subplayer at Netlify](https://subplayer.netlify.app/)
 
 - Play audio
 - View/create/edit playlists
-- Add/remove from Favourites
+- Add/remove songs from Starred
 - Search artists/albums/songs
 - Browse your music by Artist, Albums
-- Star complete albums
+- Star/unstar albums
 - Muting
 - Add/Remove from queue
 - Theming
@@ -74,10 +74,8 @@ $ docker stop mysubplayer
 
 ## TODO
 - Implement CI to push Docker image automatically when merged to `master`
-- Improve performance when shuffling/unshuffling songs (workers?)
 - There are some `TODO`s in the unit tests, but most features are tested.
 - `feature`: Rearrange items in queue. I tried this with the current rsuite's Table but didn't like the final implementation. I am thinking in (someday) writing a new `<SongsTable/>` from scratch to add all the features I want.
-- `feature`: Song seeking
 
 ## Contributions
 Any TODO item, any bug you find and want to fix, any architecture/performance/Docker improvements, any new feature you think would be cool to have is welcome :) Just keep in mind that this project is meant to be a lightweight application.
