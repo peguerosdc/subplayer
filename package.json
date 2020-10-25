@@ -13,6 +13,7 @@
     "howler": "^2.1.2",
     "less": "^3.9.0",
     "less-loader": "6.1.2",
+    "rc-slider": "^9.5.4",
     "react": "^16.8.6",
     "react-app-rewire-multiple-entry": "^2.2.0",
     "react-app-rewired": "^2.1.3",
