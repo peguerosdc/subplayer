@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 // Utils
 import { seconds_to_mss, display_starred } from "../../utils/formatting.js"
 import { sortSongsByKey, filterSongsByValue } from "../../utils/utils.js"
@@ -25,26 +25,43 @@ function SongItem(props) {
 
 export default function SongsList(props) {
     const {songs, style, ...rest} = props
-    // Songs in view
-    const [songsDisplayed, setSongsDisplayed] = useState([])
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState({page:0, songsDisplayed:[]})
+
+    // Function to call when a new page is asked to be rendered
+    function updatePage() {
+        // update the page
+        const newPage = currentPage.page + 1
+        // get the songs that will go in this new page
+        const newSongs = getSongsOfPage(newPage)
+        // update the state appending the new songs
+        const songsInPage = [...currentPage.songsDisplayed, ...newSongs]
+        setCurrentPage({page:newPage, songsDisplayed: songsInPage})
+    }
 
     // Function to call when more songs are asked
-    function displayMoreSongs(page, pageSize=20) {
-        console.log("loading")
-        // Get next songs
-        const newSongs = songs.slice(page*pageSize, (page+1)*pageSize)
-        setSongsDisplayed([...songsDisplayed, ...newSongs.map(s => <SongItem key={s.id} song={s}/>)])
+    function getSongsOfPage(page, pageSize=20) {
+        console.log("getting songs of page "+page)
+        // Get next songs. Page is 1-based. If zero based, do page+1
+        const newSongs = songs.slice((page-1)*pageSize, (page)*pageSize)
+        return newSongs.map(s => <SongItem key={s.id} song={s}/>)
     }
+
+    useEffect(() => {
+        //reset the page and the songs to display
+        setCurrentPage({page:1, songsDisplayed: getSongsOfPage(1)})
+    }, [songs])
 
     return (
         <div style={{...style, display:"flex", flexFlow:"column", overflow:"auto"}}>
             <InfiniteScroll
                 pageStart={-1}
-                loadMore={displayMoreSongs}
-                hasMore={songsDisplayed.length < songs.length}
+                initialLoad={false}
+                loadMore={updatePage}
+                hasMore={currentPage.songsDisplayed.length < songs.length}
                 loader={<div key="loading">Loading...</div>}
                 useWindow={false}>
-                {songsDisplayed}
+                {currentPage.songsDisplayed}
             </InfiniteScroll>
         </div>
     )

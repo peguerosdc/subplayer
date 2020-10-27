@@ -8,6 +8,7 @@ import SongsTable from '../SongsTable/SongsTable'
 import SongsList from '../SongsList'
 import { Button, IconButton, Icon } from 'rsuite'
 import ResponsiveTitle from '../ResponsiveTitle' 
+import { Divider } from 'rsuite';
 
 const COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.artist, SongsTable.columns.album, SongsTable.columns.duration, SongsTable.columns.selectable, SongsTable.columns.download]
 
@@ -50,6 +51,7 @@ export default class QueueView extends React.Component {
                         <Button id="remove_button" onClick={this.removeSongsFromQueue} disabled={disableButton}>Remove</Button>
                     </div>
                 </div>
+                <Divider style={{margin:"10px 0"}} />
                 <SongsList
                     id="songs_table"
                     className="queue-songs-container"
