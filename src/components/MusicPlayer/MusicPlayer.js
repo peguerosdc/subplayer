@@ -76,14 +76,18 @@ export default class MusicPlayer extends React.Component {
     }
 
     onSeeking = (value) => {
-        this.isSeeking = true
-        this.setState({tick: value})
+        if( this.streamer ) {
+            this.isSeeking = true
+            this.setState({tick: value})
+        }
     }
 
     onSeekingStopped = (value) => {
-        this.isSeeking = false
-        this.streamer.seek(value)
-        this.setState({tick: value})
+        if( this.isSeeking ) {
+            this.isSeeking = false
+            this.streamer.seek(value)
+            this.setState({tick: value})
+        }
     }
 
     componentWillUnmount() {
