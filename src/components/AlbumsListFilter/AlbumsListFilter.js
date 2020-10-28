@@ -13,7 +13,7 @@ export default function AlbumsListFilter(props) {
     const [yearTo, setYearTo] = useState(null)
 
     // Filters selection
-    const [filter, setFilter] = useState("random")
+    const [filter, setFilter] = useState("newest")
 
     // Get the available genres
     useEffect(() => {
