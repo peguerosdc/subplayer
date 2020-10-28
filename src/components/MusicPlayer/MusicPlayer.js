@@ -5,6 +5,7 @@ import { navigate } from "@reach/router"
 import { Howl } from 'howler'
 import subsonic from "../../api/subsonicApi"
 import { seconds_to_mss } from "../../utils/formatting.js"
+import * as settings from "../../utils/settings.js"
 // UI
 import { IconButton, Icon } from 'rsuite'
 import Slider from 'rc-slider';
@@ -15,7 +16,7 @@ export default class MusicPlayer extends React.Component {
     
     constructor(props) {
         super(props)
-        this.state = { playing:false, tick: 0, isMuted: false, volume: 1.0 }
+        this.state = { playing:false, tick: 0, isMuted: false, volume: settings.getVolume() }
         this.volumeBeforeMutting = 1.0
         this.isSeeking = false
     }
@@ -29,8 +30,9 @@ export default class MusicPlayer extends React.Component {
                 // Stop the current song if playing
                 this.clearMusicPlayer()
                 // Stop the previous song to prevent both songs to play at the same time
+                const newSong = this.props.song
                 this.streamer = new Howl({
-                    src: [subsonic.getStreamUrl(this.props.song.id)],
+                    src: [subsonic.getStreamUrl(newSong.id)],
                     ext: ['mp3'],
                     preload: false,
                     pool: 2,
@@ -47,7 +49,9 @@ export default class MusicPlayer extends React.Component {
                 this.isSeeking = false
                 this.setState({playing : true, tick: 0})
                 // Update title
-                document.title = `${this.props.song.title} - ${this.props.song.artist}`
+                document.title = `${newSong.title} - ${newSong.artist}`
+                // Scrobble
+                settings.getIsScrobbling() && subsonic.scrobble(newSong.id, Date.now())
             }
         }
         // If there is no song to play, stop whatever was playing
@@ -100,6 +104,8 @@ export default class MusicPlayer extends React.Component {
         this.streamer && this.streamer.volume(newVolume)
         this.setState({volume: newVolume})
         this.volumeBeforeMutting = newVolume
+        // update settings
+        settings.setVolume(newVolume)
     }
 
     toggleMute = () => {

@@ -66,5 +66,8 @@ export function logout() {
     localStorage.removeItem('host')
     localStorage.removeItem('username')
     localStorage.removeItem('enc')
+    localStorage.removeItem('is_scrobbling')
+    localStorage.removeItem('volume')
+    localStorage.removeItem('is_shuffling')
     return { type: types.LOGOUT_USER }
 }

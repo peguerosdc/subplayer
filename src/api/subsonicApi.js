@@ -222,6 +222,13 @@ class Subsonic {
             }) 
     }
 
+    scrobble(id, time, submission=false) {
+        return perform_api_call( buildUrl(this.config, "scrobble", {id, time, submission}) )
+            .then(result => {
+                return result["status"] === "ok"
+            }) 
+    }
+
 }
 
 // Export instance
