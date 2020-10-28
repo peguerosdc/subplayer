@@ -1,5 +1,6 @@
 import * as types from "./actionTypes"
 import * as alerts from "./alertsActions"
+import * as settings from "../../utils/settings"
 
 export function addSongsToQueue(songs) {
     return { type: types.ADD_SONGS_TO_QUEUE, payload: {songs}, ...alerts.alertSuccessObject(`${songs.length} songs added to the queue!`) }
@@ -30,5 +31,6 @@ export function removeSongsFromQueue(songs) {
 }
 
 export function toggleShuffle(turnOn) {
+	settings.setShuffle(turnOn)
     return { type: turnOn ? types.TOGGLE_SHUFFLE_ON : types.TOGGLE_SHUFFLE_OFF  }
 }

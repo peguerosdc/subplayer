@@ -1,3 +1,5 @@
+import * as settings from "../../utils/settings"
+
 export default {
     asyncTasksInProgress: 0,
     alert : {},
@@ -21,7 +23,7 @@ export default {
         songsById : {},
         currentSongIndex : null,
         currentSongId : null,
-        isShuffleOn: true,
+        isShuffleOn: settings.getIsShuffleOn(),
     },
     auth : {
         isAuthenticated: false,

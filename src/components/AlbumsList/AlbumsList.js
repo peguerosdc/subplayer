@@ -22,7 +22,7 @@ export const NavigationButtons = (props) => {
 export function AlbumsList(props) {
     const {albums, loadAlbums} = props
     // filters
-    const [filtering, setFiltering] = useState({filter:"random", page:0})
+    const [filtering, setFiltering] = useState({filter:"newest", page:0})
     const [loading, setLoading] = useState(true)
     // next button control
     const [disableNext, setNextDisabled] = useState(false)

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 // UI
 import ThemePicker from '../ThemePicker'
+import ScrobbleSetting from '../ScrobbleSetting'
 import { Button, Row, Col, Divider } from 'rsuite'
 // Utils
 import * as utils from "../../utils/theming"
@@ -22,6 +23,8 @@ export default class SettingsView extends React.Component {
         return (
             <div style={{display:"flex", flexDirection:"column", padding:"20px", height:"100%", overflow:"auto"}}>
                 <Row><h1>Settings</h1></Row>
+                {/*Scrobble*/}
+                <ScrobbleSetting />
                 {/* Theme picker */}
                 <h4 style={{marginTop:"15px"}}>Theme Picker</h4>
                 <Row>
