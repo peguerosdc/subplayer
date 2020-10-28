@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme'
-import {ScrobbleSetting} from "./ScrobbleSetting"
+import ScrobbleSetting from "./ScrobbleSetting"
 
 describe("<ScrobbleSetting />", () => {
 
