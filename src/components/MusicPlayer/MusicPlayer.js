@@ -27,8 +27,13 @@ export default class MusicPlayer extends React.Component {
             var playNextSong = this.props.playNextSong
             var previousSong = prevProps.song ? prevProps.song : {}
             if( this.props.song.id !== previousSong.id) {
+                const shouldScrobble = settings.getIsScrobbling()
                 // Stop the current song if playing
                 this.clearMusicPlayer()
+                // Scrobble the previous song if at least 10% of the song was listened
+                if( shouldScrobble && previousSong.id && this.state.tick >= .1*previousSong.duration) {
+                    subsonic.scrobble(previousSong.id, Date.now(), true)
+                }
                 // Stop the previous song to prevent both songs to play at the same time
                 const newSong = this.props.song
                 this.streamer = new Howl({
@@ -51,7 +56,7 @@ export default class MusicPlayer extends React.Component {
                 // Update title
                 document.title = `${newSong.title} - ${newSong.artist}`
                 // Scrobble
-                settings.getIsScrobbling() && subsonic.scrobble(newSong.id, Date.now())
+                shouldScrobble && subsonic.scrobble(newSong.id, Date.now(), false)
             }
         }
         // If there is no song to play, stop whatever was playing
