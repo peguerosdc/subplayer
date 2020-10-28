@@ -30,8 +30,8 @@ export default class MusicPlayer extends React.Component {
                 const shouldScrobble = settings.getIsScrobbling()
                 // Stop the current song if playing
                 this.clearMusicPlayer()
-                // Scrobble the previous song if at least 10% of the song was listened
-                if( shouldScrobble && previousSong.id && this.state.tick >= .1*previousSong.duration) {
+                // Mark the previous song as submitted if it was played enough to scrobble
+                if( shouldScrobble && this.isTickingEnoughToScrobble(previousSong, this.state.tick) ) {
                     subsonic.scrobble(previousSong.id, Date.now(), true)
                 }
                 // Stop the previous song to prevent both songs to play at the same time
@@ -82,6 +82,17 @@ export default class MusicPlayer extends React.Component {
                 tick: Math.ceil(this.streamer.seek())
             })
         }
+    }
+
+    isTickingEnoughToScrobble(song, tick) {
+        /* https://www.last.fm/api/scrobbling#when-is-a-scrobble-a-scrobble
+         * Send scrobble if:
+         * 1. if the song is longer than 30 seconds AND
+         * 2. the song was played for at least 50% of its length OR
+         * 3. the song was played for at least 4 minutes
+         */
+        const duration = song.duration
+        return duration > 30 && (tick >= .5*duration || tick >= 4*60 )
     }
 
     onSeeking = (value) => {
