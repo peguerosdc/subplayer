@@ -4,68 +4,100 @@ import { seconds_to_mss, display_starred } from "../../utils/formatting.js"
 import { sortSongsByKey, filterSongsByValue } from "../../utils/utils.js"
 import PropTypes from 'prop-types'
 // UI
+import "./SongsList.css"
+// Infinite draggable list
 import AutoSizer from 'react-virtualized-auto-sizer'
-import InfiniteScroll from 'react-infinite-scroller'
-// import "./SongsList.less"
-// Table components
+import {Droppable, Draggable, DragDropContext} from 'react-beautiful-dnd'
+import { FixedSizeList as List, areEqual } from 'react-window'
 
-function getElementOfSong(song) {
-    return <div key={song.id}>{song.title}</div>
+
+function reorder(list, startIndex, endIndex) {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
 }
 
-function SongItem(props) {
-    const {song, ...rest} = props
+function getStyle({ provided, style, isDragging }) {
+    // If you don't want any spacing between your items
+    // then you could just return this.
+    const combined = {...style, ...provided.draggableProps.style}
+    return combined
+}
+
+const Row = React.memo(function Row(props) {
+    const { data: items, index, style } = props;
+    const item = items[index];
     return (
-        <div {...rest} style={{padding:"10px 10px 10px 10px"}}>
+        <Draggable draggableId={item.id} index={index} key={item.id}>
+            {provided => <SongItem provided={provided} song={item} style={style} />}
+        </Draggable>
+    )
+}, areEqual)
+
+function SongItem({ provided, song, style, isDragging }) {
+    return (
+        <div
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+            style={getStyle({ provided, style, isDragging })}
+            className={`item ${isDragging ? "is-dragging" : ""}`}>
             <p><b>{song.title}</b></p>
             <p>{song.artist} in "{song.album}"</p>
         </div>
-    )
+    );
 }
 
 export default function SongsList(props) {
-    const {songs, style, ...rest} = props
+    const {style} = props
     // Pagination state
-    const [currentPage, setCurrentPage] = useState({page:0, songsDisplayed:[]})
+    const [items, setSongs] = useState(() => props.songs)
 
-    // Function to call when a new page is asked to be rendered
-    function updatePage() {
-        // update the page
-        const newPage = currentPage.page + 1
-        // get the songs that will go in this new page
-        const newSongs = getSongsOfPage(newPage)
-        // update the state appending the new songs
-        const songsInPage = [...currentPage.songsDisplayed, ...newSongs]
-        setCurrentPage({page:newPage, songsDisplayed: songsInPage})
+    function onDragEnd(result: DropResult) {
+        if (!result.destination) {
+            return;
+        }
+        if (result.source.index === result.destination.index) {
+            return;
+        }
+        // reorder
+        setSongs(reorder(items, result.source.index, result.destination.index))
     }
 
-    // Function to call when more songs are asked
-    function getSongsOfPage(page, pageSize=20) {
-        console.log("getting songs of page "+page)
-        // Get next songs. Page is 1-based. If zero based, do page+1
-        const newSongs = songs.slice((page-1)*pageSize, (page)*pageSize)
-        return newSongs.map(s => <SongItem key={s.id} song={s}/>)
-    }
-
-    useEffect(() => {
-        //reset the page and the songs to display
-        setCurrentPage({page:1, songsDisplayed: getSongsOfPage(1)})
-    }, [songs])
-
+    // https://github.com/atlassian/react-beautiful-dnd/blob/master/stories/src/virtual/react-window/list.jsx
+    // usar/instalar react-window
     return (
-        <div style={{...style, display:"flex", flexFlow:"column", overflow:"auto"}}>
-            <InfiniteScroll
-                pageStart={-1}
-                initialLoad={false}
-                loadMore={updatePage}
-                hasMore={currentPage.songsDisplayed.length < songs.length}
-                loader={<div key="loading">Loading...</div>}
-                useWindow={false}>
-                {currentPage.songsDisplayed}
-            </InfiniteScroll>
-        </div>
-    )
-
+        <DragDropContext onDragEnd={onDragEnd}>
+            <div className="list-app" style={{...style, display:"flex", flexFlow:"column", overflow:"auto"}}>
+                <AutoSizer disableWidth>
+                    {({height}) => (
+                        <Droppable
+                            droppableId="droppable"
+                            mode="virtual"
+                            renderClone={(provided, snapshot, rubric) => (
+                                <SongItem
+                                    provided={provided}
+                                    isDragging={snapshot.isDragging}
+                                    song={items[rubric.source.index]} />
+                            )}>
+                            {provided => (
+                                <List
+                                    height={height}
+                                    itemCount={items.length}
+                                    itemSize={80}
+                                    width="100%"
+                                    outerRef={provided.innerRef}
+                                    itemData={items} >
+                                    {Row}
+                                </List>
+                            )}
+                        </Droppable>
+                    )}
+                </AutoSizer>
+            </div>
+        </DragDropContext>
+  )
 
 }
 
