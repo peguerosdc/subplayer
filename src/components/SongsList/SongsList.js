@@ -4,6 +4,7 @@ import { seconds_to_mss, display_starred } from "../../utils/formatting.js"
 import { sortSongsByKey, filterSongsByValue } from "../../utils/utils.js"
 import PropTypes from 'prop-types'
 // UI
+import SongsListItem from "../SongsListItem"
 import "./SongsList.css"
 // Infinite draggable list
 import AutoSizer from 'react-virtualized-auto-sizer'
@@ -30,24 +31,16 @@ const Row = React.memo(function Row(props) {
     const item = items[index];
     return (
         <Draggable draggableId={item.id} index={index} key={item.id}>
-            {provided => <SongItem provided={provided} song={item} style={style} />}
+            {provided =>
+                <SongsListItem
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    draggableRef={provided.innerRef}
+                    song={item} style={getStyle({ provided, style })}/>
+            }
         </Draggable>
     )
 }, areEqual)
-
-function SongItem({ provided, song, style, isDragging }) {
-    return (
-        <div
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            ref={provided.innerRef}
-            style={getStyle({ provided, style, isDragging })}
-            className={`item ${isDragging ? "is-dragging" : ""}`}>
-            <p><b>{song.title}</b></p>
-            <p>{song.artist} in "{song.album}"</p>
-        </div>
-    );
-}
 
 export default function SongsList(props) {
     const {style} = props
@@ -69,15 +62,18 @@ export default function SongsList(props) {
     // usar/instalar react-window
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <div className="list-app" style={{...style, display:"flex", flexFlow:"column", overflow:"auto"}}>
+            <div style={{...style, display:"flex", flexFlow:"column", overflow:"auto"}}>
                 <AutoSizer disableWidth>
                     {({height}) => (
                         <Droppable
                             droppableId="droppable"
                             mode="virtual"
                             renderClone={(provided, snapshot, rubric) => (
-                                <SongItem
-                                    provided={provided}
+                                <SongsListItem
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    draggableRef={provided.innerRef}
+                                    style={getStyle({ provided, style:{}, isDragging:snapshot.isDragging })}
                                     isDragging={snapshot.isDragging}
                                     song={items[rubric.source.index]} />
                             )}>
