@@ -32,6 +32,8 @@ export function loginUserFailure(error) {
 export function loginUser(host, username, password, encodePassword = true) {
     return async (dispatch) => {
         dispatch(loginUserRequest())
+        // Sanitize host removing trialing /
+        host = host.replace(/\/$/, '')
         // Perform login
         try {
             const success = await subsonic.login(host, username, password, encodePassword)
