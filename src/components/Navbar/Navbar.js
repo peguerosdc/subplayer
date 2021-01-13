@@ -28,6 +28,7 @@ export default class MyNavbar extends React.Component {
                             <Dropdown.Item id="latest" eventKey="/latest/" icon={<Icon icon="clock-o" />} >Recently Added</Dropdown.Item>
                             <Dropdown.Item id="artists" eventKey="/artists/" icon={<Icon icon="group" />} >Artists</Dropdown.Item>
                             <Dropdown.Item id="album" eventKey="/album/" icon={<Icon icon="th2" />} >Albums</Dropdown.Item>
+                            <Dropdown.Item id="genres" eventKey="/genres/" icon={<Icon icon="venus-mars" />} >Genres</Dropdown.Item>
                             <Dropdown.Item id="favourites" eventKey="/favourites/" icon={<Icon icon="star" />} >Favourites</Dropdown.Item>
                         </Dropdown>
                         <Dropdown id="playlists" title="Playlists">

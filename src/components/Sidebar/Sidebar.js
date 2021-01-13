@@ -41,6 +41,9 @@ export default class Sidebar extends React.Component {
                     <Nav.Item eventKey="/album" icon={<Icon icon="th2" />}>
                         Albums
                     </Nav.Item>
+                    <Nav.Item eventKey="/genres" icon={<Icon icon="venus-mars" />}>
+                        Genres
+                    </Nav.Item>
                     <Nav.Item eventKey="/favourites" icon={<Icon icon="star" />}>
                         Favourites
                     </Nav.Item>

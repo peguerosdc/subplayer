@@ -215,6 +215,13 @@ class Subsonic {
             })
     }
 
+    getSongsByGenre(genre, offset=0, count=500) {
+        return perform_api_call( buildUrl(this.config, "getSongsByGenre", {genre, count, offset}) )
+            .then(result => {
+                return result["songsByGenre"]["song"]
+            }) 
+    }
+
     getGenres() {
         return perform_api_call( buildUrl(this.config, "getGenres") )
             .then(result => {
