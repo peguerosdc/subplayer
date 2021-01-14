@@ -19,10 +19,10 @@ function buildUrl(config, action, params = {}) {
         const value = params[key]
         if( Array.isArray(value) ) {
             // If an element has multiple values, add one key for each value
-            base += value.map(val => `&${key}=${val}`).join("")
+            base += value.map(val => `&${key}=${encodeURIComponent(val)}`).join("")
         }
         else {
-            base += `&${key}=${value}`
+            base += `&${key}=${encodeURIComponent(value)}`
         }
     }
     return base

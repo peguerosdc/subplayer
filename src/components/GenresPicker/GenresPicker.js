@@ -30,7 +30,7 @@ export default function GenresPicker(props) {
     const onValueChanged = (genre) => onGenreChanged(genre)
 
     return (
-        <SelectPicker {...rest} id="genrePicker" onChange={onValueChanged} data={genres} cleanable={false} />
+        <SelectPicker {...rest} id="genrePicker" placeholder="Select genre" onChange={onValueChanged} data={genres} cleanable={false} />
     )
 }
 
