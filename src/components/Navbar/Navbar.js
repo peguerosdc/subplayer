@@ -1,10 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { navigate } from "@reach/router"
+// Utils
+import * as settings from "../../utils/settings.js"
 // UI
 import {Navbar, Icon, Nav, Dropdown } from 'rsuite'
 
 export default class MyNavbar extends React.Component {
+
+    constructor(props) {
+        super(props)
+        // Check which items to display in the settings
+        this.itemsToDisplay = settings.getSidebarDisplaySettings(true)
+    }
 
     onNavSelected = (key) => {
         switch(key) {
@@ -25,11 +33,13 @@ export default class MyNavbar extends React.Component {
                     <Nav activeKey={currentPath} onSelect={this.onNavSelected}>
                         <Nav.Item id="search" eventKey="/search" icon={<Icon icon="search" />} />
                         <Dropdown id="library" title="Library">
-                            <Dropdown.Item id="latest" eventKey="/latest/" icon={<Icon icon="clock-o" />} >Recently Added</Dropdown.Item>
-                            <Dropdown.Item id="artists" eventKey="/artists/" icon={<Icon icon="group" />} >Artists</Dropdown.Item>
-                            <Dropdown.Item id="album" eventKey="/album/" icon={<Icon icon="th2" />} >Albums</Dropdown.Item>
-                            <Dropdown.Item id="genres" eventKey="/genres/" icon={<Icon icon="venus-mars" />} >Genres</Dropdown.Item>
-                            <Dropdown.Item id="favourites" eventKey="/favourites/" icon={<Icon icon="star" />} >Favourites</Dropdown.Item>
+                            {
+                                this.itemsToDisplay.map(item => (
+                                    <Dropdown.Item key={item.key} eventKey={item.key} icon={<Icon icon={item.icon} />}>
+                                        {item.text}
+                                    </Dropdown.Item>
+                                ))
+                            }
                         </Dropdown>
                         <Dropdown id="playlists" title="Playlists">
                             <Dropdown.Item id="createPlaylist" eventKey="newPlaylist" icon={<Icon icon="plus" />} >New playlist</Dropdown.Item>
