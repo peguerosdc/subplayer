@@ -1,12 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { navigate } from "@reach/router"
+// Utils
+import * as settings from "../../utils/settings.js"
 // UI
 import { Button, Icon, Divider, Nav } from 'rsuite'
 import SearchBar from "../SearchBar"
 import "./Sidebar.less"
 
 export default class Sidebar extends React.Component {
+
+    constructor(props) {
+        super(props)
+        // Check which items to display in the settings
+        this.itemsToDisplay = settings.getSidebarDisplaySettings()
+    }
 
     showCreatePlaylistModal = () => {
         this.props.onCreatePlaylistTrigger && this.props.onCreatePlaylistTrigger()
@@ -32,18 +40,13 @@ export default class Sidebar extends React.Component {
                     <Nav.Item panel>
                         <h6 className="section-header">Library</h6>
                     </Nav.Item>
-                    <Nav.Item eventKey="/latest" icon={<Icon icon="clock-o" />}>
-                        Recently Added
-                    </Nav.Item>
-                    <Nav.Item eventKey="/artists" icon={<Icon icon="group" />}>
-                        Artists
-                    </Nav.Item>
-                    <Nav.Item eventKey="/album" icon={<Icon icon="th2" />}>
-                        Albums
-                    </Nav.Item>
-                    <Nav.Item eventKey="/favourites" icon={<Icon icon="star" />}>
-                        Favourites
-                    </Nav.Item>
+                    {
+                        this.itemsToDisplay.map(item => (
+                            <Nav.Item key={item.key} eventKey={item.key} icon={<Icon icon={item.icon} />}>
+                                {item.text}
+                            </Nav.Item>
+                        ))
+                    }
                     <Nav.Item panel>
                         <h6 className="section-header">Playlists ({Object.keys(playlists).length})</h6>
                     </Nav.Item>

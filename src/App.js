@@ -21,6 +21,9 @@ import Queue from './components/QueueView'
 import AlertsManager from './components/AlertsManager'
 import RecentlyAdded from './components/RecentlyAddedView'
 import Settings from './components/SettingsView'
+import GenresView from './components/GenresView'
+// import main styles
+import "./App.less"
 
 export class App extends React.Component  {
 
@@ -66,6 +69,7 @@ export class App extends React.Component  {
                 <FavouritesView path="/favourites" />
                 <Queue path="/queue" />
                 <Settings path="/settings" />
+                <GenresView path="/genres" />
             </Router>
           </Content>
         </Container>

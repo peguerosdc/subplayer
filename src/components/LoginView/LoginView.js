@@ -22,7 +22,7 @@ export default class LoginView extends React.Component {
             this.props.lazyLoginUser && this.props.lazyLoginUser()
         }
         else {
-            navigate("/artists", { replace: true })
+            navigate("/latest", { replace: true })
         }
     }
 
@@ -30,7 +30,7 @@ export default class LoginView extends React.Component {
         // Check if we were waiting for an authentication update
         if( prevProps.isAuthenticating && !this.props.isAuthenticating ) {
             if( this.props.isAuthenticated ) {
-                navigate("/artists", { replace: true })
+                navigate("/latest", { replace: true })
             }
             else if(this.props.statusText) {
                 Alert.error(this.props.statusText, 3000)

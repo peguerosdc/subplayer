@@ -80,6 +80,8 @@ module.exports = (themeName) => {
             cursor: pointer;
             font-weight: bold;
         }
+
+        @scrollbar-width: 8px;
         `
     )
 }

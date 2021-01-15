@@ -19,10 +19,10 @@ function buildUrl(config, action, params = {}) {
         const value = params[key]
         if( Array.isArray(value) ) {
             // If an element has multiple values, add one key for each value
-            base += value.map(val => `&${key}=${val}`).join("")
+            base += value.map(val => `&${key}=${encodeURIComponent(val)}`).join("")
         }
         else {
-            base += `&${key}=${value}`
+            base += `&${key}=${encodeURIComponent(value)}`
         }
     }
     return base
@@ -213,6 +213,13 @@ class Subsonic {
             .then(result => {
                 return result["status"] === "ok"
             })
+    }
+
+    getSongsByGenre(genre, offset=0, count=500) {
+        return perform_api_call( buildUrl(this.config, "getSongsByGenre", {genre, count, offset}) )
+            .then(result => {
+                return result["songsByGenre"]["song"]
+            }) 
     }
 
     getGenres() {

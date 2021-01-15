@@ -29,7 +29,7 @@ export default class PlaylistSelectorDropdown extends React.Component {
         const showFavourites = this.props.showFavourites
         const showQueue = this.props.showQueue
         return (
-            <Dropdown id="selectDropdown" title="Add to ..." trigger="click" onSelect={this.onItemSelected} disabled={this.props.disabled} >
+            <Dropdown id="selectDropdown" title="Add to ..." trigger="click" onSelect={this.onItemSelected} disabled={this.props.disabled} placement="bottomEnd" >
                 {
                     showFavourites ? 
                         <Dropdown.Item id="favourites_item" eventKey={this.favourites_key} icon={<Icon icon="star" />}>Favourites</Dropdown.Item>

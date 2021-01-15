@@ -1,37 +1,15 @@
-import React, {useState, useEffect} from "react"
-import PropTypes from 'prop-types'
-// Utils
-import subsonic from "../../api/subsonicApi"
+import React, {useState} from "react"
 // UI
-import {RadioGroup, Radio, InputNumber, Button, SelectPicker, Alert } from 'rsuite'
+import {RadioGroup, Radio, InputNumber, Button, Alert } from 'rsuite'
+import GenresPicker from "../GenresPicker"
 
 export default function AlbumsListFilter(props) {
-    const {beginAsyncTask, asyncTaskSuccess, asyncTaskError} = props
     // Filter details
-    const [genres, setGenres] = useState([])
     const [yearFrom, setYearFrom] = useState(null)
     const [yearTo, setYearTo] = useState(null)
 
     // Filters selection
     const [filter, setFilter] = useState("newest")
-
-    // Get the available genres
-    useEffect(() => {
-        const getGenres = async () => {
-            // Get the available genres
-            beginAsyncTask()
-            try {
-                const genres = await subsonic.getGenres()
-                asyncTaskSuccess()
-                setGenres( genres.map(g => ({label:`${g.value} (${g.albumCount})`, value:g.value})) )
-            }
-            catch(err) {
-                console.log(err)
-                asyncTaskError("Unable to get genres")
-            }
-        }
-        getGenres()
-    }, [beginAsyncTask, asyncTaskSuccess, asyncTaskError])
 
     // Change the settings when the radio option has changed
     function onRadioChanged(value) {
@@ -45,7 +23,7 @@ export default function AlbumsListFilter(props) {
     // On genre changed
     function onGenreChanged(genre) {
         if( genre !== null) {
-            props.onFilterChanged({ filter: filter, genre:genre })
+            props.onFilterChanged({ filter: filter, genre:genre.value })
         }
     }
 
@@ -77,24 +55,10 @@ export default function AlbumsListFilter(props) {
                 <Radio value="byYear">By Year</Radio>
                 <Radio value="byGenre">By Genre</Radio>
             </RadioGroup>
-            {showGenres && <SelectPicker id="genrePicker" onChange={onGenreChanged} data={genres} style={{ width: 150, marginLeft:"10px"}} /> }
+            {showGenres && <GenresPicker id="genrePicker" onGenreChanged={onGenreChanged} style={{ width: 150, marginLeft:"10px"}} /> }
             {showYears && <InputNumber id="yearFrom" onChange={val => setYearFrom(val)} placeholder="from" style={{ width: 80, marginLeft:"10px"}}/> }
             {showYears && <InputNumber id="yearTo" onChange={val => setYearTo(val)} placeholder="to" style={{ width: 80, marginLeft:"10px"}}/> }
             {showYears && <Button id="yearSearch" style={{marginLeft:"10px"}} onClick={onSearch}>Search</Button>}
         </div>
     )
-}
-
-AlbumsListFilter.propTypes = {
-    beginAsyncTask: PropTypes.func,
-    asyncTaskSuccess: PropTypes.func,
-    asyncTaskError: PropTypes.func,
-    onFilterChanged: PropTypes.func,
-}
-
-AlbumsListFilter.defaultProps = {
-    beginAsyncTask: ()=> null,
-    asyncTaskSuccess: ()=> null,
-    asyncTaskError: ()=> null,
-    onFilterChanged: ()=> null,
 }

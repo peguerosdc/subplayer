@@ -19,10 +19,11 @@ describe("<AlbumsListFilter />", () => {
     it("notifies when a genre is selected", () => {
         const onFilterChanged = jest.fn()
         const filter = "byGenre"
+        const genre = {value: "blues"}
         const wrapper = shallow( <AlbumsListFilter onFilterChanged={onFilterChanged} /> )
         wrapper.find("#filterSelection").simulate("change", filter)
-        wrapper.find("#genrePicker").simulate("change","blues")
-        expect(onFilterChanged).toHaveBeenCalledWith({filter: filter, genre:"blues"})
+        wrapper.find("#genrePicker").simulate("genreChanged", genre)
+        expect(onFilterChanged).toHaveBeenCalledWith({filter: filter, genre: "blues"})
     })
 
     it("should only notify if a genre is set", () => {
@@ -30,7 +31,7 @@ describe("<AlbumsListFilter />", () => {
         const filter = "byGenre"
         const wrapper = shallow( <AlbumsListFilter onFilterChanged={onFilterChanged} /> )
         wrapper.find("#filterSelection").simulate("change", filter)
-        wrapper.find("#genrePicker").simulate("change", null)
+        wrapper.find("#genrePicker").simulate("genreChanged", null)
         expect(onFilterChanged).toHaveBeenCalledTimes(0)
     })
 

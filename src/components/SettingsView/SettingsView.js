@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 // UI
 import ThemePicker from '../ThemePicker'
+import SidebarSettings from '../SidebarSettings'
 import ScrobbleSetting from '../ScrobbleSetting'
 import { Button, Row, Col, Divider } from 'rsuite'
 // Utils
@@ -28,7 +29,12 @@ export default class SettingsView extends React.Component {
                 {/* Theme picker */}
                 <h4 style={{marginTop:"15px"}}>Theme Picker</h4>
                 <Row>
-                <ThemePicker themes={themes} />
+                    <ThemePicker themes={themes} />
+                </Row>
+                {/* Items to display in the sidebar */}
+                <h4 style={{marginTop:"15px"}}>Sidebar settings</h4>
+                <Row>
+                    <SidebarSettings />
                 </Row>
                 {/*Log out*/}
                 <div style={{flex:1}} />

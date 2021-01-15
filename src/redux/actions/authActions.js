@@ -32,6 +32,8 @@ export function loginUserFailure(error) {
 export function loginUser(host, username, password, encodePassword = true) {
     return async (dispatch) => {
         dispatch(loginUserRequest())
+        // Sanitize host removing trialing /
+        host = host.replace(/\/$/, '')
         // Perform login
         try {
             const success = await subsonic.login(host, username, password, encodePassword)
@@ -63,11 +65,6 @@ export function lazyLoginUser() {
 }
 
 export function logout() {
-    localStorage.removeItem('host')
-    localStorage.removeItem('username')
-    localStorage.removeItem('enc')
-    localStorage.removeItem('is_scrobbling')
-    localStorage.removeItem('volume')
-    localStorage.removeItem('is_shuffling')
+    localStorage.clear()
     return { type: types.LOGOUT_USER }
 }

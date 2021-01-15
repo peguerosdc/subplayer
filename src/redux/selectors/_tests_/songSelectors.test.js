@@ -106,5 +106,22 @@ describe('songs selectors', () => {
         expect(songs).toEqual( [ state.songs.byId['1'], state.songs.byId['3'] ] )
     })
 
+    it('should get the all the songs of one genre', () => {
+        // The store has 2 songs
+        const state = {
+            songs : {
+                byId : {
+                    '1' : { id : '1', genre:"rock"},
+                    '2' : { id : '2', genre:"rock"},
+                    '3' : { id : '3', genre:"pop"},
+                }
+            }
+        }
+        const props = { genre : {value:"rock"} }
+        // Should return an array containing song '1' and '3'
+        const songs = selectors.songsOfGenreSelector(state, props)
+        expect(songs).toEqual( [ state.songs.byId['1'], state.songs.byId['2'] ] )
+    })
+
 
 })

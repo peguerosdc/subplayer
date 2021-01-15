@@ -36,6 +36,13 @@ export const songsOfArtistSelector = createSelector(
     }
 )
 
+export const songsOfGenreSelector = createSelector(
+    [getSongs, (state, props) => props.genre.value ],
+    (songs, genre) => {
+        return Object.keys(songs).map(id => songs[id]).filter(song => song.genre === genre)
+    }
+)
+
 export const songsOfPlaylistSelector = createSelector(
     [getPlaylist, getSongs],
     (playlist, songs) => {

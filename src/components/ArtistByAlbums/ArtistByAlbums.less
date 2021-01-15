@@ -1,6 +1,6 @@
 
 .nav-artist-by-albums {
-    flex : 0 0 200px;
+    flex : 0 0 230px;
     overflow: auto;
 }
 
@@ -8,4 +8,14 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.artists-by-albums-container {
+    overflow: auto;
+}
+
+@media (max-width: 767px) {
+    .artists-by-albums-container {
+        overflow: initial;
+    }
 }

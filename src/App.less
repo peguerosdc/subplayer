@@ -1,0 +1,22 @@
+@scrollbar-width: 8px;
+
+/*Scrollbar*/
+&::-webkit-scrollbar {
+    border-radius: (@scrollbar-width / 2);
+    width: @scrollbar-width;
+}
+
+/*Handle*/
+&::-webkit-scrollbar-thumb {
+    border-radius: (@scrollbar-width / 2);
+    background-color: fade(#8d8d8d, 30);
+    &:hover {
+      background-color: fade(#8d8d8d, 90);
+    }
+}
+
+/*Track*/
+&::-webkit-scrollbar-track {
+    border-radius: (@scrollbar-width / 2);
+    background: transparent;
+}

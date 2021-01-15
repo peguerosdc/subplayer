@@ -25,6 +25,7 @@ export default createReducer(initialState.songs, {
     },
     [types.LOAD_FAVOURITES_RESULT] : (state, payload) => put_songs_in_store(state, payload.songs, true),
     [types.LOAD_SONGS_OF_ONE_ARTIST_SUCCESS] : (state, payload) => put_songs_in_store(state, payload.songs, true),
+    [types.LOAD_SONGS_OF_GENRE_SUCCESS] : (state, payload) => put_songs_in_store(state, payload.songs, true),
     [types.LOAD_ALBUM_SUCCESS] : (state, payload) => put_songs_in_store(state, payload.album.song, true),
     [types.LOAD_SINGLE_PLAYLIST_SUCCESS] : (state, payload) => put_songs_in_store(state, payload.playlist.entry, true),
     [types.LOGOUT_USER]: (state, payload) => initialState.songs
