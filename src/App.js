@@ -22,6 +22,8 @@ import AlertsManager from './components/AlertsManager'
 import RecentlyAdded from './components/RecentlyAddedView'
 import Settings from './components/SettingsView'
 import GenresView from './components/GenresView'
+// import main styles
+import "./App.less"
 
 export class App extends React.Component  {
 

@@ -38,7 +38,7 @@ export default class ArtistByAlbums extends React.Component {
                             </Nav.Item>
                         )}
                     </Nav>
-                    <Divider className="rs-hidden-xs rs-hidden-sm" vertical style={{height:"100%", minWidth:"1px"}} />
+                    <Divider className="rs-hidden-xs rs-hidden-sm" vertical style={{height:"100%", minWidth:"1px", marginLeft:0}} />
                     {/* This is the main album card */}
                     <div style={{flexGrow:1, paddingBottom:"10px"}} >
                         {selectedAlbumId && <Album id="album" albumId={selectedAlbumId} style={{height:"100%", overflow:"auto"}} />}
