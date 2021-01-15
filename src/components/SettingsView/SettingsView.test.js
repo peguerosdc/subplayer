@@ -7,12 +7,7 @@ describe("<SettingsView />", () => {
     it("renders without crashing", () => {
         shallow( <SettingsView logout={() => null} /> )
     })
-
-    it("should provide theme SettingsView", () => {
-        const wrapper = shallow( <SettingsView logout={() => null} /> )
-        expect(wrapper.find("ThemePicker").exists()).toBeTruthy()
-    })
-
+    
     it("should let me log out", () => {
     	const logout = jest.fn()
         const wrapper = shallow( <SettingsView logout={logout} /> )

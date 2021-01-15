@@ -20,7 +20,7 @@ export default function SidebarSettings(props) {
 
     return (
         <div style={{...props.style, lineHeight:"2.5em"}}>
-            <CheckboxGroup name="checkboxList" value={value} onChange={update_settings}>
+            <CheckboxGroup name="genresCheckboxList" value={value} onChange={update_settings}>
                 <p>Select the items to display in the sidebar (NOTE: you need to refresh the site for these changes to take effect)</p>
                 {
                     allOptions.map(option => (
