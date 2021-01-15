@@ -16,7 +16,7 @@ Live Demo: [Subplayer at Netlify](https://subplayer.netlify.app/)
 - View/create/edit playlists
 - Add/remove songs from Starred
 - Search artists/albums/songs
-- Browse your music by Artist and Albums
+- Browse your music by Artist, Albums and Genres (only compatible with v1.13.0)
 - Star/unstar albums
 - Scrobble
 - Add/Remove from queue
