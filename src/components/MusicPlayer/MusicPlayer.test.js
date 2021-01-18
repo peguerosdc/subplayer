@@ -102,4 +102,19 @@ describe("<MusicPlayer />", () => {
         wrapper.find("#shuffle_button").simulate("click")
         expect(toggleShuffle).toHaveBeenCalledTimes(1)
     })
+
+    it("should let me navigate to an artist", () => {
+        const wrapper = shallow( <MusicPlayer song={song} /> )
+        wrapper.find("#song_artist").simulate("click")
+    })
+
+    it("should let me navigate to an album", () => {
+        const wrapper = shallow( <MusicPlayer song={song} /> )
+        wrapper.find("#song_album").simulate("click")
+    })
+
+    it("should not let me navigate to an album if not set", () => {
+        const wrapper = shallow( <MusicPlayer /> )
+        wrapper.find("#song_album").simulate("click")
+    })
 })

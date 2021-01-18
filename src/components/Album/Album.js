@@ -1,5 +1,6 @@
 import React from "react"
 import PropTypes from 'prop-types'
+import { navigate } from "@reach/router"
 // Utils
 import subsonic from "../../api/subsonicApi"
 import { seconds_to_hhmmss } from "../../utils/formatting.js"
@@ -12,10 +13,14 @@ import "./Album.less"
 const COLUMNS_TO_SHOW = [SongsTable.columns.title, SongsTable.columns.duration, SongsTable.columns.bitRate, SongsTable.columns.selectable, SongsTable.columns.download]
 
 export default function Album(props) {
-    const { album, songs, style, starAlbums } = props
+    const { album, songs, style, starAlbums, linkArtist } = props
     // Toggle the star on this album
     function starThisAlbum() {
         starAlbums([album], !album.starred)
+    }
+
+    function goToArtist(artistId) {
+        navigate(`/artists/${artistId}`)
     }
     // Render all
     const starStyle = album.starred ? 'primary' : 'default'
@@ -25,9 +30,10 @@ export default function Album(props) {
             <Grid fluid>
                 <Row>
                     <Col smHidden xsHidden md={6} lg={6}>
-                        <img src={album.coverArt ? subsonic.getCoverArtUrl(album.coverArt) : null} alt="Album Cover" width="100%" />
-                        <IconButton id="starAlbumLG" icon={<Icon icon="star" />} circle size="lg" style={{marginTop:"-25px", marginRight:"10px", float:"right"}} appearance={starStyle} onClick={starThisAlbum}/>
-                        <p style={{marginTop:"5px"}}><strong>Genre: </strong> {album.genre} </p>
+                        <img src={album.coverArt ? subsonic.getCoverArtUrl(album.coverArt) : "/currently_placeholder.png"} alt="Album Cover" width="100%" style={{marginBottom:"5px"}} />
+                        <IconButton id="starAlbumLG" icon={<Icon icon="star" />} circle size="lg" style={{marginTop:"-30px", marginRight:"10px", float:"right"}} appearance={starStyle} onClick={starThisAlbum}/>
+                        {linkArtist && <p><strong>By: </strong> <span className="artist-link" onClick={e => goToArtist(album.artistId)}>{album.artist}</span> </p> }
+                        <p><strong>Genre: </strong> {album.genre} </p>
                         <p><strong>Songs: </strong> {album.songCount} ({seconds_to_hhmmss(album.duration)}) </p>
                         <p><strong>Year: </strong> {album.year} </p>
                     </Col>
@@ -49,12 +55,14 @@ Album.propTypes = {
     album : PropTypes.object,
     style : PropTypes.object,
     songs : PropTypes.array,
-    setStar : PropTypes.func,
+    starAlbums : PropTypes.func,
+    linkArtist : PropTypes.bool,
 }
 
 Album.defaultProps = {
     album : {},
     style : {},
     songs : [],
-    setStar: () => null,
+    starAlbums: () => null,
+    linkArtist: true,
 }

@@ -119,4 +119,12 @@ describe("<Album />", () => {
         expect(setStar).toHaveBeenCalledWith([album], false)
     })
 
+    it("should show the artist link without crashing", () => {
+        shallow( <Album linkArtist={true} /> )
+    })
+
+    it("should hide the artist link without crashing", () => {
+        shallow( <Album linkArtist={false} /> )
+    })
+
 })
