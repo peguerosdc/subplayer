@@ -162,6 +162,16 @@ export default class MusicPlayer extends React.Component {
         navigate("/queue/")
     }
 
+    goToArtist = (artistId) => {
+        navigate(`/artists/${artistId}`)
+    }
+
+    goToAlbum = (albumId) => {
+        if( albumId ) {
+            navigate(`/album/${albumId}`)
+        }
+    }
+
     playNextSong = () => {
         this.props.playNextSong && this.props.playNextSong()
     }
@@ -202,10 +212,10 @@ export default class MusicPlayer extends React.Component {
             <div className="music-player">
                 {/* Currently playing information */}
                 <div className="song_metadata_container">
-                    <img src={song.coverArt ? subsonic.getCoverArtUrl(song.coverArt) : "/currently_placeholder.png"} alt="cover" width="45" height="45"/>
+                    <img id="song_album" src={song.coverArt ? subsonic.getCoverArtUrl(song.coverArt) : "/currently_placeholder.png"} alt="cover" width="45" height="45" onClick={e => this.goToAlbum(song.albumId)}/>
                     <div style={{overflow:"hidden"}}>
                         <p id="song_name"><b>{song.title}</b></p>
-                        <span id="song_artist">{song.artist}</span>
+                        <span id="song_artist" className="artist-link" onClick={e => this.goToArtist(song.artistId)}>{song.artist}</span>
                     </div>
                     <IconButton id="star_button" icon={<Icon icon={starIcon} />} onClick={this.toggleStarOnSong} appearance="link" size="lg"/>
                 </div>
