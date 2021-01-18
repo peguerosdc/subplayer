@@ -76,7 +76,7 @@ describe("<FavouritesView />", () => {
     it("should show the correct description of the song list", () => {
         const enzymeWrapper = shallow( <FavouritesView loadFavouriteSongs={() => null} /> )
         enzymeWrapper.setProps(props)
-        expect( enzymeWrapper.find("#description").text() ).toEqual("2 songs, 8 mins 33 s")
+        expect( enzymeWrapper.find("#description").text() ).toEqual("2 songs, 8 mins")
     })
 
     it("should not enable the removal of songs if nothing is selected", () => {

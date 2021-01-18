@@ -20,7 +20,7 @@ export function seconds_to_hhmmss(d){
 
         var dDisplay = days > 0 ? days + (days === 1 ? " day " : " days ") : ""
         var hDisplay = h > 0 ? h + (h === 1 ? " hr " : " hrs ") : ""
-        var mDisplay = m > 0 ? m + (m === 1 ? " mins " : " mins ") : ""
+        var mDisplay = m > 0 ? m + (m === 1 ? " mins" : " mins") : ""
         // var sDisplay = s > 0 ? s + (s === 1 ? " s" : " s") : ""
         display = dDisplay + hDisplay + mDisplay 
     }
