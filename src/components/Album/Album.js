@@ -30,7 +30,7 @@ export default function Album(props) {
             <Grid fluid>
                 <Row>
                     <Col smHidden xsHidden md={6} lg={6}>
-                        <img src={album.coverArt ? subsonic.getCoverArtUrl(album.coverArt) : null} alt="Album Cover" width="100%" style={{marginBottom:"5px"}} />
+                        <img src={album.coverArt ? subsonic.getCoverArtUrl(album.coverArt) : "/currently_placeholder.png"} alt="Album Cover" width="100%" style={{marginBottom:"5px"}} />
                         <IconButton id="starAlbumLG" icon={<Icon icon="star" />} circle size="lg" style={{marginTop:"-30px", marginRight:"10px", float:"right"}} appearance={starStyle} onClick={starThisAlbum}/>
                         {linkArtist && <p><strong>By: </strong> <span className="artist-link" onClick={e => goToArtist(album.artistId)}>{album.artist}</span> </p> }
                         <p><strong>Genre: </strong> {album.genre} </p>
