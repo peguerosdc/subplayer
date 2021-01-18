@@ -41,7 +41,7 @@ export default class ArtistByAlbums extends React.Component {
                     <Divider className="rs-hidden-xs rs-hidden-sm" vertical style={{height:"100%", minWidth:"1px", marginLeft:0}} />
                     {/* This is the main album card */}
                     <div style={{flexGrow:1, paddingBottom:"10px"}} >
-                        {selectedAlbumId && <Album id="album" albumId={selectedAlbumId} style={{height:"100%", overflow:"auto"}} />}
+                        {selectedAlbumId && <Album id="album" albumId={selectedAlbumId} linkArtist={false} style={{height:"100%", overflow:"auto"}} />}
                     </div>
                 </div>
             </div>
