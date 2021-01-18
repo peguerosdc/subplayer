@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import subsonic from "../../api/subsonicApi"
 // UI
 import Album from "../Album"
-import { Divider, Nav, SelectPicker } from 'rsuite'
+import { Divider, Nav, SelectPicker, Tooltip, Whisper } from 'rsuite'
 import "./ArtistByAlbums.less"
 
 export default class ArtistByAlbums extends React.Component {
@@ -33,8 +33,15 @@ export default class ArtistByAlbums extends React.Component {
                     <Nav className="nav-artist-by-albums rs-hidden-xs rs-hidden-sm" vertical onSelect={this.onAlbumSelected} activeKey={selectedAlbumId}>
                         {albums.map(album =>
                             <Nav.Item key={album.id} eventKey={album.id} >
-                                <img src={album.coverArt ? subsonic.getCoverArtUrl(album.coverArt) : "/currently_placeholder.png"} alt="cover" width="40" height="40"/>
-                                <span>{" "}{album.name}</span>
+                                <Whisper
+                                    trigger="hover"
+                                    placement="right"
+                                    speaker={<Tooltip>{album.name}</Tooltip>}>
+                                    <div className="album-element">
+                                        <img src={album.coverArt ? subsonic.getCoverArtUrl(album.coverArt) : "/currently_placeholder.png"} alt="cover" width="40" height="40"/>
+                                        <span>{" "}{album.name}</span>
+                                    </div>
+                                </Whisper>
                             </Nav.Item>
                         )}
                     </Nav>
